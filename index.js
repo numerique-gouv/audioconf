@@ -7,6 +7,10 @@ const port = process.env.PORT || 8080
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 
+// Hack for importing css from npm package
+app.use('/~', express.static(path.join(__dirname, 'node_modules')))
+
+
 // Dummy users
 var users = [
   { name: 'tobi', email: 'tobi@learnboost.com' },
