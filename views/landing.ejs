@@ -1,9 +1,19 @@
 <%- include('partials/header') -%>
 
 <div class="rf-container">
-  <div class="rf-grid-row">
+  <nav class="rf-nav" role="navigation" aria-label="Menu principal">
+    <ul class="rf-nav__list">
+      <li class="rf-nav__item">
+        <a class="rf-link" href="#je-cree-une-conf" target="_self">Je crée une conférence</a>
+      </li>
+      <li class="rf-nav__item">
+        <a class="rf-link" href="#comment-ca-marche" target="_self">Comment ça marche ? </a>
+      </li>
+    </ul>
+  </nav>
+    <div class="rf-grid-row">
     <div class="rf-col">
-      <div>
+      <div id="je-cree-une-conf">
         <h2>
           Je crée une conférence téléphonique
         </h2>
@@ -15,7 +25,7 @@
           </div>
         </div>
       </div>
-      <div>
+      <div id="comment-ca-marche">
         <h2>
           Comment ça marche ?
         </h2>
@@ -40,6 +50,10 @@
             La conférence est disponible pendant 24h.
             Toute personne ayant le numéro de téléphone et l'identifiant peut rejoindre la conférence.
             Après le délai de 24h, la conférence ne marche plus, mais je pourrai en créer une nouvelle.
+          </div>
+          <div>
+            Prêts à démarrer ?
+            <button>Créer une conférence</button>
           </div>
         </div>
       </div>
