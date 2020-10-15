@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/betagouv/conferences/issues"
   },
-  "homepage": "https://github.com/betagouv/conferences#readme"
+  "homepage": "https://github.com/betagouv/conferences#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
