@@ -1,0 +1,22 @@
+{
+  "name": "conferences",
+  "version": "1.0.0",
+  "description": "Conférences audio et vidéo pour les fonctionnaires de l'Etat",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/betagouv/conferences.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/betagouv/conferences/issues"
+  },
+  "homepage": "https://github.com/betagouv/conferences#readme"
+}
