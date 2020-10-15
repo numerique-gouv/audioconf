@@ -1,6 +1,10 @@
 <%- include('header') -%>
 
-<h1>Hello everyone !</h1>
+<h1>
+  Hello everyone !
+  <span class="rf-fi-eye-line"></span>
+  <span class="rf-fi-alert-fill"></span>
+</h1>
 <ul id="users">
   <% users.forEach(function(user){ %>
     <li><%= user.name %> &lt;<%= user.email %>&gt;</li>
