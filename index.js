@@ -2,6 +2,7 @@ const express = require('express')
 const path = require('path')
 const bodyParser = require('body-parser');
 const emailer = require('./emailer')
+const conferences = require('./conferences')
 
 const port = process.env.PORT || 8080
 const appName = 'CoucouCollègues' // todo config
@@ -27,21 +28,14 @@ app.get('/', (req, res) => {
 app.post('/create-conf', async (req, res) => {
   const email = req.body.email
 
-  // Todo query OVH for conf number and id
-  const generateInteger = numDigits => {
-    return Math.floor(Math.random() * Math.pow(10, numDigits))
-  }
-  const confPhoneNumber = '0' + generateInteger(9)
-  const confId = generateInteger(6)
-
-  await emailer.sendConfCreatedEmail(email, confPhoneNumber, confId)
   // todo Errors : surround with try/catch and do something
+  const confData = await conferences.createConf(email)
+  await emailer.sendConfCreatedEmail(email, confData.phoneNumber, confData.id)
 
   res.render('confCreated', {
     appName: appName,
     email: email,
-    confPhoneNumber: confPhoneNumber,
-    confId: confId
+    confData: confData,
   })
 })
 
