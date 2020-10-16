@@ -24,15 +24,18 @@ app.get('/', (req, res) => {
   })
 })
 
-app.post('/create-conf', (req, res) => {
+app.post('/create-conf', async (req, res) => {
   const email = req.body.email
 
   // Todo query OVH for conf number and id
-  const confPhoneNumber = '11 22 33 44 55'
-  const confId = '123456'
+  const generateInteger = numDigits => {
+    return Math.floor(Math.random() * Math.pow(10, numDigits))
+  }
+  const confPhoneNumber = '0' + generateInteger(9)
+  const confId = generateInteger(6)
 
-  emailer.sendConfCreatedEmail(email, confPhoneNumber, confId)
-  // Todo async
+  await emailer.sendConfCreatedEmail(email, confPhoneNumber, confId)
+  // todo Errors : surround with try/catch and do something
 
   res.render('confCreated', {
     appName: appName,
