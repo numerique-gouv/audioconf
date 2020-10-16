@@ -32,10 +32,13 @@ app.post('/create-conf', async (req, res) => {
   const confData = await conferences.createConf(email)
   await emailer.sendConfCreatedEmail(email, confData.phoneNumber, confData.id)
 
+  res.redirect('/conf-created')
+})
+
+// Todo gather all the url strings somewhere, for easy changing later
+app.get('/conf-created', (req, res) => {
   res.render('confCreated', {
     appName: appName,
-    email: email,
-    confData: confData,
   })
 })
 
