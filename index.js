@@ -3,10 +3,7 @@ const path = require('path')
 const bodyParser = require('body-parser');
 const emailer = require('./emailer')
 const conferences = require('./conferences')
-
-const port = process.env.PORT || 8080
-const appName = 'CoucouCollègues' // todo config
-
+const config = require('./config')
 
 const app = express()
 
@@ -21,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => {
   res.render('landing', {
-    appName: appName,
+    appName: config.APP_NAME,
   })
 })
 
@@ -38,11 +35,11 @@ app.post('/create-conf', async (req, res) => {
 // Todo gather all the url strings somewhere, for easy changing later
 app.get('/conf-created', (req, res) => {
   res.render('confCreated', {
-    appName: appName,
+    appName: config.APP_NAME,
   })
 })
 
 
-module.exports = app.listen(port, () => {
-  console.log(`${appName} listening at http://localhost:${port}`)
+module.exports = app.listen(config.PORT, () => {
+  console.log(`${config.APP_NAME} listening at http://localhost:${config.PORT}`)
 })
