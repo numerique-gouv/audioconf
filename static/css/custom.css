@@ -3,3 +3,11 @@
   /* todo use Sass or some other css processor to reuse rules */
   margin-bottom: 120px !important;
 }
+
+.sub-paragraph {
+  /* .rf-margin-bottom-7N from DS*/
+  /* todo use Sass or some other css processor to reuse rules */
+  margin-bottom: 56px !important;
+}
+
+/* Todo : use callouts from the design system instead of home-made paragraphs ? */
