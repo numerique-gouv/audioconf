@@ -63,7 +63,7 @@ module.exports.sendConfCreatedEmail = async function(toEmail, confPhoneNumber, c
   <p>Bonne journée avec ${appName} !</p>`
 
   return sendMail(
-    process.env.MAIL_SENDER_EMAIL,
+    'conferences@incubateur.net',// todo process.env.MAIL_SENDER_EMAIL,
     toEmail,
     'Votre conférence est créée',
     html,
