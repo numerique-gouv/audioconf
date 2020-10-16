@@ -11,10 +11,10 @@ const mailTransport = nodemailer.createTransport({
   }
 });
 
-const sendMail = async function (toEmail, subject, html) {
+const sendMail = async function (fromEmail, toEmail, subject, html) {
   const mail = {
     to: toEmail,
-    from: `${appName} <${process.env.MAIL_USER}>`,
+    from: `${appName} <${fromEmail}>`,
     subject: subject,
     html: html,
     text: html.replace(/<(?:.|\n)*?>/gm, ''),
@@ -42,6 +42,7 @@ module.exports.sendConfCreatedEmail = async function(toEmail, confPhoneNumber, c
   <p>Bonne journée avec ${appName} !</p>`
 
   return sendMail(
+    process.env.MAIL_USER,
     toEmail,
     'Votre conférence est créée',
     html,
