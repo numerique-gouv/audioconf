@@ -28,6 +28,7 @@ if ('MAIL_SERVICE' in process.env) {
   mailOptions.port = process.env.MAIL_PORT
 }
 
+console.log('mailOptions', mailOptions)
 const mailTransport = nodemailer.createTransport(mailOptions)
 
 const sendMail = async function (fromEmail, toEmail, subject, html) {
