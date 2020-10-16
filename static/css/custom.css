@@ -11,3 +11,7 @@
 }
 
 /* Todo : use callouts from the design system instead of home-made paragraphs ? */
+
+.error-text {
+  color: var(--error);
+}

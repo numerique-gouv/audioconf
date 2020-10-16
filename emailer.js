@@ -38,6 +38,7 @@ module.exports.sendConfCreatedEmail = async function(toEmail, confPhoneNumber, c
     <li>appelez le <strong>${confPhoneNumber}</strong> sur votre téléphone pro ou perso</li>
     <li>tapez le numéro de conférence à 6 chiffres : <strong>${confId}</strong>, puis appuyez sur "#"</li>
   </ul>
+  <p style="color: #b60000;">LA CONF NE MARCHE PAS POUR DE VRAI POUR LE MOMENT, CE SITE EST ENCORE UNE DEMO</p>
   <p></p>
   <p>Bonne journée avec ${appName} !</p>`
 
