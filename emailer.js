@@ -28,7 +28,6 @@ if ('MAIL_SERVICE' in process.env) {
   mailOptions.port = process.env.MAIL_PORT
 }
 
-console.log('mailOptions', mailOptions)
 const mailTransport = nodemailer.createTransport(mailOptions)
 
 const sendMail = async function (fromEmail, toEmail, subject, html) {
@@ -63,7 +62,7 @@ module.exports.sendConfCreatedEmail = async function(toEmail, confPhoneNumber, c
   <p>Bonne journée avec ${appName} !</p>`
 
   return sendMail(
-    'conferences@incubateur.net',// todo process.env.MAIL_SENDER_EMAIL,
+    process.env.MAIL_SENDER_EMAIL,
     toEmail,
     'Votre conférence est créée',
     html,
