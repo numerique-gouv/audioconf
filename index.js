@@ -12,7 +12,7 @@ app.use('/static', express.static('static'))
 app.use('/~', express.static(path.join(__dirname, 'node_modules')))
 
 
-const appName = 'CoucouCollègues'
+const appName = 'CoucouCollègues' // todo config
 
 app.get('/', (req, res) => {
   res.render('landing', {
@@ -20,6 +20,6 @@ app.get('/', (req, res) => {
   })
 })
 
-app.listen(port, () => {
+module.exports = app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
