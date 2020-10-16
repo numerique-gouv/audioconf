@@ -1,7 +1,7 @@
 const express = require('express')
 const path = require('path')
 const bodyParser = require('body-parser');
-const emailer = require('./email') // todo rename the file
+const emailer = require('./emailer')
 
 const port = process.env.PORT || 8080
 const appName = 'CoucouCollègues' // todo config
