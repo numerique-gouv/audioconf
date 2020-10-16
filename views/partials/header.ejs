@@ -6,6 +6,7 @@
   <title><%= appName %></title>
   <!-- todo(estellecomment) : import min css and js -->
   <link rel="stylesheet" href="/~/@gouvfr/design-system/dist/css/dsfr.css">
+  <link rel="stylesheet" href="/static/css/custom.css">
   <link rel="icon" type="image/png" sizes="16x16" href="/static/images/favicon/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/static/images/favicon/favicon-32x32.png">
 </head>
@@ -16,7 +17,7 @@
         <%- include('brand') -%>
         <div class="rf-header__navbar">
           <div class="rf-service">
-            <a class="rf-service__title" href="#" title="Nom du service">
+            <a class="rf-service__title" href="/#" title="Nom du service">
               <h1><%= appName %></h1>
             </a>
             <p class="rf-service__tagline">
@@ -25,5 +26,15 @@
           </div>
         </div>
       </div>
+      <nav class="rf-nav" role="navigation" aria-label="Menu principal">
+        <ul class="rf-nav__list">
+          <li class="rf-nav__item">
+            <a class="rf-link" href="/#je-cree-une-conf" target="_self">Je crée une conférence</a>
+          </li>
+          <li class="rf-nav__item">
+            <a class="rf-link" href="/#comment-ca-marche" target="_self">Comment ça marche ? </a>
+          </li>
+        </ul>
+      </nav>
     </div>
   </header>
