@@ -8,7 +8,7 @@ module.exports.createConf = async (req, res) => {
     email === undefined ||
     !/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/.test(email)
   ) {
-    req.flash('error', 'Email invalide ou vide. Vous pouvez réessayer.')
+    req.flash('error', 'Email invalide. Avez vous bien tapé votre email ? Vous pouvez réessayer.')
     return res.redirect('/')
   }
 
