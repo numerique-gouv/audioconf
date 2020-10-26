@@ -1,5 +1,4 @@
 const bodyParser = require('body-parser')
-const cookieParser = require('cookie-parser')
 const express = require('express')
 const flash = require('connect-flash')
 const path = require('path')
@@ -17,14 +16,16 @@ app.use('/static', express.static('static'))
 // Hack for importing css from npm package
 app.use('/~', express.static(path.join(__dirname, 'node_modules')))
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser('dddd')) // todo use secret ?
-// todo Fix errors :
-/*
-express-session deprecated undefined resave option; provide resave option index.js:21:9
-express-session deprecated undefined saveUninitialized option; provide saveUninitialized option index.js:21:9
-express-session deprecated req.secret; provide secret option index.js:21:9
-*/
-app.use(session({ cookie: { maxAge: 300000, sameSite: 'lax' } })); // Only used for Flash not safe for others purposes
+// Session is necessary for flash.
+app.use(session({
+  // todo : chose a prod-appropriate store, the default MemoryStore has memoryleaks and other problems.
+  secret: 'aaaa',
+  resave: false,
+  saveUninitialized: false, // "complying with laws that require permission before setting a cookie"
+  cookie: {
+    maxAge: 300000,
+    sameSite: 'lax' // todo strict would be better for prod
+  } }));
 app.use(flash())
 
 app.get('/', (req, res) => {
