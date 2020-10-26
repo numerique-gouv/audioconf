@@ -1,9 +1,9 @@
+const bodyParser = require('body-parser');
 const express = require('express')
 const path = require('path')
-const bodyParser = require('body-parser');
-const emailer = require('./emailer')
-const conferences = require('./conferences')
+
 const config = require('./config')
+const createConfController = require('./controllers/createConfController')
 
 const app = express()
 
@@ -22,15 +22,7 @@ app.get('/', (req, res) => {
   })
 })
 
-app.post('/create-conf', async (req, res) => {
-  const email = req.body.email
-
-  // todo Errors : surround with try/catch and do something
-  const confData = await conferences.createConf(email)
-  await emailer.sendConfCreatedEmail(email, confData.phoneNumber, confData.id)
-
-  res.redirect('/conf-created')
-})
+app.post('/create-conf', createConfController.createConf)
 
 // Todo gather all the url strings somewhere, for easy changing later
 app.get('/conf-created', (req, res) => {
