@@ -12,8 +12,14 @@ module.exports.createConf = async (req, res) => {
     return res.redirect('/')
   }
 
-  // todo Errors : surround with try/catch and do something
-  const confData = await conferences.createConf(email)
+  let confData = {}
+  try {
+    confData = await conferences.createConf(email)
+  } catch (error) {
+    req.flash('error', 'La conférence n\'a pas pu être créée. Vous pouvez réessayer.')
+    console.error('Error when creating conference', error)
+    return res.redirect('/')
+  }
 
   // todo Errors : surround with try/catch and do something
   await emailer.sendConfCreatedEmail(email, confData.phoneNumber, confData.id)
