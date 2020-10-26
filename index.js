@@ -41,6 +41,7 @@ app.post('/create-conf', createConfController.createConf)
 app.get('/conf-created', (req, res) => {
   res.render('confCreated', {
     appName: config.APP_NAME,
+    email: req.query.email
   })
 })
 

@@ -1,5 +1,7 @@
-const emailer = require('../lib/emailer')
+const url = require('url')
+
 const conferences = require('../lib/conferences')
+const emailer = require('../lib/emailer')
 
 module.exports.createConf = async (req, res) => {
   const email = req.body.email
@@ -18,5 +20,8 @@ module.exports.createConf = async (req, res) => {
   // todo Errors : surround with try/catch and do something
   await emailer.sendConfCreatedEmail(email, confData.phoneNumber, confData.id)
 
-  res.redirect('/conf-created')
+  res.redirect(url.format({
+    pathname:'/conf-created',
+    query: { email: email },
+  }))
 }
