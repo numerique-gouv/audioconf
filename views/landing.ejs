@@ -8,6 +8,13 @@
           Je crée une conférence téléphonique
         </h2>
         <form action="/create-conf" method="POST">
+          <% if (errors.length) { %>
+            <div class="notification error">
+                <% errors.forEach(function(error) { %>
+                    <div><%= error %></div>
+                <% }) %>
+            </div>
+          <% } %>
           <label class="rf-label" for="email">Renseignez votre email professionnel :</label>
           <div class="rf-grid-row">
             <div class="rf-col">
