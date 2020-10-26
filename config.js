@@ -1,29 +1,37 @@
+require('dotenv').config()
 const config = {}
 
 config.PORT = process.env.PORT || 8080
 
-if (!('APP_NAME' in process.env)) {
+const isPresent = varName => {
+  if (varName in process.env && process.env[varName].trim() !== '') {
+    return true
+  }
+  return false
+}
+
+if (!isPresent('APP_NAME')) {
   config.APP_NAME = 'CoucouCollègues'
 } else {
   config.APP_NAME = process.env.APP_NAME
 }
 
-if (!('MAIL_USER' in process.env) || !('MAIL_PASS' in process.env)) {
+if (!isPresent('MAIL_USER') || !isPresent('MAIL_PASS')) {
   throw new Error('Env vars MAIL_USER and MAIL_PASS should be set')
 }
 config.MAIL_USER = process.env.MAIL_USER
 config.MAIL_PASS = process.env.MAIL_PASS
 
-if (!('MAIL_SENDER_EMAIL' in process.env)) {
+if (!isPresent('MAIL_SENDER_EMAIL')) {
   throw new Error('Env vars MAIL_SENDER_EMAIL should be set')
 }
 config.MAIL_SENDER_EMAIL = process.env.MAIL_SENDER_EMAIL
 
-if ('MAIL_SERVICE' in process.env) {
+if (isPresent('MAIL_SERVICE')) {
   config.MAIL_SERVICE = process.env.MAIL_SERVICE
 } else {
-  if (!('MAIL_HOST' in process.env) || !('MAIL_PORT' in process.env)) {
-    throw new Error('When MAIL_SERVICE is set, env vars MAIL_HOST and MAIL_PORT should be set')
+  if (!isPresent('MAIL_HOST') || !isPresent('MAIL_PORT')) {
+    throw new Error('When MAIL_SERVICE is not set, env vars MAIL_HOST and MAIL_PORT should be set')
   }
   config.MAIL_HOST = process.env.MAIL_HOST
   config.MAIL_PORT = process.env.MAIL_PORT
