@@ -21,8 +21,12 @@ module.exports.createConf = async (req, res) => {
     return res.redirect('/')
   }
 
-  // todo Errors : surround with try/catch and do something
-  await emailer.sendConfCreatedEmail(email, confData.phoneNumber, confData.id)
-
-  res.redirect('/conf-created')
+  try {
+    await emailer.sendConfCreatedEmail(email, confData.phoneNumber, confData.id)
+    res.redirect('/conf-created')
+  } catch (error) {
+    req.flash('error', 'L\'email contenant les identifiants n\'a pas pu être envoyé. Vous pouvez réessayer.')
+    console.error('Error when emailing', error)
+    return res.redirect('/')
+  }
 }
