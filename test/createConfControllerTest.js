@@ -6,6 +6,12 @@ const conferences = require('../lib/conferences')
 const config = require('../config')
 const emailer = require('../lib/emailer')
 
+const shouldRedirectToLocation = (res, location) => {
+  // Escape slashes for regex
+  const escapedLocation = location.replace('/', '\/')
+  res.should.redirectTo(new RegExp(`^http:\/\/127.0.0.1:[0-9]+${escapedLocation}$`))
+}
+
 describe('createConfController', function() {
   let createConfStub
   let sendEmailStub
@@ -32,7 +38,7 @@ describe('createConfController', function() {
         email: 'bad.email',
       })
       .end((err, res) => {
-        res.should.redirectTo(/^http:\/\/127.0.0.1:[0-9]+\/$/)
+        shouldRedirectToLocation(res, '/')
         sinon.assert.notCalled(createConfStub)
         sinon.assert.notCalled(sendEmailStub)
         done()
@@ -47,7 +53,7 @@ describe('createConfController', function() {
         email: 'bad.email@not.gouv.fr',
       })
       .end((err, res) => {
-        res.should.redirectTo(/^http:\/\/127.0.0.1:[0-9]+\/$/)
+        shouldRedirectToLocation(res, '/')
         sinon.assert.notCalled(createConfStub)
         sinon.assert.notCalled(sendEmailStub)
         done()
@@ -62,7 +68,7 @@ describe('createConfController', function() {
         email: 'good.email@beta.gouv.fr',
       })
       .end(function(err, res) {
-        res.should.redirectTo(/^http:\/\/127.0.0.1:[0-9]+\/conf-created$/)
+        shouldRedirectToLocation(res, '/conf-created')
         sinon.assert.calledOnce(createConfStub)
         sinon.assert.calledOnce(sendEmailStub)
         done()

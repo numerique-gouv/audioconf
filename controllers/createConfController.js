@@ -4,7 +4,6 @@ const emailer = require('../lib/emailer')
 
 
 const isAcceptedEmail = email => {
-  console.log(config.EMAIL_WHITELIST)
   for (const regex of config.EMAIL_WHITELIST) {
     if (regex.test(email)) {
       return true
