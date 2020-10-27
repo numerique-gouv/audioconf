@@ -46,6 +46,10 @@ app.get('/conf-created', (req, res) => {
   res.render('confCreated')
 })
 
+app.get('/mentions-legales', (req, res) => {
+  res.render('legalNotice')
+})
+
 
 module.exports = app.listen(config.PORT, () => {
   console.log(`${config.APP_NAME} listening at http://localhost:${config.PORT}`)
