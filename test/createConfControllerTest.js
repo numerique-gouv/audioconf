@@ -60,6 +60,25 @@ describe('createConfController', function() {
       })
   })
 
+  it('should react when conf was not created', function(done) {
+    createConfStub.restore()
+    createConfStub = sinon.stub(conferences, 'createConf')
+      .rejects('oops')
+
+    chai.request(app)
+      .post('/create-conf')
+      .type('form')
+      .send({
+        email: 'good.email@beta.gouv.fr',
+      })
+      .end(function(err, res) {
+        shouldRedirectToLocation(res, '/')
+        sinon.assert.calledOnce(createConfStub)
+        sinon.assert.notCalled(sendEmailStub)
+        done()
+      })
+  })
+
   it('should create conf and send email', function(done) {
     chai.request(app)
       .post('/create-conf')
