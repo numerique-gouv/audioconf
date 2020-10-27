@@ -48,7 +48,7 @@ describe('createConfController', function() {
 
   it('should refuse email that is not in EMAIL_WHITELIST', function(done) {
     chai.request(app)
-      .post('/create-conf')
+      .post(urls.createConf)
       .type('form')
       .send({
         email: 'bad.email@not.gouv.fr',
@@ -67,7 +67,7 @@ describe('createConfController', function() {
       .rejects('oops')
 
     chai.request(app)
-      .post('/create-conf')
+      .post(urls.createConf)
       .type('form')
       .send({
         email: 'good.email@beta.gouv.fr',
@@ -86,7 +86,7 @@ describe('createConfController', function() {
       .rejects('oops')
 
     chai.request(app)
-      .post('/create-conf')
+      .post(urls.createConf)
       .type('form')
       .send({
         email: 'good.email@beta.gouv.fr',
