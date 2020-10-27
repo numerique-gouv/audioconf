@@ -1,13 +1,13 @@
 .main-paragraph {
-  /* .rf-margin-bottom-15N from DS*/
   /* todo use Sass or some other css processor to reuse rules */
-  margin-bottom: 120px !important;
+  margin-top: 56px !important; /* rf-margin-top-7N */
+  margin-bottom: 64px !important; /* rf-margin-bottom-8N */
 }
 
 .sub-paragraph {
-  /* .rf-margin-bottom-7N from DS*/
   /* todo use Sass or some other css processor to reuse rules */
-  margin-bottom: 56px !important;
+  margin-top: 24px !important; /* rf-margin-top-3N */
+  margin-bottom: 56px !important; /* rf-margin-bottom-7N */
 }
 
 /* Todo : use callouts from the design system instead of home-made paragraphs ? */
