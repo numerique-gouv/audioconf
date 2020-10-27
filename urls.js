@@ -1,6 +1,6 @@
 module.exports = {
   landing : '/',
-  createConf : '/create-conf',
-  confCreated : '/conf-created',
+  createConf : '/creer-conf',
+  confCreated : '/conf-creee',
   legalNotice : '/mentions-legales',
 }
