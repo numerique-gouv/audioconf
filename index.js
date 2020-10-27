@@ -27,15 +27,16 @@ app.use(session({
     sameSite: 'lax' // todo strict would be better for prod
   } }));
 app.use(flash())
+// Populate some variables for all views
 app.use(function(req, res, next){
   res.locals.appName = config.APP_NAME
+  res.locals.errors = req.flash('error')
+  res.locals.message = req.flash('message')
   next()
 })
 
 app.get('/', (req, res) => {
-  res.render('landing', {
-    errors: req.flash('error'),
-  })
+  res.render('landing')
 })
 
 app.post('/create-conf', createConfController.createConf)
