@@ -39,7 +39,7 @@ describe('createConfController', function() {
         email: 'bad.email',
       })
       .end((err, res) => {
-        shouldRedirectToLocation(res, '/')
+        shouldRedirectToLocation(res, urls.landing)
         sinon.assert.notCalled(createConfStub)
         sinon.assert.notCalled(sendEmailStub)
         done()
@@ -73,7 +73,7 @@ describe('createConfController', function() {
         email: 'good.email@beta.gouv.fr',
       })
       .end(function(err, res) {
-        shouldRedirectToLocation(res, '/')
+        shouldRedirectToLocation(res, urls.landing)
         sinon.assert.calledOnce(createConfStub)
         sinon.assert.notCalled(sendEmailStub)
         done()
@@ -92,7 +92,7 @@ describe('createConfController', function() {
         email: 'good.email@beta.gouv.fr',
       })
       .end(function(err, res) {
-        shouldRedirectToLocation(res, '/')
+        shouldRedirectToLocation(res, urls.landing)
         sinon.assert.calledOnce(createConfStub)
         sinon.assert.calledOnce(sendEmailStub)
         done()
