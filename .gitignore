@@ -104,4 +104,4 @@ dist
 .tern-port
 
 # List of email regexes
-emailRegexes.js
+.env.email_whitelist

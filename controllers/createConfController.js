@@ -3,20 +3,13 @@ const config = require('../config')
 const emailer = require('../lib/emailer')
 
 
-let isAcceptedEmail = undefined
-try {
-  const emailRegexes = require('../emailRegexes').regexes
-  isAcceptedEmail = (email) => {
-    for (const regex of emailRegexes) {
-      if (regex.test(email)) {
-        return true
-      }
+const isAcceptedEmail = email => {
+  for (const regex of config.EMAIL_WHITELIST) {
+    if (regex.test(email)) {
+      return true
     }
-    return false
   }
-} catch (ex) {
-  // No emailRegexes file. No validation to run, everything is accepted.
-  isAcceptedEmail = (email) => true
+  return false
 }
 
 const isValidEmail = (email) => {
@@ -32,7 +25,7 @@ const isValidEmail = (email) => {
 module.exports.createConf = async (req, res) => {
   const email = req.body.email
 
-  if (isValidEmail(email)) {
+  if (!isValidEmail(email)) {
     req.flash('error', 'Email invalide. Avez vous bien tapé votre email ? Vous pouvez réessayer.')
     return res.redirect('/')
   }

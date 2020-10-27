@@ -1,4 +1,7 @@
-require('dotenv').config()
+const dotenv = require('dotenv')
+dotenv.config({ path: '.env' })
+dotenv.config({ path: '.env.email_whitelist' })
+
 const config = {}
 
 config.PORT = process.env.PORT || 8080
@@ -35,6 +38,12 @@ if (isPresent('MAIL_SERVICE')) {
   }
   config.MAIL_HOST = process.env.MAIL_HOST
   config.MAIL_PORT = process.env.MAIL_PORT
+}
+
+if (isPresent('EMAIL_WHITELIST')) {
+  config.EMAIL_WHITELIST = process.env.EMAIL_WHITELIST.split(",").map(string => new RegExp(string))
+} else {
+  config.EMAIL_WHITELIST = [/.*/]
 }
 
 module.exports = config
