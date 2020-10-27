@@ -27,10 +27,13 @@ app.use(session({
     sameSite: 'lax' // todo strict would be better for prod
   } }));
 app.use(flash())
+app.use(function(req, res, next){
+  res.locals.appName = config.APP_NAME
+  next()
+})
 
 app.get('/', (req, res) => {
   res.render('landing', {
-    appName: config.APP_NAME,
     errors: req.flash('error'),
   })
 })
@@ -39,9 +42,7 @@ app.post('/create-conf', createConfController.createConf)
 
 // Todo gather all the url strings somewhere, for easy changing later
 app.get('/conf-created', (req, res) => {
-  res.render('confCreated', {
-    appName: config.APP_NAME,
-  })
+  res.render('confCreated')
 })
 
 
