@@ -6,6 +6,7 @@ const session = require('express-session')
 
 const config = require('./config')
 const createConfController = require('./controllers/createConfController')
+const urls = require('./urls')
 
 const app = express()
 
@@ -32,21 +33,22 @@ app.use(function(req, res, next){
   res.locals.appName = config.APP_NAME
   res.locals.errors = req.flash('error')
   res.locals.message = req.flash('message')
+  res.locals.urls = urls
   next()
 })
 
-app.get('/', (req, res) => {
+app.get(urls.landing, (req, res) => {
   res.render('landing')
 })
 
-app.post('/create-conf', createConfController.createConf)
+app.post(urls.createConf, createConfController.createConf)
 
 // Todo gather all the url strings somewhere, for easy changing later
-app.get('/conf-created', (req, res) => {
+app.get(urls.confCreated, (req, res) => {
   res.render('confCreated')
 })
 
-app.get('/mentions-legales', (req, res) => {
+app.get(urls.legalNotice, (req, res) => {
   res.render('legalNotice')
 })
 

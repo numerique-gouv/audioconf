@@ -5,6 +5,7 @@ const app = require('../index')
 const conferences = require('../lib/conferences')
 const config = require('../config')
 const emailer = require('../lib/emailer')
+const urls = require('../urls')
 
 const shouldRedirectToLocation = (res, location) => {
   // Escape slashes for regex
@@ -32,7 +33,7 @@ describe('createConfController', function() {
 
   it('should refuse invalid email', function(done) {
     chai.request(app)
-      .post('/create-conf')
+      .post(urls.createConf)
       .type('form')
       .send({
         email: 'bad.email',
@@ -53,7 +54,7 @@ describe('createConfController', function() {
         email: 'bad.email@not.gouv.fr',
       })
       .end((err, res) => {
-        shouldRedirectToLocation(res, '/')
+        shouldRedirectToLocation(res, urls.landing)
         sinon.assert.notCalled(createConfStub)
         sinon.assert.notCalled(sendEmailStub)
         done()
@@ -100,13 +101,13 @@ describe('createConfController', function() {
 
   it('should create conf and send email', function(done) {
     chai.request(app)
-      .post('/create-conf')
-      .type('form')
+    .post(urls.createConf)
+    .type('form')
       .send({
         email: 'good.email@beta.gouv.fr',
       })
       .end(function(err, res) {
-        shouldRedirectToLocation(res, '/conf-created')
+        shouldRedirectToLocation(res, urls.confCreated)
         sinon.assert.calledOnce(createConfStub)
         sinon.assert.calledOnce(sendEmailStub)
         done()
