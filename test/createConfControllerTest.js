@@ -79,6 +79,25 @@ describe('createConfController', function() {
       })
   })
 
+  it('should react when email was not sent', function(done) {
+    sendEmailStub.restore()
+    sendEmailStub = sinon.stub(emailer, 'sendConfCreatedEmail')
+      .rejects('oops')
+
+    chai.request(app)
+      .post('/create-conf')
+      .type('form')
+      .send({
+        email: 'good.email@beta.gouv.fr',
+      })
+      .end(function(err, res) {
+        shouldRedirectToLocation(res, '/')
+        sinon.assert.calledOnce(createConfStub)
+        sinon.assert.calledOnce(sendEmailStub)
+        done()
+      })
+  })
+
   it('should create conf and send email', function(done) {
     chai.request(app)
       .post('/create-conf')
