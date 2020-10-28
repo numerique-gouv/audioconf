@@ -5,9 +5,9 @@
 }
 
 .sub-paragraph {
-  /* .rf-margin-bottom-7N from DS*/
   /* todo use Sass or some other css processor to reuse rules */
-  margin-bottom: 56px !important;
+  margin-top: 24px !important; /* rf-margin-top-3N */
+  margin-bottom: 56px !important; /* rf-margin-bottom-7N */
 }
 
 /* Todo : use callouts from the design system instead of home-made paragraphs ? */

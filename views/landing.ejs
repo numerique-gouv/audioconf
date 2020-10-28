@@ -7,7 +7,7 @@
         <h2>
           Je crée une conférence téléphonique
         </h2>
-        <form action="/create-conf" method="POST">
+        <form action="<%= urls.createConf %>" method="POST">
           <% if (errors.length) { %>
             <div class="notification error">
                 <% errors.forEach(function(error) { %>

@@ -6,6 +6,7 @@ const session = require('express-session')
 
 const config = require('./config')
 const createConfController = require('./controllers/createConfController')
+const urls = require('./urls')
 
 const app = express()
 
@@ -27,22 +28,29 @@ app.use(session({
     sameSite: 'lax' // todo strict would be better for prod
   } }));
 app.use(flash())
+// Populate some variables for all views
+app.use(function(req, res, next){
+  res.locals.appName = config.APP_NAME
+  res.locals.errors = req.flash('error')
+  res.locals.message = req.flash('message')
+  res.locals.urls = urls
+  next()
+})
 
-app.get('/', (req, res) => {
-  res.render('landing', {
-    appName: config.APP_NAME,
-    errors: req.flash('error'),
+app.get(urls.landing, (req, res) => {
+  res.render('landing')
+})
+
+app.post(urls.createConf, createConfController.createConf)
+
+app.get(urls.confCreated, (req, res) => {
+  res.render('confCreated', {
+    email: req.query.email
   })
 })
 
-app.post('/create-conf', createConfController.createConf)
-
-// Todo gather all the url strings somewhere, for easy changing later
-app.get('/conf-created', (req, res) => {
-  res.render('confCreated', {
-    appName: config.APP_NAME,
-    email: req.query.email
-  })
+app.get(urls.legalNotice, (req, res) => {
+  res.render('legalNotice')
 })
 
 

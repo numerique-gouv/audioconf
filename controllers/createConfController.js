@@ -3,6 +3,7 @@ const url = require('url')
 const conferences = require('../lib/conferences')
 const config = require('../config')
 const emailer = require('../lib/emailer')
+const urls = require('../urls')
 
 
 const isAcceptedEmail = email => {
@@ -49,7 +50,7 @@ module.exports.createConf = async (req, res) => {
   try {
     await emailer.sendConfCreatedEmail(email, confData.phoneNumber, confData.id)
     res.redirect(url.format({
-      pathname:'/conf-created',
+      pathname: urls.confCreated,
       query: { email: email },
     }))
   } catch (error) {
