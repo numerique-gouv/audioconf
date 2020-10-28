@@ -46,4 +46,6 @@ if (isPresent('EMAIL_WHITELIST')) {
   config.EMAIL_WHITELIST = [/.*/]
 }
 
+console.log('EMAIL_WHITELIST', config.EMAIL_WHITELIST)
+
 module.exports = config
