@@ -1,3 +1,5 @@
+const url = require('url')
+
 const conferences = require('../lib/conferences')
 const config = require('../config')
 const emailer = require('../lib/emailer')
@@ -47,7 +49,10 @@ module.exports.createConf = async (req, res) => {
 
   try {
     await emailer.sendConfCreatedEmail(email, confData.phoneNumber, confData.id)
-    res.redirect(urls.confCreated)
+    res.redirect(url.format({
+      pathname: urls.confCreated,
+      query: { email: email },
+    }))
   } catch (error) {
     req.flash('error', 'L\'email contenant les identifiants n\'a pas pu être envoyé. Vous pouvez réessayer.')
     console.error('Error when emailing', error)

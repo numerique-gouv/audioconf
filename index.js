@@ -43,9 +43,10 @@ app.get(urls.landing, (req, res) => {
 
 app.post(urls.createConf, createConfController.createConf)
 
-// Todo gather all the url strings somewhere, for easy changing later
 app.get(urls.confCreated, (req, res) => {
-  res.render('confCreated')
+  res.render('confCreated', {
+    email: req.query.email
+  })
 })
 
 app.get(urls.legalNotice, (req, res) => {
