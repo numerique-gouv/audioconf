@@ -38,19 +38,24 @@ app.use(function(req, res, next){
 })
 
 app.get(urls.landing, (req, res) => {
-  res.render('landing')
+  res.render('landing', {
+    pageTitle: 'Accueil',
+  })
 })
 
 app.post(urls.createConf, createConfController.createConf)
 
 app.get(urls.confCreated, (req, res) => {
   res.render('confCreated', {
+    pageTitle: 'La conférence est créée',
     email: req.query.email
   })
 })
 
 app.get(urls.legalNotice, (req, res) => {
-  res.render('legalNotice')
+  res.render('legalNotice', {
+    pageTitle: 'Mentions Légales',
+  })
 })
 
 
