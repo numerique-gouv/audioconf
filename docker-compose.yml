@@ -27,8 +27,10 @@ services:
       DATABASE_URL: postgres://conferences:conferences@db:5432/conferences
       MAIL_PASS: mailuser
       MAIL_USER: mailpassword
-      MAIL_SERVICE: Maildev
-      SECURE: "false"
+      MAIL_HOST: maildev
+      MAIL_IGNORE_TLS: "true"
+      MAIL_PORT: 25
+      MAIL_SENDER_EMAIL: test@example.com
     ports:
       - "8080:8080"
       - "9229:9229"

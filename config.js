@@ -35,6 +35,7 @@ if (isPresent('MAIL_SERVICE')) {
   }
   config.MAIL_HOST = process.env.MAIL_HOST
   config.MAIL_PORT = process.env.MAIL_PORT
+  config.MAIL_IGNORE_TLS = (process.env.MAIL_IGNORE_TLS === 'true')
 }
 
 if (isPresent('EMAIL_WHITELIST')) {

@@ -39,4 +39,4 @@ Pour utiliser d'autres commandes, le [CLI de KnexJS](http://knexjs.org/#Migratio
 - Récupérer les dépendences : `docker-compose run -u root web npm install`
 - Créer les tables : `docker-compose run web npm run migrate`
 - Créer une migration : `docker-compose run web npm run makeMigration <nom de la migration>`
-- Lancer le service : `docker-compose up`
+- Lancer le service : `docker-compose up` ou `docker-compose run -p 8080:8080 web npm run dev`
