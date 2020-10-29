@@ -48,7 +48,7 @@ module.exports.createConf = async (req, res) => {
   }
 
   try {
-    await emailer.sendConfCreatedEmail(email, confData.phoneNumber, confData.id)
+    await emailer.sendConfCreatedEmail(email, confData.phoneNumber, confData.pin)
     res.redirect(url.format({
       pathname: urls.confCreated,
       query: { email: email },

@@ -5,6 +5,7 @@ const path = require('path')
 const session = require('express-session')
 
 const config = require('./config')
+const conferences = require('./lib/conferences')
 const createConfController = require('./controllers/createConfController')
 const urls = require('./urls')
 
@@ -39,6 +40,7 @@ app.use(function(req, res, next){
 
 app.get(urls.landing, (req, res) => {
   res.render('landing', {
+    NUM_PIN_DIGITS: config.NUM_PIN_DIGITS,
     pageTitle: 'Accueil',
   })
 })

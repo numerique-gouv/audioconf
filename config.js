@@ -13,11 +13,8 @@ const isPresent = varName => {
   return false
 }
 
-if (!isPresent('APP_NAME')) {
-  config.APP_NAME = 'CoucouCollègues'
-} else {
-  config.APP_NAME = process.env.APP_NAME
-}
+config.APP_NAME = process.env.APP_NAME || 'CoucouCollègues'
+
 
 if (!isPresent('MAIL_USER') || !isPresent('MAIL_PASS')) {
   throw new Error('Env vars MAIL_USER and MAIL_PASS should be set')
@@ -45,5 +42,15 @@ if (isPresent('EMAIL_WHITELIST')) {
 } else {
   config.EMAIL_WHITELIST = [/.*/]
 }
+
+if (!isPresent('OVH_APP_KEY') || !isPresent('OVH_APP_SECRET') || !isPresent('OVH_CONSUMER_KEY') || !isPresent('OVH_ACCOUNT_NUMBER')) {
+  throw new Error('OVH is not set correctly')
+}
+config.OVH_APP_KEY = process.env.OVH_APP_KEY
+config.OVH_APP_SECRET = process.env.OVH_APP_SECRET
+config.OVH_CONSUMER_KEY = process.env.OVH_CONSUMER_KEY
+config.OVH_ACCOUNT_NUMBER = process.env.OVH_ACCOUNT_NUMBER
+
+config.NUM_PIN_DIGITS = process.env.NUM_PIN_DIGITS || 4
 
 module.exports = config
