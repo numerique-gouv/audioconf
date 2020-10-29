@@ -46,4 +46,8 @@ if (isPresent('EMAIL_WHITELIST')) {
   config.EMAIL_WHITELIST = [/.*/]
 }
 
+config.OVH_APP_KEY = process.env.OVH_APP_KEY
+config.OVH_APP_SECRET = process.env.OVH_APP_SECRET
+config.OVH_CONSUMER_KEY = process.env.OVH_CONSUMER_KEY
+
 module.exports = config
