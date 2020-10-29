@@ -1,6 +1,7 @@
 const url = require('url')
 
 const conferences = require('../lib/conferences')
+const db = require('../lib/db')
 const config = require('../config')
 const emailer = require('../lib/emailer')
 const urls = require('../urls')
