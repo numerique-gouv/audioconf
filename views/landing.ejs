@@ -11,7 +11,12 @@
           <% if (errors.length) { %>
             <div class="notification error">
                 <% errors.forEach(function(error) { %>
-                    <div><%= error %></div>
+                    <div class="rf-grid-row">
+                      <span class="rf-fi-close-circle-line rf-margin-right-1N"></span>
+                      <div>
+                        <%= error %>
+                      </div>
+                    </div>
                 <% }) %>
             </div>
           <% } %>
@@ -26,7 +31,7 @@
           </div>
         </form>
       </div>
-      <div id="comment-ca-marche">
+      <div id="comment-ca-marche" class="main-paragraph">
         <h2>
           Comment ça marche ?
         </h2>
@@ -62,12 +67,12 @@
             <p>Toute personne ayant le numéro de téléphone et l'identifiant à 6 chiffres peut rejoindre la conférence.</p>
             <p>Après le délai de 24h, la conférence ne marche plus, mais je pourrai en créer une nouvelle.</p>
           </div>
-          <div class="sub-paragraph">
-            <h3>Prêts à démarrer ?</h3>
-            <a class="rf-btn" title="Créer une conférence" href="#je-cree-une-conf">
-              Créer une conférence
-            </a>
-          </div>
+        </div>
+        <div>
+          <h2>Prêts à démarrer ?</h2>
+          <a class="rf-btn" title="Créer une conférence" href="#je-cree-une-conf">
+            Créer une conférence
+          </a>
         </div>
       </div>
     </div>
