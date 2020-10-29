@@ -48,18 +48,18 @@
             </p>
             <ul>
               <li>un numéro de téléphone à appeler</li>
-              <li>un identifiant à 6 chiffres pour la conférence.</li>
+              <li>un code d'accès à <%= NUM_PIN_DIGITS %> chiffres pour la conférence.</li>
             </ul>
           </div>
           <div class="sub-paragraph">
             <h3>3 . Les participants rejoignent la conférence</h3>
             Chaque personne appelle le numéro depuis son téléphone (pro ou perso, peu importe)
-            et tape les 6 chiffres de l'identifiant de la conférence, suivi de la touche dièse ("#").
+            et tape les <%= NUM_PIN_DIGITS %> chiffres du code d'accès à la conférence.
           </div>
           <div class="sub-paragraph">
             <h3>4 . C'est parti, parlez!</h3>
             <p>La conférence est disponible pendant 24h.</p>
-            <p>Toute personne ayant le numéro de téléphone et l'identifiant à 6 chiffres peut rejoindre la conférence.</p>
+            <p>Toute personne ayant le numéro de téléphone et l'identifiant à <%= NUM_PIN_DIGITS %> chiffres peut rejoindre la conférence.</p>
             <p>Après le délai de 24h, la conférence ne marche plus, mais je pourrai en créer une nouvelle.</p>
           </div>
           <div class="sub-paragraph">
