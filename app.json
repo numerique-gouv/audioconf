@@ -3,5 +3,5 @@
     "scripts": {
       "postdeploy": "npm run migrate"
     }
-  }
+}
   
