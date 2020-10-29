@@ -7,7 +7,6 @@
         <h2>
           Je crée une conférence téléphonique
         </h2>
-        <form action="<%= urls.createConf %>" method="POST">
           <% if (errors.length) { %>
             <div class="notification error">
                 <% errors.forEach(function(error) { %>
@@ -20,16 +19,24 @@
                 <% }) %>
             </div>
           <% } %>
-          <label class="rf-label" for="email">Renseignez votre email professionnel :</label>
-          <div class="rf-grid-row">
-            <div class="rf-col">
-              <input class="rf-input" type="email" id="email" name="email" required>
+          <% if(hasFreePhoneNumbers) { %>
+            <form action="<%= urls.createConf %>" method="POST">
+              <label class="rf-label" for="email">Renseignez votre email professionnel :</label>
+              <div class="rf-grid-row">
+                <div class="rf-col">
+                  <input class="rf-input" type="email" id="email" name="email" required>
+                </div>
+                <div class="rf-col">
+                  <button type="submit" class="rf-btn" title="Créer ma conférence">Créer ma conférence</button>
+                </div>
+              </div>
+            </form>
+          <% } else { %>
+            <div class="notification info rf-grid-row">
+              <span class="rf-fi-information-line rf-margin-right-1N"></span>
+              Nous n'avons plus de numéro de conférence disponible. Revenez plus tard !
             </div>
-            <div class="rf-col">
-              <button type="submit" class="rf-btn" title="Créer ma conférence">Créer ma conférence</button>
-            </div>
-          </div>
-        </form>
+          <% } %>
       </div>
       <div id="comment-ca-marche" class="main-paragraph">
         <h2>
@@ -63,9 +70,9 @@
           </div>
           <div class="sub-paragraph">
             <h3>4 . C'est parti, parlez!</h3>
-            <p>La conférence est disponible pendant 24h.</p>
+            <p>La conférence est disponible pendant <%= CONFERENCE_DURATION_IN_MINUTES %> minutes.</p>
             <p>Toute personne ayant le numéro de téléphone et l'identifiant à <%= NUM_PIN_DIGITS %> chiffres peut rejoindre la conférence.</p>
-            <p>Après le délai de 24h, la conférence ne marche plus, mais je pourrai en créer une nouvelle.</p>
+            <p>Après le délai de <%= CONFERENCE_DURATION_IN_MINUTES %> minutes, la conférence ne marche plus, mais je pourrai en créer une nouvelle.</p>
           </div>
         </div>
         <div>

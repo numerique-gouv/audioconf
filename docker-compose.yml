@@ -1,0 +1,38 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: conferences
+      POSTGRES_PASSWORD: conferences
+    ports:
+      - "5432:5432"
+  maildev:
+    image: maildev/maildev
+    environment: 
+      MAILDEV_INCOMING_USER: mailuser
+      MAILDEV_INCOMING_PASS: mailpassword
+    ports:
+      - "1080:80"
+      - "1025:1025"
+  web:
+    build: .
+    command: nodemon --inspect=0.0.0.0:9229 ./index.js
+    links:
+      - db
+      - maildev
+    env_file: 
+      - ../.env.conferences.dev
+    environment:
+      DATABASE_URL: postgres://conferences:conferences@db:5432/conferences
+      MAIL_PASS: mailuser
+      MAIL_USER: mailpassword
+      MAIL_HOST: maildev
+      MAIL_IGNORE_TLS: "true"
+      MAIL_PORT: 25
+      MAIL_SENDER_EMAIL: test@example.com
+    ports:
+      - "8080:8080"
+      - "9229:9229"
+    volumes:
+      - .:/app

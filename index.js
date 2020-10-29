@@ -6,6 +6,7 @@ const session = require('express-session')
 
 const config = require('./config')
 const conferences = require('./lib/conferences')
+const db = require('./lib/db')
 const createConfController = require('./controllers/createConfController')
 const urls = require('./urls')
 
@@ -38,10 +39,14 @@ app.use(function(req, res, next){
   next()
 })
 
-app.get(urls.landing, (req, res) => {
+app.get(urls.landing, async (req, res) => {
+  const freePhoneNumbers = await db.getFreePhoneNumberList()
+  const hasFreePhoneNumbers = (freePhoneNumbers.length > 0)
   res.render('landing', {
     NUM_PIN_DIGITS: config.NUM_PIN_DIGITS,
     pageTitle: 'Accueil',
+    hasFreePhoneNumbers: hasFreePhoneNumbers,
+    CONFERENCE_DURATION_IN_MINUTES: config.CONFERENCE_DURATION_IN_MINUTES,
   })
 })
 
@@ -60,7 +65,12 @@ app.get(urls.legalNotice, (req, res) => {
   })
 })
 
+const init = async () => {
+  const phoneNumbers = await conferences.getAllPhoneNumbers()
+  await Promise.all(phoneNumbers.map(phoneNumber => db.insertPhoneNumber(phoneNumber)))
+}
 
 module.exports = app.listen(config.PORT, () => {
+  init();
   console.log(`${config.APP_NAME} listening at http://localhost:${config.PORT}`)
 })

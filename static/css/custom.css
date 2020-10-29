@@ -27,3 +27,8 @@
   color: var(--error);
   border-color: var(--error);
 }
+
+.notification.info {
+  color: var(--info);
+  border-color: var(--info);
+}

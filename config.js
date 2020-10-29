@@ -35,6 +35,7 @@ if (isPresent('MAIL_SERVICE')) {
   }
   config.MAIL_HOST = process.env.MAIL_HOST
   config.MAIL_PORT = process.env.MAIL_PORT
+  config.MAIL_IGNORE_TLS = (process.env.MAIL_IGNORE_TLS === 'true')
 }
 
 if (isPresent('EMAIL_WHITELIST')) {
@@ -51,6 +52,14 @@ config.OVH_APP_SECRET = process.env.OVH_APP_SECRET
 config.OVH_CONSUMER_KEY = process.env.OVH_CONSUMER_KEY
 config.OVH_ACCOUNT_NUMBER = process.env.OVH_ACCOUNT_NUMBER
 
+
+if (!isPresent('DATABASE_URL')) {
+  throw new Error('Env vars DATABASE_URL should be set')
+}
+config.DATABASE_URL = process.env.DATABASE_URL
+
+
 config.NUM_PIN_DIGITS = process.env.NUM_PIN_DIGITS || 4
+config.CONFERENCE_DURATION_IN_MINUTES = process.env.CONFERENCE_DURATION_IN_MINUTES || 15
 
 module.exports = config

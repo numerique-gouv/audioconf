@@ -1,0 +1,7 @@
+{
+    "name": "secretariat",
+    "scripts": {
+      "postdeploy": "npm run migrate"
+    }
+}
+  
