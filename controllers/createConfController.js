@@ -2,41 +2,25 @@ const url = require('url')
 
 const conferences = require('../lib/conferences')
 const config = require('../config')
+const db = require('../lib/db')
 const emailer = require('../lib/emailer')
+const format = require('../lib/format')
 const urls = require('../urls')
 
 
-const isAcceptedEmail = email => {
-  for (const regex of config.EMAIL_WHITELIST) {
-    if (regex.test(email)) {
-      return true
-    }
-  }
-  return false
-}
-
-const isValidEmail = (email) => {
-  if (
-    email === undefined ||
-    !/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/.test(email)
-  ) {
-    return false
-  }
-  return true
-}
-
 module.exports.createConf = async (req, res) => {
-  const email = req.body.email
+  const token = req.query.token
 
-  if (!isValidEmail(email)) {
-    req.flash('error', 'Email invalide. Avez vous bien tapé votre email ? Vous pouvez réessayer.')
+  const tokensData = await db.getToken(token)
+  const isTokenValid = tokensData.length === 1
+
+  if (!isTokenValid) {
+    req.flash('error', 'Ce lien de confirmation ne marche plus, il a expiré. Entrez votre email ci dessous pour recommencer.')
     return res.redirect('/')
   }
 
-  if (!isAcceptedEmail(email)) {
-    req.flash('error', `Cet email ne correspond pas à une agence de l\'Etat. Vous ne pouvez pas utiliser ${config.APP_NAME} avec cet email.`)
-    return res.redirect('/')
-  }
+  const tokenData = tokensData[0]
+  const email = tokenData.email
 
   let confData = {}
   try {
@@ -47,12 +31,22 @@ module.exports.createConf = async (req, res) => {
     return res.redirect('/')
   }
 
+  const formattedPhoneNumber = format.formatFrenchPhoneNumber(confData.phoneNumber)
+  const formattedFreeAt = format.formatFrenchDate(confData.freeAt)
   try {
-    await emailer.sendConfCreatedEmail(email, confData.phoneNumber, confData.pin, confData.freeAt)
-    res.redirect(url.format({
-      pathname: urls.confCreated,
-      query: { email: email },
-    }))
+    await emailer.sendConfCreatedEmail(email, formattedPhoneNumber, confData.pin, formattedFreeAt)
+
+    res.render('confCreated', {
+      pageTitle: 'La conférence est créée',
+      NUM_PIN_DIGITS: config.NUM_PIN_DIGITS,
+      CONFERENCE_DURATION_IN_MINUTES: config.CONFERENCE_DURATION_IN_MINUTES,
+      email: email,
+      formattedPhoneNumber: formattedPhoneNumber,
+      pin: confData.pin,
+      formattedFreeAt: formattedFreeAt,
+      confDurationVerbose: config.CONFERENCE_DURATION_IN_MINUTES/60 + ' heure' + (config.CONFERENCE_DURATION_IN_MINUTES >= 120 ? 's' : '')
+    })
+
   } catch (error) {
     req.flash('error', 'L\'email contenant les identifiants n\'a pas pu être envoyé. Vous pouvez réessayer.')
     console.error('Error when emailing', error)
