@@ -20,7 +20,7 @@
             </div>
           <% } %>
           <% if(hasFreePhoneNumbers) { %>
-            <form action="<%= urls.createConf %>" method="POST">
+            <form action="<%= urls.sendValidationEmail %>" method="POST">
               <label class="rf-label" for="email">Renseignez votre email professionnel :</label>
               <div class="rf-grid-row">
                 <div class="rf-col">
@@ -81,9 +81,9 @@
           </div>
           <div class="sub-paragraph">
             <h3>4 . C'est parti, parlez!</h3>
-            <p>Le numéro de conférence est disponible pendant <%= CONFERENCE_DURATION_IN_MINUTES/60 %> heure<% CONFERENCE_DURATION_IN_MINUTES >= 120 ? 's' : '' %>.</p>
+            <p>Le numéro de conférence est disponible pendant <%= confDurationVerbose %>.</p>
             <p>Toute personne ayant le numéro de téléphone et l'identifiant à <%= NUM_PIN_DIGITS %> chiffres peut rejoindre la conférence.</p>
-            <p>Après le délai de <%= CONFERENCE_DURATION_IN_MINUTES/60 %> heure<% CONFERENCE_DURATION_IN_MINUTES >= 120 ? 's' : '' %>, le numéro de conférence ne marchera plus, mais je pourrai en créer une nouvelle.</p>
+            <p>Après le délai de <%= confDurationVerbose %>, le numéro de conférence ne marchera plus, mais je pourrai en créer une nouvelle.</p>
           </div>
         </div>
         <div>

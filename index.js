@@ -8,6 +8,7 @@ const config = require('./config')
 const conferences = require('./lib/conferences')
 const db = require('./lib/db')
 const createConfController = require('./controllers/createConfController')
+const sendValidationEmailController = require('./controllers/sendValidationEmailController')
 const urls = require('./urls')
 
 const app = express()
@@ -46,18 +47,20 @@ app.get(urls.landing, async (req, res) => {
     NUM_PIN_DIGITS: config.NUM_PIN_DIGITS,
     pageTitle: 'Accueil',
     hasFreePhoneNumbers: hasFreePhoneNumbers,
-    CONFERENCE_DURATION_IN_MINUTES: config.CONFERENCE_DURATION_IN_MINUTES,
+    confDurationVerbose: config.CONFERENCE_DURATION_IN_MINUTES/60 + ' heure' + (config.CONFERENCE_DURATION_IN_MINUTES >= 120 ? 's' : '')
   })
 })
 
-app.post(urls.createConf, createConfController.createConf)
+app.post(urls.sendValidationEmail, sendValidationEmailController.sendValidationEmail)
 
-app.get(urls.confCreated, (req, res) => {
-  res.render('confCreated', {
-    pageTitle: 'La conférence est créée',
+app.get(urls.validationEmailSent, (req, res) => {
+  res.render('validationEmailSent', {
+    pageTitle: 'Un email de validation a été envoyé',
     email: req.query.email
   })
 })
+
+app.get(urls.createConf, createConfController.createConf)
 
 app.get(urls.legalNotice, (req, res) => {
   res.render('legalNotice', {
