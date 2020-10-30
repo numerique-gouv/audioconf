@@ -39,8 +39,6 @@ module.exports.createConf = async (req, res) => {
     res.render('confCreated', {
       pageTitle: 'La conférence est créée',
       NUM_PIN_DIGITS: config.NUM_PIN_DIGITS,
-      CONFERENCE_DURATION_IN_MINUTES: config.CONFERENCE_DURATION_IN_MINUTES,
-      email: email,
       formattedPhoneNumber: formattedPhoneNumber,
       pin: confData.pin,
       formattedFreeAt: formattedFreeAt,

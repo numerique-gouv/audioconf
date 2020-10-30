@@ -62,15 +62,6 @@ app.get(urls.validationEmailSent, (req, res) => {
 
 app.get(urls.createConf, createConfController.createConf)
 
-/*app.get(urls.confCreated, (req, res) => {
-  res.render('confCreated', {
-    pageTitle: 'La conférence est créée',
-    email: req.query.email,
-    NUM_PIN_DIGITS: config.NUM_PIN_DIGITS,
-    CONFERENCE_DURATION_IN_MINUTES: config.CONFERENCE_DURATION_IN_MINUTES,
-  })
-})*/
-
 app.get(urls.legalNotice, (req, res) => {
   res.render('legalNotice', {
     pageTitle: 'Mentions Légales',

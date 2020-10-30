@@ -1,9 +1,9 @@
 const crypto = require('crypto')
 const url = require('url')
 
-const emailer = require('../lib/emailer')
 const config = require('../config');
 const db = require('../lib/db')
+const emailer = require('../lib/emailer')
 const urls = require('../urls')
 
 const isAcceptedEmail = email => {

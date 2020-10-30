@@ -9,7 +9,7 @@ services:
       - "5432:5432"
   maildev:
     image: maildev/maildev
-    environment: 
+    environment:
       MAILDEV_INCOMING_USER: mailuser
       MAILDEV_INCOMING_PASS: mailpassword
     ports:
@@ -21,7 +21,7 @@ services:
     links:
       - db
       - maildev
-    env_file: 
+    env_file:
       - ../.env.conferences.dev
     environment:
       DATABASE_URL: postgres://conferences:conferences@db:5432/conferences
@@ -30,6 +30,7 @@ services:
       MAIL_HOST: maildev
       MAIL_IGNORE_TLS: "true"
       MAIL_PORT: 25
+      PROTOCOL: "http"
       MAIL_SENDER_EMAIL: test@example.com
     ports:
       - "8080:8080"

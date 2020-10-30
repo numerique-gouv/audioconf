@@ -5,7 +5,7 @@ dotenv.config({ path: '.env.email_whitelist' })
 const config = {}
 
 config.PORT = process.env.PORT || 8080
-config.PROTOCOL = process.env.PROTOCOL || "http"
+config.PROTOCOL = process.env.PROTOCOL || "https"
 
 const isPresent = varName => {
   if (varName in process.env && process.env[varName].trim() !== '') {
