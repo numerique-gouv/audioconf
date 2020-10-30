@@ -45,6 +45,7 @@ module.exports.sendValidationEmail = async (req, res) => {
   const token = generateToken()
   const tokenExpirationDate = new Date()
   tokenExpirationDate.setMinutes(tokenExpirationDate.getMinutes() + config.TOKEN_DURATION_IN_MINUTES)
+
   try {
     await db.insertToken(email, token, tokenExpirationDate)
     console.log(`Login token créé pour ${email}, il expire à ${tokenExpirationDate}`)
