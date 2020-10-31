@@ -27,7 +27,7 @@
               </div>
               <div class="rf-input-group">
                   <label class="rf-label" for="duration">Durée de la réservation</label>
-                  <select class="rf-select" id="duration" name="duration">
+                  <select class="rf-select" id="duration" name="durationInMinutes">
                       <option value="150" selected>2 heures</option>
                       <option value="270">4 heures</option>
                       <option value="720">12 heures</option>
@@ -88,9 +88,9 @@
           </div>
           <div class="sub-paragraph">
             <h3>4 . C'est parti, parlez!</h3>
-            <p>Le numéro de conférence est disponible pendant <%= confDurationVerbose %>.</p>
+            <p>Le numéro de conférence est disponible pendant la durée choisie (avec un maximum de <%= format.formatMinutesInHours(CONFERENCE_MAX_DURATION_IN_MINUTES) %>).</p>
             <p>Toute personne ayant le numéro de téléphone et l'identifiant à <%= NUM_PIN_DIGITS %> chiffres peut rejoindre la conférence.</p>
-            <p>Après le délai de <%= confDurationVerbose %>, le numéro de conférence ne marchera plus, mais je pourrai en créer une nouvelle.</p>
+            <p>Après le délai choisi (avec un maximum de <%= format.formatMinutesInHours(CONFERENCE_MAX_DURATION_IN_MINUTES) %>), le numéro de conférence ne marchera plus, mais je pourrai en créer une nouvelle.</p>
           </div>
         </div>
         <div>
