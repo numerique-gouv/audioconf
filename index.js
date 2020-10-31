@@ -14,7 +14,7 @@ const urls = require('./urls')
 const app = express()
 
 app.set('view engine', 'ejs')
-app.set('views', path.join(__dirname, 'views'))
+app.set('views', path.joexpress-sessionin(__dirname, 'views'))
 
 app.use('/static', express.static('static'))
 // Hack for importing css from npm package
@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Session is necessary for flash.
 app.use(session({
   // todo : chose a prod-appropriate store, the default MemoryStore has memoryleaks and other problems.
-  secret: 'aaaa',
+  secret: config.SECRET,
   resave: false,
   saveUninitialized: false, // "complying with laws that require permission before setting a cookie"
   cookie: {

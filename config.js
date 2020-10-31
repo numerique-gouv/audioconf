@@ -63,5 +63,6 @@ config.DATABASE_URL = process.env.DATABASE_URL
 config.NUM_PIN_DIGITS = process.env.NUM_PIN_DIGITS || 4
 config.CONFERENCE_DURATION_IN_MINUTES = process.env.CONFERENCE_DURATION_IN_MINUTES || 15
 config.TOKEN_DURATION_IN_MINUTES = process.env.TOKEN_DURATION_IN_MINUTES || 60
+config.SECRET = process.env.SECRET
 
 module.exports = config
