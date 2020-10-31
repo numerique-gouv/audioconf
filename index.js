@@ -3,6 +3,7 @@ const express = require('express')
 const flash = require('connect-flash')
 const path = require('path')
 const session = require('express-session')
+const KnexSessionStore = require('connect-session-knex')(session);
 
 const config = require('./config')
 const conferences = require('./lib/conferences')
@@ -14,13 +15,18 @@ const urls = require('./urls')
 const app = express()
 
 app.set('view engine', 'ejs')
-app.set('views', path.joexpress-sessionin(__dirname, 'views'))
+app.set('views', path.join(__dirname, 'views'))
 
 app.use('/static', express.static('static'))
 // Hack for importing css from npm package
 app.use('/~', express.static(path.join(__dirname, 'node_modules')))
 app.use(bodyParser.urlencoded({ extended: false }));
 // Session is necessary for flash.
+
+const store = new KnexSessionStore({
+  knex: db.knex,
+  tablename: 'sessions',
+});
 app.use(session({
   // todo : chose a prod-appropriate store, the default MemoryStore has memoryleaks and other problems.
   secret: config.SECRET,
@@ -29,7 +35,9 @@ app.use(session({
   cookie: {
     maxAge: 300000,
     sameSite: 'lax' // todo strict would be better for prod
-  } }));
+  },
+  store,
+ }));
 app.use(flash())
 // Populate some variables for all views
 app.use(function(req, res, next){
