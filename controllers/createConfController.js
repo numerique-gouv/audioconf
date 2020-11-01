@@ -41,11 +41,8 @@ module.exports.createConf = async (req, res) => {
     conference.pin = confData.pin
     await emailer.sendConfCreatedEmail(email, phoneNumber, confData.pin, durationInMinutes, confData.freeAt)
 
-    res.render('confCreated', {
-      pageTitle: 'La conférence est créée',
-      conference
-    })
-
+    req.flash('pin', conference.pin);
+    return res.redirect(urls.showConf.replace(":id", conference.id))
   } catch (error) {
     req.flash('error', 'L\'email contenant les identifiants n\'a pas pu être envoyé. Vous pouvez réessayer.')
     console.error('Error when emailing', error)
@@ -59,15 +56,39 @@ module.exports.showConf = async (req, res) => {
 
   try {
     const conference = await db.getConference(confId)
+    if(conference.canceledAt) {
+      req.flash('error', `La conférence a été annulé le ${format.formatFrenchDate(conference.canceledAt)}. Vous pouvez recréer une conférence.`)
+      return res.redirect('/')
+    }
+    const pin = req.flash('pin')
+    if(pin.length) {
+      conference.pin = pin
+    }
 
     res.render('confCreated', {
-      pageTitle: 'Rappel de votre conférence',
+      pageTitle: 'Votre conférence',
       conference
     })
 
   } catch (error) {
     req.flash('error', 'La conférence a expiré. Vous pouvez recréer une conférence.')
     console.error('Conference error', error)
+    return res.redirect('/')
+  }
+}
+
+
+module.exports.cancelConf = async (req, res) => {
+  const confId = req.params.id
+  try {
+    const conference = await db.cancelConference(confId)
+
+    req.flash('success', 'La conférence a été annulé. Si vous avez besoins, vous pouvez recréer une conférence.')
+    console.log(`La conférence ${confId} a été annulé`)
+    return res.redirect('/')
+  } catch (error) {
+    req.flash('error', 'Une erreur c\'est produite pour l\'annulation de la conférence')
+    console.error('Erreur pour annuler la conférence', error)
     return res.redirect('/')
   }
 }
