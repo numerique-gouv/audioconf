@@ -40,3 +40,9 @@ Pour utiliser d'autres commandes, le [CLI de KnexJS](http://knexjs.org/#Migratio
 - Créer les tables : `docker-compose run web npm run migrate`
 - Créer une migration : `docker-compose run web npm run makeMigration <nom de la migration>`
 - Lancer le service : `docker-compose up` ou `docker-compose run -p 8080:8080 web npm run dev`
+
+## Test de charge Locust
+
+- `cd locust`
+- `docker-compose up --scale worker=8` (8 c'est pour 8 CPU)
+- Ouvrir http://localhost:8089/
