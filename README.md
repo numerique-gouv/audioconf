@@ -36,9 +36,6 @@ Pour utiliser d'autres commandes, le [CLI de KnexJS](http://knexjs.org/#Migratio
 
 ## Docker compose
 
-- Initialiser la base de donnée : 
-    - `docker-compose up -d db`
-    - `docker-compose exec db psql -U conferences -d conferences -c 'CREATE EXTENSION "uuid-ossp";'`
 - Récupérer les dépendences : `docker-compose run -u root web npm install`
 - Créer les tables de la DB : `docker-compose run web npm run migrate`
 - Créer une migration : `docker-compose run web npm run makeMigration <nom de la migration>`
