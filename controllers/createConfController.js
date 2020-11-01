@@ -33,24 +33,41 @@ module.exports.createConf = async (req, res) => {
     console.error('Error when creating conference', error)
     return res.redirect('/')
   }
+  let phoneNumber = confData.phoneNumber
 
-  const formattedPhoneNumber = format.formatFrenchPhoneNumber(confData.phoneNumber)
-  const formattedFreeAt = format.formatFrenchDate(confData.freeAt)
   try {
-    await emailer.sendConfCreatedEmail(email, formattedPhoneNumber, confData.pin, durationInMinutes, formattedFreeAt)
+    const conference = await db.insertConference(email, phoneNumber, durationInMinutes, confData.freeAt)
+    console.log("Création de la conférence", conference)
+    conference.pin = confData.pin
+    await emailer.sendConfCreatedEmail(email, phoneNumber, confData.pin, durationInMinutes, confData.freeAt)
 
     res.render('confCreated', {
       pageTitle: 'La conférence est créée',
-      NUM_PIN_DIGITS: config.NUM_PIN_DIGITS,
-      formattedPhoneNumber: formattedPhoneNumber,
-      pin: confData.pin,
-      formattedFreeAt: formattedFreeAt,
-      durationInMinutes: durationInMinutes
+      conference
     })
 
   } catch (error) {
     req.flash('error', 'L\'email contenant les identifiants n\'a pas pu être envoyé. Vous pouvez réessayer.')
     console.error('Error when emailing', error)
+    return res.redirect('/')
+  }
+}
+
+
+module.exports.showConf = async (req, res) => {
+  const confId = req.params.id
+
+  try {
+    const conference = await db.getConference(confId)
+
+    res.render('confCreated', {
+      pageTitle: 'Rappel de votre conférence',
+      conference
+    })
+
+  } catch (error) {
+    req.flash('error', 'La conférence a expiré. Vous pouvez recréer une conférence.')
+    console.error('Conference error', error)
     return res.redirect('/')
   }
 }

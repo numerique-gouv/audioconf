@@ -64,6 +64,8 @@ app.get(urls.validationEmailSent, (req, res) => {
 
 app.get(urls.createConf, createConfController.createConf)
 
+app.get(urls.showConf, createConfController.showConf)
+
 app.get(urls.legalNotice, (req, res) => {
   res.render('legalNotice', {
     pageTitle: 'Mentions Légales',
@@ -75,7 +77,7 @@ const init = async () => {
      const phoneNumbers = await conferences.getAllPhoneNumbers()
      await Promise.all(phoneNumbers.map(phoneNumber => db.insertPhoneNumber(phoneNumber)))
   } catch(err) {
-    log.console("Erreur dans la récupération des numéros de conférence sur l'API OVH", err)
+    console.log("Erreur dans la récupération des numéros de conférence sur l'API OVH", err)
   }
 }
 

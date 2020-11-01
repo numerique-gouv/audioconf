@@ -6,20 +6,39 @@
     <p>
       <p>Pour vous y connecter : <p>
       <ul>
-        <li>appelez le <strong><%= formattedPhoneNumber %></strong> sur votre téléphone pro ou perso</li>
-        <li>tapez le code d'accès à <%= NUM_PIN_DIGITS %> chiffres : <strong><%= pin %></strong></li>
+        <li>appelez le <strong><%= format.formatFrenchPhoneNumber(conference.phoneNumber) %></strong> sur votre téléphone pro ou perso</li>
+        <li>tapez le code d'accès : <strong>
+        <% if(conference.pin) { %><%= conference.pin %><% } else { %>
+          **** (Vous avez reçu le code PIN par email, si vous l'avez perdu, annuler cette conférence et générer une nouvelle conférence)
+        <% } %>
+        </strong></li>
       </ul>
       <p></p>
       <p>
-        Ce numéro de conférence est actif pendant <%= format.formatMinutesInHours(durationInMinutes) %>.
-        Il expirera <%= formattedFreeAt %>.
+        Ce numéro de conférence est actif pendant <%= format.formatMinutesInHours(conference.durationInMinutes) %>.
+        Il expirera <%= format.formatFrenchDate(conference.freeAt) %>.
       </p>
       <p>Il peut accueillir jusqu'à 50 personnes.</p>
       <p></p>
+      
       <p>Bonne journée avec <%= appName %> !</p>
 
     </p>
     <p>Bonne discussion !</p>
+    <br>
+
+    <p id="annuler"><strong>Vous n'allez pas utiliser le numéro de conférence ? libérer le pour qu'il soit réutilisé : </strong>
+      <form action="<%= urls.cancelConf %>" method="POST">
+        <div class="rf-checkbox-group">
+          <input type="checkbox" id="confirm" name="confirm" onchange="document.getElementById('cancel-button').disabled = null">
+          <label class="rf-label" for="confirm" aria-describedby="checkboxes-hint-confirm-desc-hint">En cochant cette case, je comprends que la suppression n'est pas réversible</label>
+          <p class="rf-hint-text" id="checkboxes-hint-confirm-desc-hint">Vous aurez la possibilité de recréer une conférence</p>
+        </div><br>
+        <div class="rf-input-group">
+          <button type="submit" class="rf-btn" title="Annuler la conférence" id="cancel-button" disabled>Annuler la conférence</button>
+        </div>      
+    </form>
+    </p>
   </div>
 </div>
 
