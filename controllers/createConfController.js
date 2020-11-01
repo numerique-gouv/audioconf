@@ -39,7 +39,8 @@ module.exports.createConf = async (req, res) => {
     const conference = await db.insertConference(email, phoneNumber, durationInMinutes, confData.freeAt)
     console.log("Création de la conférence", conference)
     conference.pin = confData.pin
-    await emailer.sendConfCreatedEmail(email, phoneNumber, confData.pin, durationInMinutes, confData.freeAt)
+    const confUrl = `${config.PROTOCOL}://${req.get('host')}${urls.showConf.replace(":id", conference.id)}#annuler`
+    await emailer.sendConfCreatedEmail(email, phoneNumber, confData.pin, durationInMinutes, confData.freeAt, confUrl)
 
     req.flash('pin', conference.pin);
     return res.redirect(urls.showConf.replace(":id", conference.id))
