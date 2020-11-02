@@ -15,7 +15,7 @@ module.exports.createConf = async (req, res) => {
   const isTokenValid = tokensData.length === 1
 
   if (!isTokenValid) {
-    req.flash('error', 'Ce lien de confirmation ne marche plus, il a expiré. Entrez votre email ci dessous pour recommencer.')
+    req.flash('error', 'Ce lien de confirmation ne marche plus, il a expiré. Entrez votre email ci-dessous pour recommencer.')
     return res.redirect('/')
   }
 
@@ -37,8 +37,8 @@ module.exports.createConf = async (req, res) => {
 
   try {
     const conference = await db.insertConference(email, phoneNumber, durationInMinutes, confData.freeAt)
-    console.log("Création de la conférence", conference)
     conference.pin = confData.pin
+
     const confUrl = `${config.PROTOCOL}://${req.get('host')}${urls.showConf.replace(":id", conference.id)}#annuler`
     await emailer.sendConfCreatedEmail(email, phoneNumber, confData.pin, durationInMinutes, confData.freeAt, confUrl)
 
@@ -58,7 +58,7 @@ module.exports.showConf = async (req, res) => {
   try {
     const conference = await db.getConference(confId)
     if(conference.canceledAt) {
-      req.flash('error', `La conférence a été annulé le ${format.formatFrenchDate(conference.canceledAt)}. Vous pouvez recréer une conférence.`)
+      req.flash('error', `La conférence a été annulée le ${format.formatFrenchDate(conference.canceledAt)}. Si vous avez encore besoin d\'une conférence, vous pouvez en créer une nouvelle.`)
       return res.redirect('/')
     }
     const pin = req.flash('pin')
@@ -84,11 +84,11 @@ module.exports.cancelConf = async (req, res) => {
   try {
     const conference = await db.cancelConference(confId)
 
-    req.flash('success', 'La conférence a été annulé. Si vous avez besoins, vous pouvez recréer une conférence.')
-    console.log(`La conférence ${confId} a été annulé`)
+    req.flash('success', 'La conférence a bien été annulée. Si vous avez encore besoin d\'une conférence, vous pouvez en créer une nouvelle.')
+    console.log(`La conférence ${confId} a été annulée`)
     return res.redirect('/')
   } catch (error) {
-    req.flash('error', 'Une erreur c\'est produite pour l\'annulation de la conférence')
+    req.flash('error', 'Une erreur s\'est produite pour l\'annulation de la conférence')
     console.error('Erreur pour annuler la conférence', error)
     return res.redirect('/')
   }
