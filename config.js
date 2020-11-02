@@ -65,4 +65,9 @@ config.CONFERENCE_MAX_DURATION_IN_MINUTES = process.env.CONFERENCE_MAX_DURATION_
 config.TOKEN_DURATION_IN_MINUTES = process.env.TOKEN_DURATION_IN_MINUTES || 60
 config.SECRET = process.env.SECRET
 
+if (!isPresent('TZ')) {
+  process.env.TZ = 'Europe/Paris'
+}
+console.log('Using timezone', process.env.TZ)
+
 module.exports = config
