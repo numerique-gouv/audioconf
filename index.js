@@ -76,4 +76,3 @@ module.exports = app.listen(config.PORT, () => {
 })
 
 const format = require('./lib/format')
-console.log('format test', format.formatFrenchDate(new Date()))
