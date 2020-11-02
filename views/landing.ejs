@@ -19,6 +19,18 @@
                 <% }) %>
             </div>
           <% } %>
+          <% if (successes.length) { %>
+            <div class="notification success">
+                <% successes.forEach(function(success) { %>
+                  <div class="rf-grid-row">
+                    <span class="rf-fi-check-circle-line rf-margin-right-1N"></span>
+                    <div>
+                      <%= success %>
+                    </div>
+                  </div>
+                <% }) %>
+            </div>
+          <% } %>
           <% if(hasFreePhoneNumbers) { %>
             <form action="<%= urls.sendValidationEmail %>" method="POST">
               <div class="rf-input-group">

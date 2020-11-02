@@ -38,6 +38,7 @@ app.use(function(req, res, next){
   res.locals.appName = config.APP_NAME
   res.locals.errors = req.flash('error')
   res.locals.message = req.flash('message')
+  res.locals.successes = req.flash('success')
   res.locals.urls = urls
   next()
 })
@@ -63,6 +64,10 @@ app.get(urls.validationEmailSent, (req, res) => {
 })
 
 app.get(urls.createConf, createConfController.createConf)
+
+app.get(urls.showConf, createConfController.showConf)
+
+app.post(urls.cancelConf, createConfController.cancelConf)
 
 app.get(urls.legalNotice, (req, res) => {
   res.render('legalNotice', {
