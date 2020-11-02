@@ -28,7 +28,6 @@ const store = new KnexSessionStore({
   tablename: 'sessions',
 });
 app.use(session({
-  // todo : chose a prod-appropriate store, the default MemoryStore has memoryleaks and other problems.
   secret: config.SECRET,
   resave: false,
   saveUninitialized: false, // "complying with laws that require permission before setting a cookie"
