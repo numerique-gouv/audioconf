@@ -95,3 +95,6 @@ module.exports = app.listen(config.PORT, () => {
   init();
   console.log(`${config.APP_NAME} listening at http://localhost:${config.PORT}`)
 })
+
+console.log('format test', format.formatFrenchDate(new Date()))
+console.log('format test 2', format.formatFrenchDate2(new Date()))
