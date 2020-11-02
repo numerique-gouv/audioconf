@@ -95,5 +95,3 @@ module.exports = app.listen(config.PORT, () => {
   init();
   console.log(`${config.APP_NAME} listening at http://localhost:${config.PORT}`)
 })
-
-const format = require('./lib/format')
