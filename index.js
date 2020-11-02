@@ -3,6 +3,7 @@ const express = require('express')
 const flash = require('connect-flash')
 const path = require('path')
 const session = require('express-session')
+const KnexSessionStore = require('connect-session-knex')(session);
 
 const config = require('./config')
 const conferences = require('./lib/conferences')
@@ -23,15 +24,21 @@ app.use('/static', express.static('static'))
 app.use('/~', express.static(path.join(__dirname, 'node_modules')))
 app.use(bodyParser.urlencoded({ extended: false }));
 // Session is necessary for flash.
+
+const store = new KnexSessionStore({
+  knex: db.knex,
+  tablename: 'sessions',
+});
 app.use(session({
-  // todo : chose a prod-appropriate store, the default MemoryStore has memoryleaks and other problems.
-  secret: 'aaaa',
+  secret: config.SECRET,
   resave: false,
   saveUninitialized: false, // "complying with laws that require permission before setting a cookie"
   cookie: {
     maxAge: 300000,
     sameSite: 'lax' // todo strict would be better for prod
-  } }));
+  },
+  store,
+ }));
 app.use(flash())
 // Populate some variables for all views
 app.use(function(req, res, next){

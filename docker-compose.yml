@@ -32,6 +32,7 @@ services:
       MAIL_PORT: 25
       PROTOCOL: "http"
       MAIL_SENDER_EMAIL: test@example.com
+      SECRET: secret
     ports:
       - "8080:8080"
       - "9229:9229"
