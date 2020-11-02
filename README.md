@@ -8,10 +8,11 @@ Lien : https://eu.api.ovh.com/createToken/
 
 - Nécessaires pour les fonctionalités en cours
 ```
-GET /telephony/*
-POST /telephony/*
-DELETE /telephony/*
-PUT /telephony/*
+GET /telephony/${OVH_ACCOUNT_NUMBER}/conference
+PUT /telephony/${OVH_ACCOUNT_NUMBER}/conference/*/settings
+GET /telephony/${OVH_ACCOUNT_NUMBER}/conference/*/participants
+POST /telephony/${OVH_ACCOUNT_NUMBER}/conference/*/participants/*/kick
+GET /telephony/${OVH_ACCOUNT_NUMBER}/conference/*/informations
 ```
 
 
