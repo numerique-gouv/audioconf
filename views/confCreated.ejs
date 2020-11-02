@@ -2,35 +2,44 @@
 
 <div class="rf-container">
   <div class="main-paragraph">
-    <h2>Regardez vos emails</h2>
+    <h2>Votre conférence est bien créée.</h2>
     <p>
-      <%= appName %> a envoyé un email à
-      <strong><%= email %></strong>
-      contenant les identifiants de la conférence, et les instructions pour la rejoindre.
+      <p>Pour vous y connecter : <p>
+      <ul>
+        <li>appelez le <strong><%= format.formatFrenchPhoneNumber(conference.phoneNumber) %></strong> sur votre téléphone pro ou perso</li>
+        <li>tapez le code d'accès : <strong>
+        <% if(conference.pin) { %><%= conference.pin %><% } else { %>
+          **** (Vous avez reçu le code PIN par email, si vous l'avez perdu, annuler cette conférence et générer une nouvelle conférence)
+        <% } %>
+        </strong></li>
+      </ul>
+      <p></p>
+      <p>
+        Ce numéro de conférence est actif pendant <%= format.formatMinutesInHours(conference.durationInMinutes) %>.
+        Il expirera <%= format.formatFrenchDate(conference.freeAt) %>.
+      </p>
+      <p>Il peut accueillir jusqu'à 50 personnes.</p>
+      <p></p>
+
+      <p>Bonne journée avec <%= appName %> !</p>
+
     </p>
     <p>Bonne discussion !</p>
-  </div>
+    <br>
 
-  <div class="main-paragraph">
-    <h2>Je n'ai pas reçu l'email</h2>
-    <p>Avez-vous bien renseigné votre email sans faute de frappe ?</p>
-    <p>L'email est-il arrivé dans les indésirables (spam) de votre boîte mail ? </p>
+    <p id="annuler"><strong>Vous n'allez pas utiliser ce numéro de conférence ? Libérez-le pour qu'il soit réutilisé : </strong>
+      <form action="<%= urls.cancelConf.replace(":id", conference.id) %>" method="POST">
+        <div class="rf-checkbox-group">
+          <input type="checkbox" id="confirm" name="confirm" onchange="document.getElementById('cancel-button').disabled = null">
+          <label class="rf-label" for="confirm" aria-describedby="checkboxes-hint-confirm-desc-hint">En cochant cette case, je comprends que la suppression n'est pas réversible</label>
+          <p class="rf-hint-text" id="checkboxes-hint-confirm-desc-hint">Vous aurez la possibilité de recréer une conférence</p>
+        </div><br>
+        <div class="rf-input-group">
+          <button type="submit" class="rf-btn" title="Annuler la conférence" id="cancel-button" disabled>Annuler la conférence</button>
+        </div>
+    </form>
+    </p>
   </div>
-
-  <div class="main-paragraph">
-    <p>Dans tous les cas, vous pouvez réessayer ou nous contacter !</p>
-    <a class="rf-btn rf-btn rf-margin-right-2N" title="Créer une conférence" href="/">
-      Créer une conférence
-    </a>
-    <a class="rf-btn"
-       title="Nous contacter"
-       target="_blank"
-       rel="noopener"
-       href="mailto:audioconf@beta.gouv.fr?subject=Je n'ai pas reçu l'email&body=Bonjour,%0d%0a%0d%0a[Expliquez votre problème ici]">
-      Nous contacter
-    </a>
-  </div>
-
 </div>
 
 <%- include('partials/footer') -%>

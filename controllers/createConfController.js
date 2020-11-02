@@ -2,60 +2,94 @@ const url = require('url')
 
 const conferences = require('../lib/conferences')
 const config = require('../config')
+const db = require('../lib/db')
 const emailer = require('../lib/emailer')
+const format = require('../lib/format')
 const urls = require('../urls')
 
 
-const isAcceptedEmail = email => {
-  for (const regex of config.EMAIL_WHITELIST) {
-    if (regex.test(email)) {
-      return true
-    }
-  }
-  return false
-}
-
-const isValidEmail = (email) => {
-  if (
-    email === undefined ||
-    !/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/.test(email)
-  ) {
-    return false
-  }
-  return true
-}
-
 module.exports.createConf = async (req, res) => {
-  const email = req.body.email
+  const token = req.query.token
 
-  if (!isValidEmail(email)) {
-    req.flash('error', 'Email invalide. Avez vous bien tapé votre email ? Vous pouvez réessayer.')
+  const tokensData = await db.getToken(token)
+  const isTokenValid = tokensData.length === 1
+
+  if (!isTokenValid) {
+    req.flash('error', 'Ce lien de confirmation ne marche plus, il a expiré. Entrez votre email ci-dessous pour recommencer.')
     return res.redirect('/')
   }
 
-  if (!isAcceptedEmail(email)) {
-    req.flash('error', `Cet email ne correspond pas à une agence de l\'Etat. Vous ne pouvez pas utiliser ${config.APP_NAME} avec cet email.`)
-    return res.redirect('/')
-  }
+  const tokenData = tokensData[0]
+  const email = tokenData.email
+  const durationInMinutes = tokenData.durationInMinutes
+
+  console.log(`Création d'un numéro de conférence pour ${email} pour ${durationInMinutes} minutes`)
 
   let confData = {}
   try {
-    confData = await conferences.createConf(email)
+    confData = await conferences.createConf(email, durationInMinutes)
   } catch (error) {
     req.flash('error', 'La conférence n\'a pas pu être créée. Vous pouvez réessayer.')
     console.error('Error when creating conference', error)
     return res.redirect('/')
   }
+  let phoneNumber = confData.phoneNumber
 
   try {
-    await emailer.sendConfCreatedEmail(email, confData.phoneNumber, confData.pin, confData.freeAt)
-    res.redirect(url.format({
-      pathname: urls.confCreated,
-      query: { email: email },
-    }))
+    const conference = await db.insertConference(email, phoneNumber, durationInMinutes, confData.freeAt)
+    conference.pin = confData.pin
+
+    const confUrl = `${config.PROTOCOL}://${req.get('host')}${urls.showConf.replace(":id", conference.id)}#annuler`
+    await emailer.sendConfCreatedEmail(email, phoneNumber, confData.pin, durationInMinutes, confData.freeAt, confUrl)
+
+    req.flash('pin', conference.pin);
+    return res.redirect(urls.showConf.replace(":id", conference.id))
   } catch (error) {
     req.flash('error', 'L\'email contenant les identifiants n\'a pas pu être envoyé. Vous pouvez réessayer.')
     console.error('Error when emailing', error)
+    return res.redirect('/')
+  }
+}
+
+
+module.exports.showConf = async (req, res) => {
+  const confId = req.params.id
+
+  try {
+    const conference = await db.getConference(confId)
+    if(conference.canceledAt) {
+      req.flash('error', `La conférence a été annulée le ${format.formatFrenchDate(conference.canceledAt)}. Si vous avez encore besoin d\'une conférence, vous pouvez en créer une nouvelle.`)
+      return res.redirect('/')
+    }
+    const pin = req.flash('pin')
+    if(pin.length) {
+      conference.pin = pin
+    }
+
+    res.render('confCreated', {
+      pageTitle: 'Votre conférence',
+      conference
+    })
+
+  } catch (error) {
+    req.flash('error', 'La conférence a expiré. Vous pouvez recréer une conférence.')
+    console.error('Conference error', error)
+    return res.redirect('/')
+  }
+}
+
+
+module.exports.cancelConf = async (req, res) => {
+  const confId = req.params.id
+  try {
+    const conference = await db.cancelConference(confId)
+
+    req.flash('success', 'La conférence a bien été annulée. Si vous avez encore besoin d\'une conférence, vous pouvez en créer une nouvelle.')
+    console.log(`La conférence ${confId} a été annulée`)
+    return res.redirect('/')
+  } catch (error) {
+    req.flash('error', 'Une erreur s\'est produite pour l\'annulation de la conférence')
+    console.error('Erreur pour annuler la conférence', error)
     return res.redirect('/')
   }
 }

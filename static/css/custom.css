@@ -32,3 +32,8 @@
   color: var(--info);
   border-color: var(--info);
 }
+
+.notification.success {
+  color: var(--success);
+  border-color: var(--success);
+}
