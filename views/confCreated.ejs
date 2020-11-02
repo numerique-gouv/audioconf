@@ -20,14 +20,14 @@
       </p>
       <p>Il peut accueillir jusqu'à 50 personnes.</p>
       <p></p>
-      
+
       <p>Bonne journée avec <%= appName %> !</p>
 
     </p>
     <p>Bonne discussion !</p>
     <br>
 
-    <p id="annuler"><strong>Vous n'allez pas utiliser le numéro de conférence ? libérer le pour qu'il soit réutilisé : </strong>
+    <p id="annuler"><strong>Vous n'allez pas utiliser ce numéro de conférence ? Libérez-le pour qu'il soit réutilisé : </strong>
       <form action="<%= urls.cancelConf.replace(":id", conference.id) %>" method="POST">
         <div class="rf-checkbox-group">
           <input type="checkbox" id="confirm" name="confirm" onchange="document.getElementById('cancel-button').disabled = null">
@@ -36,7 +36,7 @@
         </div><br>
         <div class="rf-input-group">
           <button type="submit" class="rf-btn" title="Annuler la conférence" id="cancel-button" disabled>Annuler la conférence</button>
-        </div>      
+        </div>
     </form>
     </p>
   </div>
