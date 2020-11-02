@@ -7,6 +7,7 @@ const session = require('express-session')
 const config = require('./config')
 const conferences = require('./lib/conferences')
 const db = require('./lib/db')
+const format = require('./lib/format')
 const createConfController = require('./controllers/createConfController')
 const sendValidationEmailController = require('./controllers/sendValidationEmailController')
 const urls = require('./urls')
@@ -15,6 +16,7 @@ const app = express()
 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
+app.locals.format = format;
 
 app.use('/static', express.static('static'))
 // Hack for importing css from npm package
@@ -47,7 +49,7 @@ app.get(urls.landing, async (req, res) => {
     NUM_PIN_DIGITS: config.NUM_PIN_DIGITS,
     pageTitle: 'Accueil',
     hasFreePhoneNumbers: hasFreePhoneNumbers,
-    confDurationVerbose: config.CONFERENCE_DURATION_IN_MINUTES/60 + ' heure' + (config.CONFERENCE_DURATION_IN_MINUTES >= 120 ? 's' : '')
+    CONFERENCE_MAX_DURATION_IN_MINUTES: config.CONFERENCE_MAX_DURATION_IN_MINUTES
   })
 })
 
@@ -69,8 +71,12 @@ app.get(urls.legalNotice, (req, res) => {
 })
 
 const init = async () => {
-  const phoneNumbers = await conferences.getAllPhoneNumbers()
-  await Promise.all(phoneNumbers.map(phoneNumber => db.insertPhoneNumber(phoneNumber)))
+  try {
+     const phoneNumbers = await conferences.getAllPhoneNumbers()
+     await Promise.all(phoneNumbers.map(phoneNumber => db.insertPhoneNumber(phoneNumber)))
+  } catch(err) {
+    console.error("Erreur dans la récupération des numéros de conférence sur l'API OVH", err)
+  }
 }
 
 module.exports = app.listen(config.PORT, () => {

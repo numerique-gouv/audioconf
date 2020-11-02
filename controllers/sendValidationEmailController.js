@@ -31,6 +31,7 @@ const generateToken = () => {
 
 module.exports.sendValidationEmail = async (req, res) => {
   const email = req.body.email
+  const conferenceDurationInMinutes = req.body.durationInMinutes
 
   if (!isValidEmail(email)) {
     req.flash('error', 'Email invalide. Avez vous bien tapé votre email ? Vous pouvez réessayer.')
@@ -47,7 +48,7 @@ module.exports.sendValidationEmail = async (req, res) => {
   tokenExpirationDate.setMinutes(tokenExpirationDate.getMinutes() + config.TOKEN_DURATION_IN_MINUTES)
 
   try {
-    await db.insertToken(email, token, tokenExpirationDate)
+    await db.insertToken(email, token, conferenceDurationInMinutes, tokenExpirationDate)
     console.log(`Login token créé pour ${email}, il expire à ${tokenExpirationDate}`)
 
     const validationUrl = `${config.PROTOCOL}://${req.get('host')}${urls.createConf}?token=${encodeURIComponent(token)}`

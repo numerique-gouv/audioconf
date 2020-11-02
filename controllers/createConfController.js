@@ -21,10 +21,13 @@ module.exports.createConf = async (req, res) => {
 
   const tokenData = tokensData[0]
   const email = tokenData.email
+  const durationInMinutes = tokenData.durationInMinutes
+
+  console.log(`Création d'un numéro de conférence pour ${email} pour ${durationInMinutes} minutes`)
 
   let confData = {}
   try {
-    confData = await conferences.createConf(email)
+    confData = await conferences.createConf(email, durationInMinutes)
   } catch (error) {
     req.flash('error', 'La conférence n\'a pas pu être créée. Vous pouvez réessayer.')
     console.error('Error when creating conference', error)
@@ -34,7 +37,7 @@ module.exports.createConf = async (req, res) => {
   const formattedPhoneNumber = format.formatFrenchPhoneNumber(confData.phoneNumber)
   const formattedFreeAt = format.formatFrenchDate(confData.freeAt)
   try {
-    await emailer.sendConfCreatedEmail(email, formattedPhoneNumber, confData.pin, formattedFreeAt)
+    await emailer.sendConfCreatedEmail(email, formattedPhoneNumber, confData.pin, durationInMinutes, formattedFreeAt)
 
     res.render('confCreated', {
       pageTitle: 'La conférence est créée',
@@ -42,7 +45,7 @@ module.exports.createConf = async (req, res) => {
       formattedPhoneNumber: formattedPhoneNumber,
       pin: confData.pin,
       formattedFreeAt: formattedFreeAt,
-      confDurationVerbose: config.CONFERENCE_DURATION_IN_MINUTES/60 + ' heure' + (config.CONFERENCE_DURATION_IN_MINUTES >= 120 ? 's' : '')
+      durationInMinutes: durationInMinutes
     })
 
   } catch (error) {
