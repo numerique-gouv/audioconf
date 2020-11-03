@@ -32,10 +32,6 @@
             </div>
           <% } %>
           <% if(numberOfFreePhoneNumbers) { %>
-            <div class="notification info rf-grid-row">
-              <span class="rf-fi-information-line rf-margin-right-1N"></span>
-              Il reste <%= numberOfFreePhoneNumbers %> numéros de conférences disponible.
-            </div>
             <form action="<%= urls.sendValidationEmail %>" method="POST">
               <div class="rf-input-group">
                   <label class="rf-label" for="email">Votre email professionnel :</label>
@@ -55,6 +51,9 @@
                   <button type="submit" class="rf-btn" title="Démarrer ma conférence">Démarrer ma conférence</button>
               </div>
             </form>
+            <p class="rf-text--xs">
+              Il reste <%= numberOfFreePhoneNumbers %> numéros de conférence disponibles.
+            </p>
           <% } else { %>
             <div class="notification info rf-grid-row">
               <span class="rf-fi-information-line rf-margin-right-1N"></span>
