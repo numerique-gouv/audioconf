@@ -43,6 +43,7 @@ app.use(flash())
 // Populate some variables for all views
 app.use(function(req, res, next){
   res.locals.appName = config.APP_NAME
+  res.locals.supportEmail = config.SUPPORT_EMAIL
   res.locals.errors = req.flash('error')
   res.locals.message = req.flash('message')
   res.locals.successes = req.flash('success')
