@@ -39,10 +39,7 @@ module.exports.sendValidationEmail = async (req, res) => {
   }
 
   if (!isAcceptedEmail(email)) {
-    req.flash('error', `Cet email ne correspond pas à une agence de l\'État. Si vous appartenez à un service de l'État mais votre email n'est pas reconnu par AudioConf, <a title="Contactez-nous"
-                 target="_blank"
-                 rel="noopener"
-                 href="mailto:${config.SUPPORT_EMAIL}?subject=Je voudrais faire ajouter mon service à AudioConf">contactez-nous</a> pour que nous le rajoutions!`)
+    req.flash('error', `Cet email ne correspond pas à une agence de l\'État. Si vous appartenez à un service de l'État mais votre email n'est pas reconnu par AudioConf, contactez-nous pour que nous le rajoutions!`)
     return res.redirect('/')
   }
 
