@@ -52,7 +52,7 @@
               </div>
             </form>
             <p class="rf-text--xs">
-              Il reste <%= numberOfFreePhoneNumbers %> numéro<% numberOfFreePhoneNumbers === 1 ? '' : 's' %> de conférence disponibles.
+              Il reste <%= numberOfFreePhoneNumbers %> numéro<%= numberOfFreePhoneNumbers === 1 ? '' : 's' %> de conférence disponibles.
             </p>
           <% } else { %>
             <div class="notification info rf-grid-row">
