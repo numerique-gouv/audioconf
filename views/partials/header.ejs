@@ -3,7 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title><%= pageTitle %> | <%= appName %></title>
+  <title>
+    <% if (locals.pageTitle) { %>
+      <%= pageTitle %> | <%= appName %>
+    <% } else { %>
+      <%= appName %>
+    <% } %>
+  </title>
   <!-- todo(estellecomment) : import min css and js -->
   <link rel="stylesheet" href="/~/@gouvfr/design-system/dist/css/dsfr.css">
   <link rel="stylesheet" href="/static/css/custom.css">
@@ -45,7 +51,7 @@
               </li>
             </ul>
           </div>
-        </div>  
+        </div>
       </div>
     </div>
   </header>

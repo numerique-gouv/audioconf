@@ -59,7 +59,6 @@ app.get(urls.landing, async (req, res) => {
 
   res.render('landing', {
     NUM_PIN_DIGITS: config.NUM_PIN_DIGITS,
-    pageTitle: 'Accueil',
     numberOfFreePhoneNumbers: numberOfFreePhoneNumbers,
     nextFreePhoneNumberAt: nextFreePhoneNumberAt,
     CONFERENCE_MAX_DURATION_IN_MINUTES: config.CONFERENCE_MAX_DURATION_IN_MINUTES
