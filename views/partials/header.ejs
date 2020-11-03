@@ -14,11 +14,20 @@
   <header class="rf-header">
     <div class="rf-container">
       <div class="rf-header__body">
-        <%- include('brand') -%>
+        <div class="rf-header__brand">
+          <a class="rf-logo"
+             href="/"
+             title="Direction interministérielle du numérique">
+            <span class="rf-logo__title">
+              République
+              <br>française
+            </span>
+          </a>
+        </div>
         <div class="rf-header__navbar">
           <div class="rf-service">
             <a class="rf-service__title" href="/" title="<%= appName %>">
-              <span><%= appName %></span>
+              <%= appName %>
             </a>
             <p class="rf-service__tagline">
               Conférences téléphoniques pour les agents de l'État
@@ -38,15 +47,5 @@
           </div>
         </div>  
       </div>
-      <nav class="rf-nav" role="navigation" aria-label="Menu principal">
-        <ul class="rf-nav__list">
-          <li class="rf-nav__item">
-            <a class="rf-link" href="/#je-cree-une-conf" target="_self">Je crée une conférence</a>
-          </li>
-          <li class="rf-nav__item">
-            <a class="rf-link" href="/#comment-ca-marche" target="_self">Comment ça marche ? </a>
-          </li>
-        </ul>
-      </nav>
     </div>
   </header>
