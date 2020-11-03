@@ -28,6 +28,7 @@ if (!isPresent('MAIL_SENDER_EMAIL')) {
 }
 config.MAIL_SENDER_EMAIL = process.env.MAIL_SENDER_EMAIL
 
+
 if (isPresent('MAIL_SERVICE')) {
   config.MAIL_SERVICE = process.env.MAIL_SERVICE
 } else {
@@ -64,6 +65,8 @@ config.NUM_PIN_DIGITS = process.env.NUM_PIN_DIGITS || 4
 config.CONFERENCE_MAX_DURATION_IN_MINUTES = process.env.CONFERENCE_MAX_DURATION_IN_MINUTES || 1440
 config.TOKEN_DURATION_IN_MINUTES = process.env.TOKEN_DURATION_IN_MINUTES || 60
 config.SECRET = process.env.SECRET
+
+config.SUPPORT_EMAIL = process.env.SUPPORT_EMAIL || process.env.MAIL_SENDER_EMAIL
 
 if (!isPresent('TZ')) {
   process.env.TZ = 'Europe/Paris'
