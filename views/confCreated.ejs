@@ -24,12 +24,13 @@
 
       <p>Bonne discussion avec <%= appName %> !</p>
 
-    <p id="annuler"><strong>Vous n'allez pas utiliser ce numéro de conférence ? Libérez-le pour qu'il soit réutilisé : </strong>
+      <hr />
+      <p id="annuler"><strong>Vous n'allez pas utiliser ce numéro de conférence ? Libérez-le pour qu'il soit réutilisé : </strong>
       <form action="<%= urls.cancelConf.replace(":id", conference.id) %>" method="POST">
         <div class="rf-checkbox-group">
           <input type="checkbox" id="confirm" name="confirm" onchange="document.getElementById('cancel-button').disabled = null">
-          <label class="rf-label" for="confirm" aria-describedby="checkboxes-hint-confirm-desc-hint">En cochant cette case, je comprends que la suppression n'est pas réversible</label>
-          <p class="rf-hint-text" id="checkboxes-hint-confirm-desc-hint">Vous aurez la possibilité de recréer une conférence</p>
+          <label class="rf-label" for="confirm" aria-describedby="checkboxes-hint-confirm-desc-hint">En cochant cette case, je comprends que le numéro ne me sera plus réservé.</label>
+          <p class="rf-hint-text" id="checkboxes-hint-confirm-desc-hint">Je pourrais réserver un nouveau numéro.</p>
         </div><br>
         <div class="rf-input-group">
           <button type="submit" class="rf-btn" title="Annuler la conférence" id="cancel-button" disabled>Annuler la conférence</button>
