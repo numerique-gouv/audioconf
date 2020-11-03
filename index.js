@@ -52,12 +52,16 @@ app.use(function(req, res, next){
 })
 
 app.get(urls.landing, async (req, res) => {
-  const freePhoneNumbers = await db.getFreePhoneNumberList()
-  const hasFreePhoneNumbers = (freePhoneNumbers.length > 0)
+  const freeNumbers = await db.getPhoneNumberList()
+  const now = new Date()
+  const numberOfFreePhoneNumbers = freeNumbers.filter(phoneNumber => phoneNumber.freeAt < now).length
+  const nextFreePhoneNumberAt = freeNumbers[0] ? freeNumbers[0].freeAt:null
+
   res.render('landing', {
     NUM_PIN_DIGITS: config.NUM_PIN_DIGITS,
     pageTitle: 'Accueil',
-    hasFreePhoneNumbers: hasFreePhoneNumbers,
+    numberOfFreePhoneNumbers: numberOfFreePhoneNumbers,
+    nextFreePhoneNumberAt: nextFreePhoneNumberAt,
     CONFERENCE_MAX_DURATION_IN_MINUTES: config.CONFERENCE_MAX_DURATION_IN_MINUTES
   })
 })

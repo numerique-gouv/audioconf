@@ -31,7 +31,7 @@
                 <% }) %>
             </div>
           <% } %>
-          <% if(hasFreePhoneNumbers) { %>
+          <% if(numberOfFreePhoneNumbers) { %>
             <form action="<%= urls.sendValidationEmail %>" method="POST">
               <div class="rf-input-group">
                   <label class="rf-label" for="email">Votre email professionnel :</label>
@@ -51,10 +51,13 @@
                   <button type="submit" class="rf-btn" title="Démarrer ma conférence">Démarrer ma conférence</button>
               </div>
             </form>
+            <p class="rf-text--xs">
+              Il reste <%= numberOfFreePhoneNumbers %> numéro<%= numberOfFreePhoneNumbers === 1 ? '' : 's' %> de conférence disponibles.
+            </p>
           <% } else { %>
             <div class="notification info rf-grid-row">
               <span class="rf-fi-information-line rf-margin-right-1N"></span>
-              Nous n'avons plus de numéro de conférence disponible. Revenez plus tard !
+              Nous n'avons plus de numéro de conférence disponible. Prochain numéro libre <%= format.formatFrenchDate(nextFreePhoneNumberAt) %>.
             </div>
           <% } %>
       </div>
