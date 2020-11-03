@@ -88,7 +88,7 @@ const init = async () => {
      const phoneNumbers = await conferences.getAllPhoneNumbers()
      await Promise.all(phoneNumbers.map(phoneNumber => db.insertPhoneNumber(phoneNumber)))
   } catch(err) {
-    console.error("Erreur dans la récupération des numéros de conférence sur l'API OVH", err)
+    console.error('Erreur dans la récupération des numéros de conférence sur l\'API OVH', err)
   }
 }
 

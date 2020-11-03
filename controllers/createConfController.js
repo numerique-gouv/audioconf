@@ -22,31 +22,29 @@ module.exports.createConf = async (req, res) => {
   const tokenData = tokensData[0]
   const email = tokenData.email
   const durationInMinutes = tokenData.durationInMinutes
-
   console.log(`Création d'un numéro de conférence pour ${email} pour ${durationInMinutes} minutes`)
 
-  let confData = {}
+  let conference = {}
   try {
-    confData = await conferences.createConf(email, durationInMinutes)
-  } catch (error) {
+    const OVHconfData = await conferences.createConf(email, durationInMinutes)
+
+    conference = await db.insertConference(email, OVHconfData.phoneNumber, durationInMinutes, OVHconfData.freeAt)
+    conference.pin = OVHconfData.pin
+  } catch (err) {
     req.flash('error', 'La conférence n\'a pas pu être créée. Vous pouvez réessayer.')
-    console.error('Error when creating conference', error)
+    console.error('Error when creating conference', err)
     return res.redirect('/')
   }
-  let phoneNumber = confData.phoneNumber
 
+  const confUrl = `${config.PROTOCOL}://${req.get('host')}${urls.showConf.replace(":id", conference.id)}#annuler`
   try {
-    const conference = await db.insertConference(email, phoneNumber, durationInMinutes, confData.freeAt)
-    conference.pin = confData.pin
+    await emailer.sendConfCreatedEmail(email, conference.phoneNumber, conference.pin, durationInMinutes, conference.freeAt, confUrl)
 
-    const confUrl = `${config.PROTOCOL}://${req.get('host')}${urls.showConf.replace(":id", conference.id)}#annuler`
-    await emailer.sendConfCreatedEmail(email, phoneNumber, confData.pin, durationInMinutes, confData.freeAt, confUrl)
-
-    req.flash('pin', conference.pin);
+    req.flash('pin', conference.pin)
     return res.redirect(urls.showConf.replace(":id", conference.id))
-  } catch (error) {
+  } catch (err) {
     req.flash('error', 'L\'email contenant les identifiants n\'a pas pu être envoyé. Vous pouvez réessayer.')
-    console.error('Error when emailing', error)
+    console.error('Error when emailing', err)
     return res.redirect('/')
   }
 }
@@ -57,23 +55,23 @@ module.exports.showConf = async (req, res) => {
 
   try {
     const conference = await db.getConference(confId)
-    if(conference.canceledAt) {
+
+    if (conference.canceledAt) {
       req.flash('error', `La conférence a été annulée le ${format.formatFrenchDate(conference.canceledAt)}. Si vous avez encore besoin d\'une conférence, vous pouvez en créer une nouvelle.`)
       return res.redirect('/')
     }
+
     const pin = req.flash('pin')
     if(pin.length) {
       conference.pin = pin
     }
-
     res.render('confCreated', {
       pageTitle: 'Votre conférence',
       conference
     })
-
   } catch (error) {
     req.flash('error', 'La conférence a expiré. Vous pouvez recréer une conférence.')
-    console.error('Conference error', error)
+    console.error('showConf error', error)
     return res.redirect('/')
   }
 }
@@ -87,9 +85,9 @@ module.exports.cancelConf = async (req, res) => {
     req.flash('success', 'La conférence a bien été annulée. Si vous avez encore besoin d\'une conférence, vous pouvez en créer une nouvelle.')
     console.log(`La conférence ${confId} a été annulée`)
     return res.redirect('/')
-  } catch (error) {
-    req.flash('error', 'Une erreur s\'est produite pour l\'annulation de la conférence')
-    console.error('Erreur pour annuler la conférence', error)
+  } catch (err) {
+    req.flash('error', 'Une erreur s\'est produite pendant l\'annulation de la conférence.')
+    console.error('Erreur pour annuler la conférence', err)
     return res.redirect('/')
   }
 }
