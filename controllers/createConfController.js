@@ -22,27 +22,23 @@ module.exports.createConf = async (req, res) => {
   const tokenData = tokensData[0]
   const email = tokenData.email
   const durationInMinutes = tokenData.durationInMinutes
-
   console.log(`Création d'un numéro de conférence pour ${email} pour ${durationInMinutes} minutes`)
 
-  let confData = {} // todo internal to the try catch ?
   let conference = {}
   try {
-    confData = await conferences.createConf(email, durationInMinutes)
+    const OVHconfData = await conferences.createConf(email, durationInMinutes)
 
-    conference = await db.insertConference(email, phoneNumber, durationInMinutes, confData.freeAt)
-    console.log('conference returned from db', conference) // todo remove this log
-    conference.pin = confData.pin
+    conference = await db.insertConference(email, OVHconfData.phoneNumber, durationInMinutes, OVHconfData.freeAt)
+    conference.pin = OVHconfData.pin
   } catch (err) {
     req.flash('error', 'La conférence n\'a pas pu être créée. Vous pouvez réessayer.')
     console.error('Error when creating conference', err)
     return res.redirect('/')
   }
 
-  let phoneNumber = confData.phoneNumber
   const confUrl = `${config.PROTOCOL}://${req.get('host')}${urls.showConf.replace(":id", conference.id)}#annuler`
   try {
-    await emailer.sendConfCreatedEmail(email, phoneNumber, confData.pin, durationInMinutes, confData.freeAt, confUrl)
+    await emailer.sendConfCreatedEmail(email, conference.phoneNumber, conference.pin, durationInMinutes, conference.freeAt, confUrl)
 
     req.flash('pin', conference.pin)
     return res.redirect(urls.showConf.replace(":id", conference.id))
