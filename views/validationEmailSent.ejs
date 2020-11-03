@@ -2,37 +2,31 @@
 
 <div class="rf-container">
   <div class="main-paragraph">
-    <h2>Regardez vos emails</h2>
-    <p>
-      <%= appName %> a envoyé un email à
-      <strong><%= email %></strong>
-      contenant un lien que vous devez cliquer pour continuer.
-    </p>
-    <p>
-      Prochaine étape : allez chercher ce mail et cliquez sur le lien !
-    </p>
-  </div>
 
-  <div class="main-paragraph">
-    <h2>Je n'ai pas reçu l'email</h2>
-    <p>Avez-vous bien renseigné votre email sans faute de frappe ?</p>
-    <p>L'email est-il arrivé dans les indésirables (spam) de votre boîte mail ? </p>
-  </div>
+    <div class="rf-callout">
+      <h2 class="rf-callout__title">Validez votre mail</h2>
+      <p class="rf-callout__text">Pour continuer, cliquez sur le lien envoyé à
+        <strong><%= email %></strong>.</p>
+    </div>
 
-  <div class="main-paragraph">
-    <p>Dans tous les cas, vous pouvez réessayer ou nous contacter !</p>
-    <a class="rf-btn rf-btn rf-margin-right-2N" title="Créer une conférence" href="/">
-      Créer une conférence
-    </a>
-    <a class="rf-btn"
-       title="Nous contacter"
-       target="_blank"
-       rel="noopener"
-       href="mailto:audioconf@beta.gouv.fr?subject=Je n'ai pas reçu l'email&body=Bonjour,%0d%0a%0d%0a[Expliquez votre problème ici]">
+
+    <h3>Besoin d'aide ?</h3>
+    <div class="sub-paragraph">
+      <h4>Je n'ai pas reçu l'email</h4>
+      <p>Avez-vous bien renseigné votre email sans faute de frappe ? L'email est-il arrivé dans les indésirables (spam) de votre boîte mail ?</p>
+
+      <a class="rf-btn rf-btn rf-margin-right-2N" title="Démarrer une nouvelle conférence" href="/">
+        Démarrer une nouvelle conférence
+      </a>
+    </div>
+
+    <div class="sub-paragraph">
+      <h4>Je n'arrive pas à me connecter à la conférence</h4>
+        <a class="rf-btn" title="Nous contacter" target="_blank" rel="noopener" href="mailto:audioconf@beta.gouv.fr?subject=Je n'ai pas re%C3%A7u l'email&amp;body=Bonjour,%0d%0a%0d%0a[Expliquez votre probl%C3%A8me ici]">
       Nous contacter
-    </a>
+      </a>
+    </div>
   </div>
-
 </div>
 
 <%- include('partials/footer') -%>
