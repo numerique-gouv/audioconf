@@ -5,7 +5,7 @@
     <div class="rf-col rf-col-lg-8">
       <div id="je-cree-une-conf" class="main-paragraph">
         <h2>
-          Je crée une conférence téléphonique
+          Créer une conférence téléphonique
         </h2>
           <% if (errors.length) { %>
             <div class="notification error">
@@ -34,7 +34,7 @@
           <% if(hasFreePhoneNumbers) { %>
             <form action="<%= urls.sendValidationEmail %>" method="POST">
               <div class="rf-input-group">
-                  <label class="rf-label" for="email">Renseignez votre email professionnel :</label>
+                  <label class="rf-label" for="email">Votre email professionnel :</label>
                   <input class="rf-input" type="email" id="email" name="email" required>
               </div>
               <div class="rf-input-group">
@@ -48,7 +48,7 @@
                   </select>
               </div>
               <div class="rf-input-group">
-                  <button type="submit" class="rf-btn" title="Créer ma conférence">Créer ma conférence</button>
+                  <button type="submit" class="rf-btn" title="Démarrer ma conférence">Démarrer ma conférence</button>
               </div>
             </form>
           <% } else { %>
@@ -64,53 +64,25 @@
         </h2>
         <div>
           <div class="sub-paragraph">
-            <p>Vous êtes en télétravail et vous voulez appeler vos trois collègues de bureau ? </p>
-            <p>Vous devez organiser votre réunion de service à distance pour vos 10 collaborateurs ? </p>
-            <p>Créez en quelques clics une conférence téléphonique, où jusqu'à 50 personnes pourront se connecter, chacune sur son téléphone.</p>
-            <p>Voici les étapes : </p>
+            <h3>Je démarre une conférence</h3>
+            <p>Renseignez votre email professionnel pour recevoir un lien de création : en un clic, votre conférence sera prête ! </p>
           </div>
           <div class="sub-paragraph">
-            <h3>1 . Je renseigne mon email professionnel</h3>
-            <p>Il doit finir par ".gouv.fr" ou un autre suffixe correspondant à un service de l’Etat.</p>
+            <h3>J'invite les participants</h3>
             <p>
-              <span class="rf-fi-arrow-right-line"></span>
-              Vous appartenez à un service de l'Etat mais votre email n'est pas reconnu par <%= appName %> ?
-              <a title="Contactez-nous"
-                 target="_blank"
-                 rel="noopener"
-                 href="mailto:audioconf@beta.gouv.fr?subject=Je voudrais faire ajouter mon service à <%= appName %>">
-                  Contactez-nous
-              </a>
-              pour que nous le rajoutions!
+              Transmettez à vos collègues le <b>numéro de téléphone de la conférence</b> et le code d’accès à  <%= NUM_PIN_DIGITS %> chiffres.<br />
+Chaque participant peut appeler appelle le numéro depuis son téléphone professionnel ou personnel puis taper le code d'accès à la conférence.
             </p>
           </div>
           <div class="sub-paragraph">
-            <h3>2 . Je reçois un email du site <%= appName %></h3>
-            <p>
-              L'email contient :
-            </p>
-            <ul>
-              <li>un numéro de téléphone à appeler</li>
-              <li>un code d'accès à <%= NUM_PIN_DIGITS %> chiffres pour la conférence.</li>
-            </ul>
-          </div>
-          <div class="sub-paragraph">
-            <h3>3 . Les participants rejoignent la conférence</h3>
+            <h3>C'est parti !</h3>
             Chaque personne appelle le numéro depuis son téléphone (pro ou perso, peu importe)
             et tape les <%= NUM_PIN_DIGITS %> chiffres du code d'accès à la conférence.
           </div>
           <div class="sub-paragraph">
             <h3>4 . C'est parti, parlez!</h3>
-            <p>Le numéro de conférence est disponible pendant la durée choisie (avec un maximum de <%= format.formatMinutesInHours(CONFERENCE_MAX_DURATION_IN_MINUTES) %>).</p>
-            <p>Toute personne ayant le numéro de téléphone et l'identifiant à <%= NUM_PIN_DIGITS %> chiffres peut rejoindre la conférence.</p>
-            <p>Après le délai choisi (avec un maximum de <%= format.formatMinutesInHours(CONFERENCE_MAX_DURATION_IN_MINUTES) %>), le numéro de conférence ne marchera plus, mais je pourrai en créer une nouvelle.</p>
+            <p>Le numéro de conférence est disponible pendant la durée choisie. Jusqu'à 50 personnes peuvent rejoindre la conférence.</p>
           </div>
-        </div>
-        <div>
-          <h2>Prêts à démarrer ?</h2>
-          <a class="rf-btn" title="Créer une conférence" href="#je-cree-une-conf">
-            Créer une conférence
-          </a>
         </div>
       </div>
     </div>
