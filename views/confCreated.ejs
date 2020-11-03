@@ -19,7 +19,8 @@
     </div>
 
       <p>
-        Ce numéro de conférence est actif pendant <%= format.formatMinutesInHours(conference.durationInMinutes) %> : il expirera <%= format.formatFrenchDate(conference.freeAt) %>.
+        Ce numéro de conférence est actif pendant <%= format.formatMinutesInHours(conference.durationInMinutes) %>.
+        Il expirera <%= format.formatFrenchDate(conference.expiresAt) %>.
       </p>
 
       <p>Bonne discussion avec <%= appName %> !</p>

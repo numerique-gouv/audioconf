@@ -38,7 +38,7 @@ module.exports.createConf = async (req, res) => {
 
   const confUrl = `${config.PROTOCOL}://${req.get('host')}${urls.showConf.replace(":id", conference.id)}#annuler`
   try {
-    await emailer.sendConfCreatedEmail(email, conference.phoneNumber, conference.pin, durationInMinutes, conference.freeAt, confUrl)
+    await emailer.sendConfCreatedEmail(email, conference.phoneNumber, conference.pin, durationInMinutes, conference.expiresAt, confUrl)
 
     req.flash('pin', conference.pin)
     return res.redirect(urls.showConf.replace(":id", conference.id))
