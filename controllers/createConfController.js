@@ -36,12 +36,11 @@ module.exports.createConf = async (req, res) => {
     return res.redirect('/')
   }
 
-  const confUrl = `${config.PROTOCOL}://${req.get('host')}${urls.showConf.replace(":id", conference.id)}#annuler`
+  const confUrl = `${config.PROTOCOL}://${req.get('host')}${urls.showConf.replace(":id", conference.id)}#${conference.pin}`
   try {
     await emailer.sendConfCreatedEmail(email, conference.phoneNumber, conference.pin, durationInMinutes, conference.expiresAt, confUrl)
 
-    req.flash('pin', conference.pin)
-    return res.redirect(urls.showConf.replace(":id", conference.id))
+    return res.redirect(urls.showConf.replace(":id", conference.id) + '#' + conference.pin)
   } catch (err) {
     req.flash('error', 'L\'email contenant les identifiants n\'a pas pu être envoyé. Vous pouvez réessayer.')
     console.error('Error when emailing', err)
@@ -66,10 +65,6 @@ module.exports.showConf = async (req, res) => {
       return res.redirect('/')
     }
 
-    const pin = req.flash('pin')
-    if(pin.length) {
-      conference.pin = pin
-    }
     res.render('confCreated', {
       pageTitle: 'Votre conférence',
       conference

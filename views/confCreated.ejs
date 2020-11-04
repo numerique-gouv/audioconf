@@ -10,11 +10,12 @@
         <p class="rf-callout__title">Pour vous y connecter</p>
         <ul class="rf-callout__text">
         <li>Appelez le <strong><%= format.formatFrenchPhoneNumber(conference.phoneNumber) %></strong> depuis un téléphone.</li>
-        <li>Tapez le code d'accès : <strong>
-        <% if(conference.pin) { %><%= conference.pin %><% } else { %>
-          **** (Vous avez reçu le code PIN par email, si vous l'avez perdu, annuler cette conférence et générer une nouvelle conférence)
-        <% } %>
-        </strong></li>
+        <li>
+          Tapez le code d'accès :
+          <strong id="pin">
+            **** (Vous avez reçu le code PIN par email, si vous l'avez perdu, annuler cette conférence et générer une nouvelle conférence)
+          </strong>
+        </li>
       </ul>
     </div>
 
@@ -40,5 +41,13 @@
     </p>
   </div>
 </div>
+
+<script type="text/javascript">
+  // If the pin is in the hash, display it in the page.
+  const hash = window.location.hash.replace('#', '')
+  if (/^[0-9]{4}$/.test(hash)) {
+    document.getElementById('pin').innerHTML = hash
+  }
+</script>
 
 <%- include('partials/footer') -%>
