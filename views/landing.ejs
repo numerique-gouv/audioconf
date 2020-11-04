@@ -46,7 +46,7 @@
               Il reste <%= numberOfFreePhoneNumbers %> numéro<%= numberOfFreePhoneNumbers === 1 ? '' : 's' %> de conférence disponibles.
             </p>
           <% } else { %>
-            <div class="rf-callout rf-fi-alert-line rf-callout--scheme-soft-orange-soft rf-margin-bottom--3N">
+            <div class="rf-callout rf-fi-information-line rf-callout--scheme-soft-blue-soft rf-margin-bottom--3N">
                 <p class="rf-callout__text">Nous n'avons plus de numéro de conférence disponible. Prochain numéro libre <%= format.formatFrenchDate(nextFreePhoneNumberAt) %>.
                 </p>
             </div>
