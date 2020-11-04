@@ -19,6 +19,12 @@
             <% }) %>
           <% } %>
 
+          <% if (successes.length) { %>
+            <% successes.forEach(function(success) { %>
+              <%- include('partials/notificationSuccess', {success: success}) -%>
+            <% }) %>
+          <% } %>
+
           <% if(numberOfFreePhoneNumbers) { %>
             <form action="<%= urls.sendValidationEmail %>" method="POST">
               <div class="rf-input-group">
