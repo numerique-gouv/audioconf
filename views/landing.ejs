@@ -9,16 +9,14 @@
         </h2>
           <% if (errors.length) { %>
             <% errors.forEach(function(error) { %>
-              <div class="rf-callout rf-fi-alert-line rf-callout--scheme-soft-orange-soft rf-margin-bottom--3N">
-                <p class="rf-callout__text"><%= error %></p>
-              </div>
+              <%- include('partials/notificationError', {error: error}) -%>
             <% }) %>
           <% } %>
 
           <% if (successes.length) { %>
             <% successes.forEach(function(success) { %>
               <div class="rf-callout rf-fi-information-line rf-callout--scheme-soft-blue-soft rf-margin-bottom--3N">
-                  <p class="rf-callout__text"><%= success %></p>
+                <p class="rf-callout__text"><%= success %></p>
               </div>
             <% }) %>
           <% } %>
