@@ -54,7 +54,12 @@ module.exports.showConf = async (req, res) => {
   const confId = req.params.id
 
   try {
-    const conference = await db.getUnexpiredConference(confId)
+    const conference = await db.getConference(confId)
+
+    if (conference.expiresAt < new Date()) {
+      req.flash('error', 'La conférence a expiré. Vous pouvez recréer une conférence.')
+      return res.redirect('/')
+    }
 
     if (conference.canceledAt) {
       req.flash('error', `La conférence a été annulée le ${format.formatFrenchDate(conference.canceledAt)}. Si vous avez encore besoin d\'une conférence, vous pouvez en créer une nouvelle.`)
