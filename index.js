@@ -57,11 +57,23 @@ app.get(urls.landing, async (req, res) => {
   const numberOfFreePhoneNumbers = freeNumbers.filter(phoneNumber => phoneNumber.freeAt < now).length
   const nextFreePhoneNumberAt = freeNumbers[0] ? freeNumbers[0].freeAt : new Date()
 
+  let statsPoint = await db.getLatestStatsPoint()
+  if (!statsPoint) {
+    statsPoint = {
+      date: new Date(),
+      onlineParticipantsCount: 0,
+      activeConfsCount: 0,
+      errorConfsCount: 0,
+    }
+  }
+
   res.render('landing', {
     NUM_PIN_DIGITS: config.NUM_PIN_DIGITS,
     numberOfFreePhoneNumbers: numberOfFreePhoneNumbers,
     nextFreePhoneNumberAt: nextFreePhoneNumberAt,
-    CONFERENCE_MAX_DURATION_IN_MINUTES: config.CONFERENCE_MAX_DURATION_IN_MINUTES
+    CONFERENCE_MAX_DURATION_IN_MINUTES: config.CONFERENCE_MAX_DURATION_IN_MINUTES,
+    onlineParticipantsCount: statsPoint.onlineParticipantsCount,
+    activeConfsCount: statsPoint.activeConfsCount,
   })
 })
 

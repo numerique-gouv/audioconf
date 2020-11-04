@@ -51,6 +51,9 @@
           <% } else { %>
             <%- include('partials/notificationInfo', {info: `Nous n'avons plus de numéro de conférence disponible. Prochain numéro libre ${format.formatFrenchDate(nextFreePhoneNumberAt)}.`}) -%>
           <% } %>
+          <div>
+            Il y a actuellement <%= onlineParticipantsCount %> personnes au téléphone dans <%= activeConfsCount %> conférences.
+          </div>
       </div>
       <div id="comment-ca-marche" class="main-paragraph">
         <h2>
