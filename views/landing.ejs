@@ -15,9 +15,7 @@
 
           <% if (successes.length) { %>
             <% successes.forEach(function(success) { %>
-              <div class="rf-callout rf-fi-information-line rf-callout--scheme-soft-blue-soft rf-margin-bottom--3N">
-                <p class="rf-callout__text"><%= success %></p>
-              </div>
+              <%- include('partials/notificationInfo', {info: success}) -%>
             <% }) %>
           <% } %>
 
@@ -45,10 +43,7 @@
               Il reste <%= numberOfFreePhoneNumbers %> numéro<%= numberOfFreePhoneNumbers === 1 ? '' : 's' %> de conférence disponibles.
             </p>
           <% } else { %>
-            <div class="rf-callout rf-fi-information-line rf-callout--scheme-soft-blue-soft rf-margin-bottom--3N">
-                <p class="rf-callout__text">Nous n'avons plus de numéro de conférence disponible. Prochain numéro libre <%= format.formatFrenchDate(nextFreePhoneNumberAt) %>.
-                </p>
-            </div>
+            <%- include('partials/notificationInfo', {info: `Nous n'avons plus de numéro de conférence disponible. Prochain numéro libre ${format.formatFrenchDate(nextFreePhoneNumberAt)}.`}) -%>
           <% } %>
       </div>
       <div id="comment-ca-marche" class="main-paragraph">
