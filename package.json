@@ -11,6 +11,7 @@
     "migrate": "knex migrate:latest",
     "makeMigration": "knex migrate:make",
     "start": "node index.js",
+    "rollback": "knex migrate:rollback",
     "test": "mocha --recursive --exit --require ./test/setup.js"
   },
   "repository": {
@@ -27,6 +28,7 @@
     "@gouvfr/design-system": "^0.2.0",
     "connect-flash": "^0.1.1",
     "connect-session-knex": "^2.0.0",
+    "cron": "^1.8.2",
     "dotenv": "^8.2.0",
     "ejs": "^3.1.5",
     "express": "^4.17.1",
