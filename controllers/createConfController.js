@@ -22,7 +22,7 @@ module.exports.createConf = async (req, res) => {
   const tokenData = tokensData[0]
   const email = tokenData.email
   const durationInMinutes = tokenData.durationInMinutes
-  console.log(`Création d'un numéro de conférence pour ${email} pour ${durationInMinutes} minutes`)
+  console.log(`Création d'un numéro de conférence pour ${format.hashForLogs(email)} pour ${durationInMinutes} minutes`)
 
   let conference = {}
   try {

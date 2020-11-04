@@ -4,6 +4,7 @@ const url = require('url')
 const config = require('../config');
 const db = require('../lib/db')
 const emailer = require('../lib/emailer')
+const format = require('../lib/format')
 const urls = require('../urls')
 
 const isAcceptedEmail = email => {
@@ -49,7 +50,7 @@ module.exports.sendValidationEmail = async (req, res) => {
 
   try {
     await db.insertToken(email, token, conferenceDurationInMinutes, tokenExpirationDate)
-    console.log(`Login token créé pour ${email}, il expire à ${tokenExpirationDate}`)
+    console.log(`Login token créé pour ${format.hashForLogs(email)}, il expire à ${tokenExpirationDate}`)
 
     const validationUrl = `${config.PROTOCOL}://${req.get('host')}${urls.createConf}?token=${encodeURIComponent(token)}`
     await emailer.sendEmailValidationEmail(email, token, tokenExpirationDate, validationUrl)
