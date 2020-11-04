@@ -24,16 +24,23 @@
 }
 
 .notification.error {
-  color: var(--error);
   border-color: var(--error);
 }
 
 .notification.info {
-  color: var(--info);
   border-color: var(--info);
 }
 
 .notification.success {
-  color: var(--success);
   border-color: var(--success);
+}
+
+
+.rf-bg--alt {
+  background-color: var(--g100);
+}
+
+#advantages, #advantages h3 {
+  color: var(--bd500);
+  text-align: center;
 }
