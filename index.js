@@ -55,7 +55,7 @@ app.get(urls.landing, async (req, res) => {
   const freeNumbers = await db.getPhoneNumberList()
   const now = new Date()
   const numberOfFreePhoneNumbers = freeNumbers.filter(phoneNumber => phoneNumber.freeAt < now).length
-  const nextFreePhoneNumberAt = freeNumbers[0] ? freeNumbers[0].freeAt:null
+  const nextFreePhoneNumberAt = freeNumbers[0] ? freeNumbers[0].freeAt : new Date()
 
   res.render('landing', {
     NUM_PIN_DIGITS: config.NUM_PIN_DIGITS,
