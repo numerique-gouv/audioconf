@@ -13,9 +13,9 @@
             <% }) %>
           <% } %>
 
-          <% if (successes.length) { %>
-            <% successes.forEach(function(success) { %>
-              <%- include('partials/notificationInfo', {info: success}) -%>
+          <% if (infos.length) { %>
+            <% infos.forEach(function(info) { %>
+              <%- include('partials/notificationInfo', {info: info}) -%>
             <% }) %>
           <% } %>
 

@@ -82,7 +82,7 @@ module.exports.cancelConf = async (req, res) => {
   try {
     const conference = await db.cancelConference(confId)
 
-    req.flash('success', 'La conférence a bien été annulée. Si vous avez encore besoin d\'une conférence, vous pouvez en créer une nouvelle.')
+    req.flash('info', 'La conférence a bien été annulée. Si vous avez encore besoin d\'une conférence, vous pouvez en créer une nouvelle.')
     console.log(`La conférence ${confId} a été annulée`)
     return res.redirect('/')
   } catch (err) {

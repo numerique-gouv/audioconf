@@ -45,7 +45,7 @@ app.use(function(req, res, next){
   res.locals.appName = config.APP_NAME
   res.locals.supportEmail = config.SUPPORT_EMAIL
   res.locals.errors = req.flash('error')
-  res.locals.message = req.flash('message')
+  res.locals.infos = req.flash('info')
   res.locals.successes = req.flash('success')
   res.locals.urls = urls
   next()
