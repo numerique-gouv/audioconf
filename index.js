@@ -96,6 +96,6 @@ const init = async () => {
 }
 
 module.exports = app.listen(config.PORT, () => {
-  await init();
+  init();
   console.log(`It is ${format.formatFrenchDate(new Date())}, ${config.APP_NAME} listening at http://localhost:${config.PORT}`)
 })
