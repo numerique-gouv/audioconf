@@ -11,7 +11,7 @@
         <ul class="rf-callout__text">
         <li>
           Appelez le
-          <a href="tel:<%= conference.phoneNumber %>"><strong><%= format.formatFrenchPhoneNumber(conference.phoneNumber) %></strong></a>
+          <a id="phone-link" href="tel:<%= conference.phoneNumber %>"><strong><%= format.formatFrenchPhoneNumber(conference.phoneNumber) %></strong></a>
           depuis un téléphone.
         </li>
         <li>
@@ -51,6 +51,8 @@
   const hash = window.location.hash.replace('#', '')
   if (/^[0-9]{4}$/.test(hash)) {
     document.getElementById('pin').innerHTML = hash
+    const phoneLink = document.getElementById('phone-link')
+    phoneLink.href = phoneLink.href + ',,' + hash
   }
 </script>
 
