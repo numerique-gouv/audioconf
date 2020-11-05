@@ -10,7 +10,7 @@ const makeConfig = formattedData => {
         data: formattedData.onlineParticipantsSeries,
         fill: false,
       }, {
-        label: 'Nombre de conférences actives',
+        label: 'Conférences actives',
         fill: false,
         backgroundColor: '#000091',
         borderColor: '#000091',
