@@ -57,13 +57,24 @@ app.get(urls.landing, async (req, res) => {
   const numberOfFreePhoneNumbers = freeNumbers.filter(phoneNumber => phoneNumber.freeAt < now).length
   const nextFreePhoneNumberAt = freeNumbers[0] ? freeNumbers[0].freeAt : new Date()
 
-  let statsPoint = await db.getLatestStatsPoint()
+  let statsPoint = {}
+  let displayStats = config.FEATURE_DISPLAY_STATS_ON_LANDING
+  console.log('Using FEATURE_DISPLAY_STATS_ON_LANDING :', config.FEATURE_DISPLAY_STATS_ON_LANDING)
+  if (displayStats) {
+    try {
+      statsPoint = await db.getLatestStatsPoint()
+    } catch (err) {
+      console.error(`Impossible de récupérer le statsPoint, donc on ne l'affiche pas.`, err)
+      displayStats = false
+    }
+  }
 
   res.render('landing', {
     NUM_PIN_DIGITS: config.NUM_PIN_DIGITS,
     numberOfFreePhoneNumbers: numberOfFreePhoneNumbers,
     nextFreePhoneNumberAt: nextFreePhoneNumberAt,
     CONFERENCE_MAX_DURATION_IN_MINUTES: config.CONFERENCE_MAX_DURATION_IN_MINUTES,
+    FEATURE_DISPLAY_STATS_ON_LANDING: displayStats,
     onlineParticipantsCount: statsPoint.onlineParticipantsCount,
     activeConfsCount: statsPoint.activeConfsCount,
   })
