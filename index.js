@@ -51,7 +51,17 @@ app.use(function(req, res, next){
   next()
 })
 
-app.get(urls.landing, async (req, res) => {
+app.get(urls.landing, async (req, res) => { // todo move everything to a controller
+  const areStatsTooOldToDiplay = stats => {
+    const STATS_MAX_AGE_MINUTES = 5
+    const cutoffDate = new Date()
+    cutoffDate.setMinutes(cutoffDate.getMinutes() - STATS_MAX_AGE_MINUTES)
+    if (stats.date < cutoffDate) {
+      return true
+    }
+    return false
+  }
+
   const freeNumbers = await db.getPhoneNumberList()
   const now = new Date()
   const numberOfFreePhoneNumbers = freeNumbers.filter(phoneNumber => phoneNumber.freeAt < now).length
@@ -59,10 +69,13 @@ app.get(urls.landing, async (req, res) => {
 
   let statsPoint = {}
   let displayStats = config.FEATURE_DISPLAY_STATS_ON_LANDING
-  console.log('Using FEATURE_DISPLAY_STATS_ON_LANDING :', config.FEATURE_DISPLAY_STATS_ON_LANDING)
   if (displayStats) {
     try {
       statsPoint = await db.getLatestStatsPoint()
+      if (areStatsTooOldToDiplay(statsPoint)) {
+        console.log('Stats too old to display, date is', statsPoint.date)
+        displayStats = false
+      }
     } catch (err) {
       console.error(`Impossible de récupérer le statsPoint, donc on ne l'affiche pas.`, err)
       displayStats = false
