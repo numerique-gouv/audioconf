@@ -33,6 +33,7 @@ services:
       PROTOCOL: "http"
       MAIL_SENDER_EMAIL: test@example.com
       SECRET: secret
+      POLL_URL: https://github.com/betagouv/conferences/issues
     ports:
       - "8080:8080"
       - "9229:9229"

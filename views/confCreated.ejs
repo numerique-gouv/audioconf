@@ -25,7 +25,16 @@
       </p>
 
       <p>Bonne discussion avec <%= appName %> !</p>
+      <% if(pollUrl) {  %>
+        <hr />
+        <p>Partagez vos impressions</p>
 
+        <div class="rf-input-group">
+          <a class="rf-btn rf-btn rf-margin-right-2N rf-btn--primary" title="Donner mon avis" rel="noopener noreferrer nofollow" target="_blank" href="<%= pollUrl %>">
+            Donner mon avis
+          </a>
+        </div>
+      <% } %>
       <hr />
       <p id="annuler"><strong>Vous n'allez pas utiliser ce numéro de conférence ? Libérez-le pour qu'il soit réutilisé : </strong>
       <form action="<%= urls.cancelConf.replace(":id", conference.id) %>" method="POST">
