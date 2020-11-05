@@ -65,21 +65,6 @@ const fetchData = () => {
   return data
 }
 
-/**
- * inData = [{"date":"2020-11-05T14:11:00.440Z","onlineParticipantsCount":0,"activeConfsCount":0,"errorConfsCount":0}, {...}, ...]
- * outData = { labels: [dates], onlineParticipantsSeries: [series], activeConfsSeries: [series] }
- */
-const formatDataForDisplay = inData => {
-  const outData = { labels: [], onlineParticipantsSeries: [], activeConfsSeries: [] }
-  inData.forEach(dataPoint => {
-    // Use unshift to add at the beginning of array, because the inData is in reverse chronological order.
-    outData.labels.unshift(dataPoint.date)
-    outData.onlineParticipantsSeries.unshift(dataPoint.onlineParticipantsCount)
-    outData.activeConfsSeries.unshift(dataPoint.activeConfsCount)
-  })
-  return outData
-}
-
 window.onload = function() {
   let data = []
   try {
@@ -89,9 +74,6 @@ window.onload = function() {
     return
   }
 
-  const formattedData = formatDataForDisplay(data)
-  console.log('formattedData', formattedData)
-
   const ctx = document.getElementById('myChart').getContext('2d')
-  window.myLine = new Chart(ctx, makeConfig(formattedData))
+  window.myLine = new Chart(ctx, makeConfig(data))
 };
