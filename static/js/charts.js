@@ -53,7 +53,7 @@ const config = {
   }
 }
 
-window.onload = function() {
+const fetchData = () => {
   const dataEl = document.getElementById('chart-data')
   if (!dataEl) {
     console.error('No data element found.')
@@ -61,11 +61,17 @@ window.onload = function() {
   }
   const JSONdata = dataEl.textContent
   console.log('got JSONdata', JSONdata)
+
+  const data = JSON.parse(JSONdata)
+  console.log('got data', data)
+  return data
+}
+
+window.onload = function() {
   try {
-    const data = JSON.parse(JSONdata)
-    console.log('got data', data)
+    const data = fetchData()
   } catch (err) {
-    console.error('Could not parse data to JSON format.', JSONdata)
+    console.error('Could get data.', JSONdata, err)
     return
   }
   const ctx = document.getElementById('myChart').getContext('2d')
