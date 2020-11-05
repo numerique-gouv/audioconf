@@ -1,3 +1,18 @@
+body:after{
+  content: "beta";
+  position: fixed;
+  width: 80px;
+  height: 25px;
+  background: var(--error);
+  top: 7px;
+  right: -20px;
+  text-align: center;
+  text-transform: uppercase;
+  color: #fff;
+  line-height: 27px;
+  transform:rotate(45deg);
+}
+
 .main-paragraph {
   /* todo use Sass or some other css processor to reuse rules */
   margin-top: 56px !important; /* rf-margin-top-7N */
