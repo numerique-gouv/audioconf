@@ -9,7 +9,11 @@
     <div class="rf-callout">
         <p class="rf-callout__title">Pour vous y connecter</p>
         <ul class="rf-callout__text">
-        <li>Appelez le <strong><%= format.formatFrenchPhoneNumber(conference.phoneNumber) %></strong> depuis un téléphone.</li>
+        <li>
+          Appelez le
+          <a href="tel:<%= conference.phoneNumber %>"><strong><%= format.formatFrenchPhoneNumber(conference.phoneNumber) %></strong></a>
+          depuis un téléphone.
+        </li>
         <li>
           Tapez le code d'accès :
           <strong id="pin">
