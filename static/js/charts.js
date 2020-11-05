@@ -5,15 +5,15 @@ const makeConfig = formattedData => {
       labels: formattedData.labels,
       datasets: [{
         label: 'Participants en ligne',
-        backgroundColor: 'red',
-        borderColor: 'red',
+        backgroundColor: '#b60000',
+        borderColor: '#b60000',
         data: formattedData.onlineParticipantsSeries,
         fill: false,
       }, {
         label: 'Nombre de conférences actives',
         fill: false,
-        backgroundColor: 'blue',
-        borderColor: 'blue',
+        backgroundColor: '#000091',
+        borderColor: '#000091',
         data: formattedData.activeConfsSeries,
       }]
     },
