@@ -7,6 +7,7 @@ const makeConfig = formattedData => {
         label: 'Participants en ligne',
         backgroundColor: '#b60000',
         borderColor: '#b60000',
+        radius: '2',
         data: formattedData.onlineParticipantsSeries,
         fill: false,
       }, {
@@ -14,6 +15,7 @@ const makeConfig = formattedData => {
         fill: false,
         backgroundColor: '#000091',
         borderColor: '#000091',
+        radius: '2',
         data: formattedData.activeConfsSeries,
       }]
     },
