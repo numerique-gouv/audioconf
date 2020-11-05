@@ -95,6 +95,12 @@ if (config.FEATURE_STATS_PAGE) {
   })
 }
 
+app.get(urls.contact, (req, res) => {
+  res.render('contact', {
+    pageTitle: 'Contact',
+  })
+})
+
 const init = async () => {
   try {
      const phoneNumbers = await conferences.getAllPhoneNumbers()

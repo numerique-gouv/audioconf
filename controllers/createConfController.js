@@ -38,7 +38,7 @@ module.exports.createConf = async (req, res) => {
 
   const confUrl = `${config.PROTOCOL}://${req.get('host')}${urls.showConf.replace(":id", conference.id)}#${conference.pin}`
   try {
-    await emailer.sendConfCreatedEmail(email, conference.phoneNumber, conference.pin, durationInMinutes, conference.expiresAt, confUrl)
+    await emailer.sendConfCreatedEmail(email, conference.phoneNumber, conference.pin, durationInMinutes, conference.expiresAt, confUrl, config.POLL_URL)
 
     return res.redirect(urls.showConf.replace(":id", conference.id) + '#' + conference.pin)
   } catch (err) {
@@ -67,7 +67,8 @@ module.exports.showConf = async (req, res) => {
 
     res.render('confCreated', {
       pageTitle: 'Votre conférence',
-      conference
+      conference,
+      pollUrl: config.POLL_URL
     })
   } catch (error) {
     req.flash('error', 'La conférence a expiré. Vous pouvez recréer une conférence.')

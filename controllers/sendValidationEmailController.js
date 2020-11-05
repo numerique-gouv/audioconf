@@ -19,7 +19,7 @@ const isAcceptedEmail = email => {
 const isValidEmail = (email) => {
   if (
     email === undefined ||
-    !/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/.test(email)
+    !/^([a-zA-Z0-9_\-\.']+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/.test(email)
   ) {
     return false
   }
