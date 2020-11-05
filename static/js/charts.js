@@ -44,9 +44,13 @@ const makeConfig = formattedData => {
           scaleLabel: {
             display: true,
             labelString: 'Nombre',
-          }
+          },
+          ticks: {
+            fixedStepSize: 1,
+            beginAtZero: true,
+          },
         }]
-      }
+      },
     }
   }
 }
