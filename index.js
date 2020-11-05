@@ -78,7 +78,7 @@ app.get(urls.legalNotice, (req, res) => {
 
 if (config.FEATURE_STATS_PAGE) {
   app.get(urls.stats, async (req, res) => {
-    const NUM_STATS_POINTS = 20
+    const NUM_STATS_POINTS = 1440 // 24h if 1 point per hour
     let latestStats = []
     try {
       latestStats = await db.getLatestStatsPoints(NUM_STATS_POINTS)
