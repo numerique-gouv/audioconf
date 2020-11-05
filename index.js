@@ -10,6 +10,7 @@ const conferences = require('./lib/conferences')
 const db = require('./lib/db')
 const format = require('./lib/format')
 const createConfController = require('./controllers/createConfController')
+const landingController = require('./controllers/landingController')
 const sendValidationEmailController = require('./controllers/sendValidationEmailController')
 const urls = require('./urls')
 
@@ -51,47 +52,7 @@ app.use(function(req, res, next){
   next()
 })
 
-app.get(urls.landing, async (req, res) => { // todo move everything to a controller
-  const areStatsTooOldToDiplay = stats => {
-    const STATS_MAX_AGE_MINUTES = 5
-    const cutoffDate = new Date()
-    cutoffDate.setMinutes(cutoffDate.getMinutes() - STATS_MAX_AGE_MINUTES)
-    if (stats.date < cutoffDate) {
-      return true
-    }
-    return false
-  }
-
-  const freeNumbers = await db.getPhoneNumberList()
-  const now = new Date()
-  const numberOfFreePhoneNumbers = freeNumbers.filter(phoneNumber => phoneNumber.freeAt < now).length
-  const nextFreePhoneNumberAt = freeNumbers[0] ? freeNumbers[0].freeAt : new Date()
-
-  let statsPoint = {}
-  let displayStats = config.FEATURE_DISPLAY_STATS_ON_LANDING
-  if (displayStats) {
-    try {
-      statsPoint = await db.getLatestStatsPoint()
-      if (areStatsTooOldToDiplay(statsPoint)) {
-        console.log('Stats too old to display, date is', statsPoint.date)
-        displayStats = false
-      }
-    } catch (err) {
-      console.error(`Impossible de récupérer le statsPoint, donc on ne l'affiche pas.`, err)
-      displayStats = false
-    }
-  }
-
-  res.render('landing', {
-    NUM_PIN_DIGITS: config.NUM_PIN_DIGITS,
-    numberOfFreePhoneNumbers: numberOfFreePhoneNumbers,
-    nextFreePhoneNumberAt: nextFreePhoneNumberAt,
-    CONFERENCE_MAX_DURATION_IN_MINUTES: config.CONFERENCE_MAX_DURATION_IN_MINUTES,
-    FEATURE_DISPLAY_STATS_ON_LANDING: displayStats,
-    onlineParticipantsCount: statsPoint.onlineParticipantsCount,
-    activeConfsCount: statsPoint.activeConfsCount,
-  })
-})
+app.get(urls.landing, landingController.getLanding)
 
 app.post(urls.sendValidationEmail, sendValidationEmailController.sendValidationEmail)
 
