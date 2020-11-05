@@ -76,22 +76,24 @@ app.get(urls.legalNotice, (req, res) => {
   })
 })
 
-app.get(urls.stats, async (req, res) => {
-  const NUM_STATS_POINTS = 20
-  let latestStats = []
-  try {
-    latestStats = await db.getLatestStatsPoints(NUM_STATS_POINTS)
-  } catch (err) {
-    console.error(`Impossible de récupérer les statsPoints`, err)
-  }
+if (config.FEATURE_STATS_PAGE) {
+  app.get(urls.stats, async (req, res) => {
+    const NUM_STATS_POINTS = 20
+    let latestStats = []
+    try {
+      latestStats = await db.getLatestStatsPoints(NUM_STATS_POINTS)
+    } catch (err) {
+      console.error(`Impossible de récupérer les statsPoints`, err)
+    }
 
-  const formattedStats = stats.formatDataForDisplay(latestStats)
+    const formattedStats = stats.formatDataForDisplay(latestStats)
 
-  res.render('stats', {
-    pageTitle: 'Statistiques',
-    stats: formattedStats,
+    res.render('stats', {
+      pageTitle: 'Statistiques',
+      stats: formattedStats,
+    })
   })
-})
+}
 
 const init = async () => {
   try {
