@@ -39,16 +39,23 @@ body:after{
 }
 
 .notification.error {
-  color: var(--error);
   border-color: var(--error);
 }
 
 .notification.info {
-  color: var(--info);
   border-color: var(--info);
 }
 
 .notification.success {
-  color: var(--success);
   border-color: var(--success);
+}
+
+
+.rf-bg--alt {
+  background-color: var(--bf500);
+}
+
+#advantages, #advantages h3 {
+  color: var(--g100);
+  text-align: center;
 }
