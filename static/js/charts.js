@@ -34,6 +34,10 @@ const makeConfig = formattedData => {
       scales: {
         xAxes: [{
           display: true,
+          ticks: {
+            autoSkip: true,
+            maxTicksLimit: 20,
+          },
           scaleLabel: {
             display: true,
             labelString: 'Temps',
