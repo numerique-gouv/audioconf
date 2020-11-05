@@ -10,6 +10,7 @@ const conferences = require('./lib/conferences')
 const db = require('./lib/db')
 const format = require('./lib/format')
 const createConfController = require('./controllers/createConfController')
+const landingController = require('./controllers/landingController')
 const sendValidationEmailController = require('./controllers/sendValidationEmailController')
 const urls = require('./urls')
 
@@ -51,19 +52,7 @@ app.use(function(req, res, next){
   next()
 })
 
-app.get(urls.landing, async (req, res) => {
-  const freeNumbers = await db.getPhoneNumberList()
-  const now = new Date()
-  const numberOfFreePhoneNumbers = freeNumbers.filter(phoneNumber => phoneNumber.freeAt < now).length
-  const nextFreePhoneNumberAt = freeNumbers[0] ? freeNumbers[0].freeAt : new Date()
-
-  res.render('landing', {
-    NUM_PIN_DIGITS: config.NUM_PIN_DIGITS,
-    numberOfFreePhoneNumbers: numberOfFreePhoneNumbers,
-    nextFreePhoneNumberAt: nextFreePhoneNumberAt,
-    CONFERENCE_MAX_DURATION_IN_MINUTES: config.CONFERENCE_MAX_DURATION_IN_MINUTES
-  })
-})
+app.get(urls.landing, landingController.getLanding)
 
 app.post(urls.sendValidationEmail, sendValidationEmailController.sendValidationEmail)
 

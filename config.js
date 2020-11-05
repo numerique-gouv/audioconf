@@ -73,4 +73,8 @@ if (!isPresent('TZ')) {
 }
 console.log('Using timezone', process.env.TZ)
 
+/* Feature flags */
+config.FEATURE_DISPLAY_STATS_ON_LANDING = (process.env.FEATURE_DISPLAY_STATS_ON_LANDING === 'true') || false
+
+
 module.exports = config
