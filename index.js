@@ -75,6 +75,12 @@ app.get(urls.legalNotice, (req, res) => {
   })
 })
 
+app.get(urls.stats, (req, res) => {
+  res.render('stats', {
+    pageTitle: 'Statistiques',
+  })
+})
+
 const init = async () => {
   try {
      const phoneNumbers = await conferences.getAllPhoneNumbers()

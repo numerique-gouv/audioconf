@@ -7,4 +7,5 @@ module.exports = {
   legalNotice : '/mentions-legales',
   showConf : '/conferences/:id',
   cancelConf : '/conferences/:id/annuler',
+  stats: '/stats',
 }
