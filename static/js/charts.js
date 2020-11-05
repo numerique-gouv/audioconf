@@ -54,6 +54,8 @@ const config = {
 }
 
 window.onload = function() {
+  const data = document.getElementById('chart-data')
+  console.log('got data', data.textContent)
   const ctx = document.getElementById('myChart').getContext('2d')
   window.myLine = new Chart(ctx, config)
 };
