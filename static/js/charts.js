@@ -83,5 +83,7 @@ window.onload = function() {
   }
 
   const ctx = document.getElementById('myChart').getContext('2d')
+  Chart.defaults.global.defaultFontFamily = '"Marianne", arial, sans-serif';
+  Chart.defaults.global.defaultFontSize = 16;
   window.myLine = new Chart(ctx, makeConfig(data))
 };
