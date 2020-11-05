@@ -54,8 +54,20 @@ const config = {
 }
 
 window.onload = function() {
-  const data = document.getElementById('chart-data')
-  console.log('got data', data.textContent)
+  const dataEl = document.getElementById('chart-data')
+  if (!dataEl) {
+    console.error('No data element found.')
+    return
+  }
+  const JSONdata = dataEl.textContent
+  console.log('got JSONdata', JSONdata)
+  try {
+    const data = JSON.parse(JSONdata)
+    console.log('got data', data)
+  } catch (err) {
+    console.error('Could not parse data to JSON format.', JSONdata)
+    return
+  }
   const ctx = document.getElementById('myChart').getContext('2d')
   window.myLine = new Chart(ctx, config)
 };

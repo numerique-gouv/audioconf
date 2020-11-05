@@ -75,10 +75,18 @@ app.get(urls.legalNotice, (req, res) => {
   })
 })
 
-app.get(urls.stats, (req, res) => {
+app.get(urls.stats, async (req, res) => {
+  const NUM_STATS_POINTS = 20
+  let stats = []
+  try {
+    stats = await db.getLatestStatsPoints(NUM_STATS_POINTS)
+  } catch (err) {
+    console.error(`Impossible de récupérer les statsPoints`, err)
+  }
+
   res.render('stats', {
     pageTitle: 'Statistiques',
-    stats: 'coucou',
+    stats: stats,
   })
 })
 
