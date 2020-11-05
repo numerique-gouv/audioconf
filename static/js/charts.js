@@ -1,4 +1,4 @@
-var config = {
+const config = {
   type: 'line',
   data: {
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -24,7 +24,7 @@ var config = {
     responsive: true,
     title: {
       display: true,
-      text: 'Chart.js Line Chart'
+      text: 'Chart.js Line Chart',
     },
     tooltips: {
       mode: 'index',
@@ -32,28 +32,28 @@ var config = {
     },
     hover: {
       mode: 'nearest',
-      intersect: true
+      intersect: true,
     },
     scales: {
       xAxes: [{
         display: true,
         scaleLabel: {
           display: true,
-          labelString: 'Month'
+          labelString: 'Month',
         }
       }],
       yAxes: [{
         display: true,
         scaleLabel: {
           display: true,
-          labelString: 'Value'
+          labelString: 'Value',
         }
       }]
     }
   }
-};
+}
 
 window.onload = function() {
-  var ctx = document.getElementById('myChart').getContext('2d');
-  window.myLine = new Chart(ctx, config);
+  const ctx = document.getElementById('myChart').getContext('2d')
+  window.myLine = new Chart(ctx, config)
 };
