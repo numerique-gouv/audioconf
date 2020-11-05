@@ -26,6 +26,7 @@
   "homepage": "https://github.com/betagouv/conferences#readme",
   "dependencies": {
     "@gouvfr/design-system": "^0.2.0",
+    "chart.js": "^2.9.4",
     "connect-flash": "^0.1.1",
     "connect-session-knex": "^2.0.0",
     "cron": "^1.8.2",

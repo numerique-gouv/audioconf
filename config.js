@@ -77,6 +77,6 @@ console.log('Using timezone', process.env.TZ)
 
 /* Feature flags */
 config.FEATURE_DISPLAY_STATS_ON_LANDING = (process.env.FEATURE_DISPLAY_STATS_ON_LANDING === 'true') || false
-
+config.FEATURE_STATS_PAGE = (process.env.FEATURE_STATS_PAGE === 'true') || false
 
 module.exports = config

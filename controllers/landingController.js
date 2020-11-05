@@ -21,7 +21,7 @@ module.exports.getLanding = async (req, res) => {
   let displayStats = config.FEATURE_DISPLAY_STATS_ON_LANDING
   if (displayStats) {
     try {
-      statsPoint = await db.getLatestStatsPoint()
+      statsPoint = (await db.getLatestStatsPoints(1))[0]
       if (areStatsTooOldToDiplay(statsPoint)) {
         console.log('Stats too old to display, stats date is', statsPoint.date)
         displayStats = false
