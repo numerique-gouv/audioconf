@@ -70,6 +70,11 @@ const fetchData = () => {
   return data
 }
 
+const drawChart = (chartElId, config) => {
+  const ctx = document.getElementById(chartElId).getContext('2d')
+  window.myLine = new Chart(ctx, config)
+}
+
 window.onload = function() {
   let data = []
   try {
@@ -91,7 +96,6 @@ window.onload = function() {
       data: data.activeConfsSeries,
     },
   ]
-
-  const ctx = document.getElementById('myChart').getContext('2d')
-  window.myLine = new Chart(ctx, makeConfig('Statistiques d\'utilisation', data.labels, datasets))
+  const config = makeConfig('Statistiques d\'utilisation', data.labels, datasets)
+  drawChart('conf-stats-chart', config)
 };
