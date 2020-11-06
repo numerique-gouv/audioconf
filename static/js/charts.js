@@ -59,6 +59,7 @@ const makeConfig = (chartName, xAxisLabels, datasets) => {
       backgroundColor: dataset.color,
       borderColor: dataset.color,
       data: dataset.data,
+      radius: '2',
     }
   })
   return config
@@ -92,15 +93,18 @@ window.onload = function() {
     return
   }
 
+  Chart.defaults.global.defaultFontFamily = '"Marianne", arial, sans-serif'
+  Chart.defaults.global.defaultFontSize = 16
+
   const datasets = [
     {
       label: 'Participants en ligne',
-      color: 'red',
+      color: '#b60000',
       data: data.onlineParticipantsSeries,
     },
     {
       label: 'Conférences actives',
-      color: 'blue',
+      color: '#000091',
       data: data.activeConfsSeries,
     },
   ]
