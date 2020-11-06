@@ -117,6 +117,11 @@ window.onload = function() {
       color: 'green',
       data: data.freePhoneNumbersSeries,
     },
+    {
+      label: 'Numéros de conférence',
+      color: 'black',
+      data: data.phoneNumbersSeries,
+    },
   ]
   const config2 = makeConfig('Numéros de conférence libres', data.labels, datasets2)
   drawChart('free-phone-numbers-chart', config2)
