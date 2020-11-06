@@ -48,7 +48,7 @@
           <% } else { %>
             <%- include('partials/notificationInfo', {info: `Nous n'avons plus de numéro de conférence disponible. Prochain numéro libre ${format.formatFrenchDate(nextFreePhoneNumberAt)}.`}) -%>
           <% } %>
-            <div class="rf-text--xs">
+            <div class="rf-text--s rf-padding-top-2N">
               <% if (FEATURE_DISPLAY_STATS_ON_LANDING) { %>
               Il y a actuellement <%= onlineParticipantsCount %> personne<%= onlineParticipantsCount > 1 ? 's' : '' %> au téléphone dans <%= activeConfsCount %> conférence<%= activeConfsCount > 1 ? 's' : '' %> avec <%= appName %>. 
               <% } %>
