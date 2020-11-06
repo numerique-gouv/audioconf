@@ -50,9 +50,14 @@
           <% } %>
             <div class="rf-text--s rf-padding-top-2N">
               <% if (FEATURE_DISPLAY_STATS_ON_LANDING) { %>
-              Actuellement, il y a <%= onlineParticipantsCount %> personne<%= onlineParticipantsCount > 1 ? 's' : '' %> dans <%= activeConfsCount %> conférence<%= activeConfsCount > 1 ? 's' : '' %> téléphoniques. 
-              <% } %>
+                <% if (onlineParticipantsCount == 0 && activeConfsCount == 0) { %>
+                Actuellement, il reste <%= numberOfFreePhoneNumbers %> numéro<%= numberOfFreePhoneNumbers === 1 ? '' : 's' %> de conférence disponibles.
+                <% } else { %>
+                Actuellement, il y a <%= onlineParticipantsCount %> personne<%= onlineParticipantsCount > 1 ? 's' : '' %> dans <%= activeConfsCount %> conférence<%= activeConfsCount > 1 ? 's' : '' %> téléphoniques. 
+                <% } %>
+              <% } else { %>
               Il reste <%= numberOfFreePhoneNumbers %> numéro<%= numberOfFreePhoneNumbers === 1 ? '' : 's' %> de conférence disponibles.
+              <% } %>
             </div>
       </div>
 
