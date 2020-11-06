@@ -53,7 +53,7 @@
           <% } %>
           <% if (FEATURE_DISPLAY_STATS_ON_LANDING) { %>
             <div class="rf-text--xs">
-              Il y a actuellement <%= onlineParticipantsCount %> personne<%= onlineParticipantsCount > 1 ? 's' : '' %> au téléphone dans <%= activeConfsCount %> conférence<%= onlineParticipantsCount > 1 ? 's' : '' %> avec <%= appName %>.
+              Il y a actuellement <%= onlineParticipantsCount %> personne<%= onlineParticipantsCount > 1 ? 's' : '' %> au téléphone dans <%= activeConfsCount %> conférence<%= activeConfsCount > 1 ? 's' : '' %> avec <%= appName %>.
             </div>
           <% } %>
       </div>
