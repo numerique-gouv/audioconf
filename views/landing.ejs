@@ -50,7 +50,7 @@
           <% } %>
             <div class="rf-text--s rf-padding-top-2N">
               <% if (FEATURE_DISPLAY_STATS_ON_LANDING) { %>
-              Il y a actuellement <%= onlineParticipantsCount %> personne<%= onlineParticipantsCount > 1 ? 's' : '' %> au téléphone dans <%= activeConfsCount %> conférence<%= activeConfsCount > 1 ? 's' : '' %> avec <%= appName %>. 
+              Actuellement, il y a <%= onlineParticipantsCount %> personne<%= onlineParticipantsCount > 1 ? 's' : '' %> dans <%= activeConfsCount %> conférence<%= activeConfsCount > 1 ? 's' : '' %> téléphoniques. 
               <% } %>
               Il reste <%= numberOfFreePhoneNumbers %> numéro<%= numberOfFreePhoneNumbers === 1 ? '' : 's' %> de conférence disponibles.
             </div>
