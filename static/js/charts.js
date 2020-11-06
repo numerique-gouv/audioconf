@@ -1,3 +1,11 @@
+/**
+ *  Datasets is an array, like this:
+ *  [{
+      label: 'Participants en ligne',
+      color: 'red',
+      data: data.onlineParticipantsSeries,
+    }]
+ */
 const makeConfig = (chartName, xAxisLabels, datasets) => {
   const config =  {
     type: 'line',
