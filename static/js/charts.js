@@ -1,27 +1,14 @@
-const makeConfig = formattedData => {
-  return {
+const makeConfig = (chartName, xAxisLabels, datasets) => {
+  const config =  {
     type: 'line',
     data: {
-      labels: formattedData.labels,
-      datasets: [{
-        label: 'Participants en ligne',
-        backgroundColor: 'red',
-        borderColor: 'red',
-        data: formattedData.onlineParticipantsSeries,
-        fill: false,
-      }, {
-        label: 'Nombre de conférences actives',
-        fill: false,
-        backgroundColor: 'blue',
-        borderColor: 'blue',
-        data: formattedData.activeConfsSeries,
-      }]
+      labels: xAxisLabels,
     },
     options: {
       responsive: true,
       title: {
         display: true,
-        text: 'Statistiques d\'utilisation',
+        text: chartName,
       },
       tooltips: {
         mode: 'index',
@@ -57,6 +44,16 @@ const makeConfig = formattedData => {
       },
     }
   }
+  config.data.datasets = datasets.map(dataset => {
+    return {
+      label: dataset.label,
+      fill: false,
+      backgroundColor: dataset.color,
+      borderColor: dataset.color,
+      data: dataset.data,
+    }
+  })
+  return config
 }
 
 const fetchData = () => {
@@ -82,6 +79,19 @@ window.onload = function() {
     return
   }
 
+  const datasets = [
+    {
+      label: 'Participants en ligne',
+      color: 'red',
+      data: data.onlineParticipantsSeries,
+    },
+    {
+      label: 'Conférences actives',
+      color: 'blue',
+      data: data.activeConfsSeries,
+    },
+  ]
+
   const ctx = document.getElementById('myChart').getContext('2d')
-  window.myLine = new Chart(ctx, makeConfig(data))
+  window.myLine = new Chart(ctx, makeConfig('Statistiques d\'utilisation', data.labels, datasets))
 };
