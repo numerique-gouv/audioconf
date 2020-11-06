@@ -113,22 +113,22 @@ window.onload = function() {
 
   const datasets2 = [
     {
-      label: 'Numéros de conférence libres',
-      color: 'green',
-      data: data.freePhoneNumbersSeries,
-    },
-    {
       label: 'Numéros de conférence réservés',
-      color: '#b60000',
+      color: 'cyan',
       data: data.bookedPhoneNumbersSeries,
     },
     {
-      label: 'Numéros de conférence',
+      label: 'Numéros de conférence actifs',
+      color: '#000091',
+      data: data.activeConfsSeries,
+    },
+    {
+      label: 'Tous les numéros de conférence',
       color: 'black',
       data: data.phoneNumbersSeries,
     },
   ]
-  const config2 = makeConfig('Numéros de conférence libres', data.labels, datasets2)
+  const config2 = makeConfig('Utilisation des numéros de conférence', data.labels, datasets2)
   drawChart('free-phone-numbers-chart', config2)
 
 };
