@@ -118,6 +118,11 @@ window.onload = function() {
       data: data.freePhoneNumbersSeries,
     },
     {
+      label: 'Numéros de conférence réservés',
+      color: '#b60000',
+      data: data.bookedPhoneNumbersSeries,
+    },
+    {
       label: 'Numéros de conférence',
       color: 'black',
       data: data.phoneNumbersSeries,
