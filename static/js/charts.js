@@ -98,4 +98,15 @@ window.onload = function() {
   ]
   const config = makeConfig('Statistiques d\'utilisation', data.labels, datasets)
   drawChart('conf-stats-chart', config)
+
+  const datasets2 = [
+    {
+      label: 'Numéros de conférence libres',
+      color: 'green',
+      data: data.freePhoneNumbersSeries,
+    },
+  ]
+  const config2 = makeConfig('Numéros de conférence libres', data.labels, datasets2)
+  drawChart('free-phone-numbers-chart', config2)
+
 };
