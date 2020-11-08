@@ -46,6 +46,7 @@ app.use(flash())
 app.use(function(req, res, next){
   res.locals.appName = config.APP_NAME
   res.locals.supportEmail = config.SUPPORT_EMAIL
+  res.locals.pollUrl = config.POLL_URL
   res.locals.errors = req.flash('error')
   res.locals.infos = req.flash('info')
   res.locals.successes = req.flash('success')
