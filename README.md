@@ -47,3 +47,8 @@ Pour utiliser d'autres commandes, le [CLI de KnexJS](http://knexjs.org/#Migratio
 - `cd locust`
 - `docker-compose up --scale worker=8` (8 c'est pour 8 CPU)
 - Ouvrir http://localhost:8089/
+
+
+## SQL
+
+- Total de réservation par nom de domaine : `select substring(email from '@[^@]*$') as domain, count(*) from conferences group by domain order by count DESC;`
