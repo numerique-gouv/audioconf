@@ -67,8 +67,7 @@ module.exports.showConf = async (req, res) => {
 
     res.render('confCreated', {
       pageTitle: 'Votre conférence',
-      conference,
-      pollUrl: config.POLL_URL
+      conference
     })
   } catch (error) {
     req.flash('error', 'La conférence a expiré. Vous pouvez recréer une conférence.')
