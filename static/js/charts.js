@@ -1,27 +1,22 @@
-const makeConfig = formattedData => {
-  return {
+/**
+ *  Datasets is an array, like this:
+ *  [{
+      label: 'Participants en ligne',
+      color: 'red',
+      data: data.onlineParticipantsSeries,
+    }]
+ */
+const makeConfig = (chartName, xAxisLabels, datasets) => {
+  const config =  {
     type: 'line',
     data: {
-      labels: formattedData.labels,
-      datasets: [{
-        label: 'Participants en ligne',
-        backgroundColor: 'red',
-        borderColor: 'red',
-        data: formattedData.onlineParticipantsSeries,
-        fill: false,
-      }, {
-        label: 'Nombre de conférences actives',
-        fill: false,
-        backgroundColor: 'blue',
-        borderColor: 'blue',
-        data: formattedData.activeConfsSeries,
-      }]
+      labels: xAxisLabels,
     },
     options: {
       responsive: true,
       title: {
         display: true,
-        text: 'Statistiques d\'utilisation',
+        text: chartName,
       },
       tooltips: {
         mode: 'index',
@@ -57,6 +52,17 @@ const makeConfig = formattedData => {
       },
     }
   }
+  config.data.datasets = datasets.map(dataset => {
+    return {
+      label: dataset.label,
+      fill: false,
+      backgroundColor: dataset.color,
+      borderColor: dataset.color,
+      data: dataset.data,
+      radius: '2',
+    }
+  })
+  return config
 }
 
 const fetchData = () => {
@@ -73,6 +79,11 @@ const fetchData = () => {
   return data
 }
 
+const drawChart = (chartElId, config) => {
+  const ctx = document.getElementById(chartElId).getContext('2d')
+  window.myLine = new Chart(ctx, config)
+}
+
 window.onload = function() {
   let data = []
   try {
@@ -82,6 +93,42 @@ window.onload = function() {
     return
   }
 
-  const ctx = document.getElementById('myChart').getContext('2d')
-  window.myLine = new Chart(ctx, makeConfig(data))
+  Chart.defaults.global.defaultFontFamily = '"Marianne", arial, sans-serif'
+  Chart.defaults.global.defaultFontSize = 16
+
+  const datasets = [
+    {
+      label: 'Participants en ligne',
+      color: '#b60000',
+      data: data.onlineParticipantsSeries,
+    },
+    {
+      label: 'Conférences actives',
+      color: '#000091',
+      data: data.activeConfsSeries,
+    },
+  ]
+  const config = makeConfig('Statistiques d\'utilisation', data.labels, datasets)
+  drawChart('conf-stats-chart', config)
+
+  const datasets2 = [
+    {
+      label: 'Numéros de conférence réservés',
+      color: 'cyan',
+      data: data.bookedPhoneNumbersSeries,
+    },
+    {
+      label: 'Numéros de conférence actifs',
+      color: '#000091',
+      data: data.activeConfsSeries,
+    },
+    {
+      label: 'Tous les numéros de conférence',
+      color: 'black',
+      data: data.phoneNumbersSeries,
+    },
+  ]
+  const config2 = makeConfig('Utilisation des numéros de conférence', data.labels, datasets2)
+  drawChart('free-phone-numbers-chart', config2)
+
 };
