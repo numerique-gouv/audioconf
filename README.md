@@ -54,6 +54,10 @@ npm run checkHTML --  <url du site à tester>
 ```
 Si on veut checker pour une PR donnée, utiliser l'url de la review app de la PR (voir les checks dans la PR).
 
+Pour valider le code en local :
+```
+npm run checkHTMLLocal
+```
 
 ## SQL
 
