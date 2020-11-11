@@ -48,6 +48,16 @@ Pour utiliser d'autres commandes, le [CLI de KnexJS](http://knexjs.org/#Migratio
 - `docker-compose up --scale worker=8` (8 c'est pour 8 CPU)
 - Ouvrir http://localhost:8089/
 
+## Tester que le HTML d'un site est valide
+```
+npm run checkHTML --  <url du site à tester>
+```
+Si on veut checker pour une PR donnée, utiliser l'url de la review app de la PR (voir les checks dans la PR).
+
+Pour valider le code en local :
+```
+npm run checkHTMLLocal
+```
 
 ## SQL
 
