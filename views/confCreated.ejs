@@ -54,9 +54,18 @@
 <script type="text/javascript">
   // If the pin is in the hash, display it in the page.
   const hash = window.location.hash.replace('#', '')
-  // todo get the number of digits in the config
-  if (/^[0-9]{4}$/.test(hash)) {
-    document.getElementById('pin').innerHTML = hash
+  const numPinDigits = <%= numPinDigits %>
+
+  const formatPin = (pin) => {
+    if (numPinDigits !== 9) {
+      return pin
+    }
+    return pin.substring(0, 3) + ' ' + pin.substring(3, 6) + ' ' + pin.substring(6, 9)
+  }
+
+  const regex = new RegExp(`^[0-9]{${numPinDigits}}$`)
+  if (regex.test(hash)) {
+    document.getElementById('pin').innerHTML = formatPin(hash)
   }
   // todo display "appuyer sur #" if needed
 </script>
