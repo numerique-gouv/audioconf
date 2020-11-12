@@ -131,11 +131,11 @@ ovh.requestPromised('GET', roomsUrl, {}).then(result => console.log(result))
 Promise.resolve()
   .then(() => {
     console.log('Create room')
-    return ovh.requestPromised('POST', roomsUrl, {})
+
+    return conferences.createRoom()
   })
-  .then(result => {
-    console.log(result)
-    const roomNumber = result.roomNumber
+  .then(roomNumber => {
+    console.log('roomNumber', roomNumber)
     const roomUrl = `/telephony/${accountNumber}/conference/${phoneNumber}/rooms/${roomNumber}`
 
     Promise.resolve()
@@ -146,9 +146,7 @@ Promise.resolve()
       .then(result => console.log(result))
       .then(() => {
         console.log('Set room settings for room', roomNumber)
-        return ovh.requestPromised('PUT', roomUrl, {
-          pin: '0',
-        })
+        return conferences.removeRoomPin(roomNumber)
       })
       .then(result => console.log(result))
       .then(() => {
