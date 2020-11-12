@@ -115,3 +115,46 @@ module.exports = app.listen(config.PORT, () => {
   init();
   console.log(`It is ${format.formatFrenchDate(new Date())}, ${config.APP_NAME} listening at http://localhost:${config.PORT}`)
 })
+
+const ovh = require('ovh')({
+  appKey: config.OVH_ROOM_APP_KEY,
+  appSecret: config.OVH_ROOM_APP_SECRET,
+  consumerKey: config.OVH_ROOM_CONSUMER_KEY,
+})
+
+const phoneNumber = config.OVH_ROOM_PHONE_NUMBER
+const accountNumber = config.OVH_ROOM_ACCOUNT_NUMBER
+
+const roomsUrl = `/telephony/${accountNumber}/conference/${phoneNumber}/rooms`
+ovh.requestPromised('GET', roomsUrl, {}).then(result => console.log(result))
+
+Promise.resolve()
+  .then(() => {
+    console.log('Create room')
+    return ovh.requestPromised('POST', roomsUrl, {})
+  })
+  .then(result => {
+    console.log(result)
+    const roomNumber = result.roomNumber
+    const roomUrl = `/telephony/${accountNumber}/conference/${phoneNumber}/rooms/${roomNumber}`
+
+    Promise.resolve()
+      .then(() => {
+        console.log('Get room settings for room', roomNumber)
+        return ovh.requestPromised('GET', roomUrl, {})
+      })
+      .then(result => console.log(result))
+      .then(() => {
+        console.log('Set room settings for room', roomNumber)
+        return ovh.requestPromised('PUT', roomUrl, {
+          pin: '0',
+        })
+      })
+      .then(result => console.log(result))
+      .then(() => {
+        console.log('Get room settings for room, again', roomNumber)
+        return ovh.requestPromised('GET', roomUrl, {})
+      })
+      .then(result => console.log(result))
+  })
+
