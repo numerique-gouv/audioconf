@@ -54,9 +54,11 @@
 <script type="text/javascript">
   // If the pin is in the hash, display it in the page.
   const hash = window.location.hash.replace('#', '')
+  // todo get the number of digits in the config
   if (/^[0-9]{4}$/.test(hash)) {
     document.getElementById('pin').innerHTML = hash
   }
+  // todo display "appuyer sur #" if needed
 </script>
 
 <%- include('partials/footer') -%>

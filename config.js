@@ -77,7 +77,7 @@ if (!isPresent('DATABASE_URL')) {
 config.DATABASE_URL = process.env.DATABASE_URL
 
 
-config.NUM_PIN_DIGITS = process.env.NUM_PIN_DIGITS || 4
+config.NUM_PIN_DIGITS = process.env.NUM_PIN_DIGITS || (config.USE_OVH_ROOM_API ? 9 : 4)
 config.CONFERENCE_MAX_DURATION_IN_MINUTES = process.env.CONFERENCE_MAX_DURATION_IN_MINUTES || 1440
 config.TOKEN_DURATION_IN_MINUTES = process.env.TOKEN_DURATION_IN_MINUTES || 120
 config.POLL_URL = process.env.POLL_URL
