@@ -26,7 +26,7 @@ module.exports.createConf = async (req, res) => {
 
   let conference = {}
   try {
-    const OVHconfData = await conferences.createConf(email, durationInMinutes)
+    const OVHconfData = await conferences.createConf(durationInMinutes)
 
     conference = await db.insertConference(email, OVHconfData.phoneNumber, durationInMinutes, OVHconfData.freeAt)
     conference.pin = OVHconfData.pin
