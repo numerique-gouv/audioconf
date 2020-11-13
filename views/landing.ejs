@@ -49,7 +49,7 @@
               Il reste <%= numberOfFreePhoneNumbers %> numéro<%= numberOfFreePhoneNumbers === 1 ? '' : 's' %> de conférence disponibles.
             </p>
           <% } else { %>
-            <%- include('partials/notificationInfo', {info: `Nous n'avons plus de numéro de conférence disponible. Prochain numéro libre ${format.formatFrenchDate(nextFreePhoneNumberAt)}.`}) -%>
+            <%- include('partials/notificationInfo', {info: `Nous n'avons plus de numéro de conférence disponible. Prochain numéro libre ${format.formatFrenchDateTime(nextFreePhoneNumberAt)}.`}) -%>
           <% } %>
           <% if (FEATURE_DISPLAY_STATS_ON_LANDING) { %>
             <div class="rf-text--xs">
