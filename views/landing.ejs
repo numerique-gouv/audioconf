@@ -33,10 +33,9 @@
               </div>
               <% if(FEATURE_RESERVATIONS) { %>
                 <div class="rf-input-group">
-                  <label class="rf-label" for="duration">Date de votre conférence :</label>
-                  <!-- todo aria label hint -->
-                  <p class="rf-hint-text" id="select-hint-desc-hint">La conférence vous sera réservée pour la journée choisie.</p>
-                  <select class="rf-select" id="duration" name="durationInMinutes">
+                  <label class="rf-label" for="day">Date de votre conférence :</label>
+                  <p class="rf-hint-text" id="day-hint">La conférence vous sera réservée pour la journée choisie.</p>
+                  <select class="rf-select" id="day" name="day" aria-describedby="day-hint">
                     <% dateChoices.forEach(function(dateChoice) { %>
                       <option value="<%= dateChoice.value %>"><%= dateChoice.label %></option>
                     <% }) %>
