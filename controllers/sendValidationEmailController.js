@@ -52,7 +52,7 @@ module.exports.sendValidationEmail = async (req, res) => {
   tokenExpirationDate.setMinutes(tokenExpirationDate.getMinutes() + config.TOKEN_DURATION_IN_MINUTES)
 
   try {
-    await db.insertToken(email, token, conferenceDurationInMinutes, tokenExpirationDate)
+    await db.insertToken(email, token, tokenExpirationDate, conferenceDurationInMinutes)
     console.log(`Login token créé pour ${format.hashForLogs(email)}, il expire à ${tokenExpirationDate}`)
 
     const validationUrl = `${config.PROTOCOL}://${req.get('host')}${urls.createConf}?token=${encodeURIComponent(token)}`
