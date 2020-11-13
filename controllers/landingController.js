@@ -39,19 +39,18 @@ module.exports.getLanding = async (req, res) => {
   }
   const dateChoices = []
   let date = new Date()
-  dateChoices.push({ label: 'Aujourd\'hui', value: date})
+  dateChoices.push({ label: 'Aujourd\'hui', value: format.formatStandardDate(date) })
   date = incrementDate(date)
-  dateChoices.push({ label: 'Demain', value: date})
+  dateChoices.push({ label: 'Demain', value: format.formatStandardDate(date) })
 
   const numOtherDates = (config.RESERVE_NUM_DAYS_AHEAD - 2) > 0 ? (config.RESERVE_NUM_DAYS_AHEAD - 2) : 0
   for (let i = 0 ; i < numOtherDates; i++) {
     date = incrementDate(date)
     dateChoices.push({
       label: format.formatFrenchDate(date),
-      value: date,
+      value: format.formatStandardDate(date),
     })
   }
-  console.log('dateChoices', dateChoices)
 
   res.render('landing', {
     NUM_PIN_DIGITS: config.NUM_PIN_DIGITS,
