@@ -20,13 +20,16 @@ module.exports.createConf = async (req, res) => {
   }
 
   const tokenData = tokensData[0]
+  console.log('tokenData', tokenData)
   const email = tokenData.email
   const durationInMinutes = tokenData.durationInMinutes
   console.log(`Création d'un numéro de conférence pour ${format.hashForLogs(email)} pour ${durationInMinutes} minutes`)
 
   let conference = {}
   try {
-    const OVHconfData = await conferences.createConf(email, durationInMinutes)
+    const now = new Date()
+    const freeAt = new Date(now.setMinutes(now.getMinutes() + durationInMinutes))
+    const OVHconfData = await conferences.createConf(email, freeAt)
 
     conference = await db.insertConference(email, OVHconfData.phoneNumber, durationInMinutes, OVHconfData.freeAt)
     conference.pin = OVHconfData.pin
