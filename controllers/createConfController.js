@@ -7,6 +7,42 @@ const emailer = require('../lib/emailer')
 const format = require('../lib/format')
 const urls = require('../urls')
 
+const createConfWithDuration = async (email, durationInMinutes) => {
+  try {
+    console.log(`Création d'un numéro de conférence pour ${format.hashForLogs(email)} pour ${durationInMinutes} minutes`)
+    const now = new Date()
+    const freeAt = new Date(now.setMinutes(now.getMinutes() + durationInMinutes))
+    const OVHconfData = await conferences.createConf(email, freeAt)
+
+    const conference = await db.insertConference(email, OVHconfData.phoneNumber, durationInMinutes, OVHconfData.freeAt)
+    console.log('conference created in db', conference)
+    conference.pin = OVHconfData.pin
+    return conference
+  } catch (err) {
+    console.error(`Error when creating conference with duration ${durationInMinutes}`, err)
+    throw new Error(`Error when creating conference with duration ${durationInMinutes}`)
+  }
+}
+
+const createConfWithDay = async (email, conferenceDay) => {
+  try {
+    console.log(`Création d'un numéro de conférence pour ${format.hashForLogs(email)} pour le ${conferenceDay}`)
+
+    const freeAt = new Date(conferenceDay)
+    freeAt.setHours(23)
+    freeAt.setMinutes(59)
+    console.log('freeAt', format.formatFrenchDateTime(freeAt))
+    const OVHconfData = await conferences.createConf(email, freeAt)
+
+    const conference = await db.insertConferenceWithFreeAt(email, OVHconfData.phoneNumber, OVHconfData.freeAt)
+    console.log('conference created in db', conference)
+    conference.pin = OVHconfData.pin
+    return conference
+  } catch (err) {
+    console.error(`Error when creating conference for day ${conferenceDay}`, err)
+    throw new Error(`Error when creating conference for day ${conferenceDay}`)
+  }
+}
 
 module.exports.createConf = async (req, res) => {
   const token = req.query.token
@@ -23,22 +59,23 @@ module.exports.createConf = async (req, res) => {
   console.log('tokenData', tokenData)
   const email = tokenData.email
   const durationInMinutes = tokenData.durationInMinutes
-  console.log(`Création d'un numéro de conférence pour ${format.hashForLogs(email)} pour ${durationInMinutes} minutes`)
+  // todo return from db as dateString ?
+  const conferenceDay = tokenData.conferenceDay
 
   let conference = {}
   try {
-    const now = new Date()
-    const freeAt = new Date(now.setMinutes(now.getMinutes() + durationInMinutes))
-    const OVHconfData = await conferences.createConf(email, freeAt)
-
-    conference = await db.insertConference(email, OVHconfData.phoneNumber, durationInMinutes, OVHconfData.freeAt)
-    conference.pin = OVHconfData.pin
+    if (!conferenceDay) { // todo figure out the right switch, with feature flag ?
+      conference = await createConfWithDuration(email, durationInMinutes)
+    } else {
+      conference = await createConfWithDay(email, conferenceDay)
+    }
   } catch (err) {
     req.flash('error', 'La conférence n\'a pas pu être créée. Vous pouvez réessayer.')
     console.error('Error when creating conference', err)
     return res.redirect('/')
   }
 
+  // TODO switch for email sending
   const confUrl = `${config.PROTOCOL}://${req.get('host')}${urls.showConf.replace(":id", conference.id)}#${conference.pin}`
   try {
     await emailer.sendConfCreatedEmail(email, conference.phoneNumber, conference.pin, durationInMinutes, conference.expiresAt, confUrl, config.POLL_URL)
