@@ -34,19 +34,22 @@ module.exports.getLanding = async (req, res) => {
   }
 
   // We allow booking a conf config.RESERVE_NUM_DAYS_AHEAD days in the future.
+  const incrementDate = date => {
+    return new Date(date.setDate(date.getDate() + 1))
+  }
+  const dateChoices = []
   let date = new Date()
-  const dateChoices = [
-    { label: 'Aujourd\'hui', value: 1},
-    { label: 'Demain', value: 2},
-  ]
+  dateChoices.push({ label: 'Aujourd\'hui', value: date})
+  date = incrementDate(date)
+  dateChoices.push({ label: 'Demain', value: date})
+
   const numOtherDates = (config.RESERVE_NUM_DAYS_AHEAD - 2) > 0 ? (config.RESERVE_NUM_DAYS_AHEAD - 2) : 0
-  date.setDate(date.getDate() + 2)
   for (let i = 0 ; i < numOtherDates; i++) {
+    date = incrementDate(date)
     dateChoices.push({
       label: format.formatFrenchDate(date),
-      value: i + 3,
+      value: date,
     })
-    date.setDate(date.getDate() + 1)
   }
   console.log('dateChoices', dateChoices)
 
