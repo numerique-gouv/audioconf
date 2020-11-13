@@ -2,12 +2,10 @@
 
 <div class="rf-container">
   <div class="main-paragraph">
-    <h2>Votre conférence est prête !</h2>
-
-    <p>Elle peut accueillir jusqu'à 50 personnes.</p>
+    <h2>Votre conférence du 11/01/2020 est réservée !</h2>
 
     <div class="rf-callout">
-        <p class="rf-callout__title">Pour vous y connecter</p>
+        <p class="rf-callout__title">Pour vous y connecter, le 11 janvier 2020</p>
         <ul class="rf-callout__text">
         <li>Appelez le <strong><%= format.formatFrenchPhoneNumber(conference.phoneNumber) %></strong> depuis un téléphone.</li>
         <li>
@@ -20,8 +18,7 @@
     </div>
 
       <p>
-        Ce numéro de conférence est actif pendant <%= format.formatMinutesInHours(conference.durationInMinutes) %>.
-        Il expirera <%= format.formatFrenchDate(conference.expiresAt) %>.
+        Ce numéro de conférence sera actif toute la journée du 11 janvier 2020. Il pourra accueillir jusqu'à 50 personnes.
       </p>
 
       <p>Bonne discussion avec <%= appName %> !</p>
