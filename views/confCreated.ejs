@@ -9,15 +9,11 @@
     <div class="rf-callout">
         <p class="rf-callout__title">Pour vous y connecter</p>
         <ul class="rf-callout__text">
-        <li>
-          Appelez le
-          <a id="phone-link" href="tel:<%= conference.phoneNumber %>"><strong><%= format.formatFrenchPhoneNumber(conference.phoneNumber) %></strong></a>
-          depuis un téléphone.
-        </li>
+        <li>Appelez le <a id="phone-link" href="tel:<%= conference.phoneNumber %>"><strong><%= format.formatFrenchPhoneNumber(conference.phoneNumber) %></strong></a> (numéro non surtaxé) depuis un téléphone.</li>
         <li>
           Tapez le code d'accès :
           <strong id="pin">
-            **** (Vous avez reçu le code PIN par email, si vous l'avez perdu, annuler cette conférence et générer une nouvelle conférence)
+            **** (Vous avez reçu le code d'accès par email, si vous l'avez perdu, annuler cette conférence et démarrer une nouvelle conférence)
           </strong>
         </li>
       </ul>
@@ -29,7 +25,16 @@
       </p>
 
       <p>Bonne discussion avec <%= appName %> !</p>
+      <% if(pollUrl) {  %>
+        <hr />
+        <p>Partagez vos impressions</p>
 
+        <div class="rf-input-group">
+          <a class="rf-btn rf-btn rf-margin-right-2N rf-btn--primary" title="Donner mon avis" rel="noopener noreferrer nofollow" target="_blank" href="<%= pollUrl %>">
+            Donner mon avis
+          </a>
+        </div>
+      <% } %>
       <hr />
       <p id="annuler"><strong>Vous n'allez pas utiliser ce numéro de conférence ? Libérez-le pour qu'il soit réutilisé : </strong>
       <form action="<%= urls.cancelConf.replace(":id", conference.id) %>" method="POST">

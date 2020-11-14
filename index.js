@@ -12,6 +12,7 @@ const format = require('./lib/format')
 const createConfController = require('./controllers/createConfController')
 const landingController = require('./controllers/landingController')
 const sendValidationEmailController = require('./controllers/sendValidationEmailController')
+const stats = require('./lib/stats')
 const urls = require('./urls')
 
 const app = express()
@@ -45,6 +46,7 @@ app.use(flash())
 app.use(function(req, res, next){
   res.locals.appName = config.APP_NAME
   res.locals.supportEmail = config.SUPPORT_EMAIL
+  res.locals.pollUrl = config.POLL_URL
   res.locals.errors = req.flash('error')
   res.locals.infos = req.flash('info')
   res.locals.successes = req.flash('success')
@@ -72,6 +74,31 @@ app.post(urls.cancelConf, createConfController.cancelConf)
 app.get(urls.legalNotice, (req, res) => {
   res.render('legalNotice', {
     pageTitle: 'Mentions Légales',
+  })
+})
+
+if (config.FEATURE_STATS_PAGE) {
+  app.get(urls.stats, async (req, res) => {
+    const NUM_STATS_POINTS = 1440 // 24h if 1 point per hour
+    let latestStats = []
+    try {
+      latestStats = await db.getLatestStatsPoints(NUM_STATS_POINTS)
+    } catch (err) {
+      console.error(`Impossible de récupérer les statsPoints`, err)
+    }
+
+    const formattedStats = stats.formatDataForDisplay(latestStats)
+
+    res.render('stats', {
+      pageTitle: 'Statistiques',
+      stats: formattedStats,
+    })
+  })
+}
+
+app.get(urls.contact, (req, res) => {
+  res.render('contact', {
+    pageTitle: 'Contact',
   })
 })
 

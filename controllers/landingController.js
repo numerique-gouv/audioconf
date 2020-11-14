@@ -12,16 +12,16 @@ const areStatsTooOldToDiplay = stats => {
 }
 
 module.exports.getLanding = async (req, res) => {
-  const freeNumbers = await db.getPhoneNumberList()
+  const phoneNumbers = await db.getPhoneNumberList()
   const now = new Date()
-  const numberOfFreePhoneNumbers = freeNumbers.filter(phoneNumber => phoneNumber.freeAt < now).length
-  const nextFreePhoneNumberAt = freeNumbers[0] ? freeNumbers[0].freeAt : new Date()
+  const numberOfFreePhoneNumbers = phoneNumbers.filter(phoneNumber => phoneNumber.freeAt < now).length
+  const nextFreePhoneNumberAt = phoneNumbers[0] ? phoneNumbers[0].freeAt : new Date()
 
   let statsPoint = {}
   let displayStats = config.FEATURE_DISPLAY_STATS_ON_LANDING
   if (displayStats) {
     try {
-      statsPoint = await db.getLatestStatsPoint()
+      statsPoint = (await db.getLatestStatsPoints(1))[0]
       if (areStatsTooOldToDiplay(statsPoint)) {
         console.log('Stats too old to display, stats date is', statsPoint.date)
         displayStats = false
