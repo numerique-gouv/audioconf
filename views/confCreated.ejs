@@ -9,7 +9,7 @@
     <div class="rf-callout">
         <p class="rf-callout__title">Pour vous y connecter</p>
         <ul class="rf-callout__text">
-        <li>Appelez le <strong><%= format.formatFrenchPhoneNumber(conference.phoneNumber) %></strong> (numéro non surtaxé) depuis un téléphone.</li>
+        <li>Appelez le <a id="phone-link" href="tel:<%= conference.phoneNumber %>"><strong><%= format.formatFrenchPhoneNumber(conference.phoneNumber) %></strong></a> (numéro non surtaxé) depuis un téléphone.</li>
         <li>
           Tapez le code d'accès :
           <strong id="pin">
@@ -56,6 +56,8 @@
   const hash = window.location.hash.replace('#', '')
   if (/^[0-9]{4}$/.test(hash)) {
     document.getElementById('pin').innerHTML = hash
+    const phoneLink = document.getElementById('phone-link')
+    phoneLink.href = phoneLink.href + ',,' + hash
   }
 </script>
 
