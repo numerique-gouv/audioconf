@@ -10,16 +10,7 @@ exports.up = knex => {
     })
 }
 
-// Note : if the column contains null values, the rollback with fail :
-// you cannot set notNullable when there are null values.
+// Note : we cannot set the fields back to notNullable, because now that the column contains null values,
+// the rollback will crash.
 exports.down = knex => {
-  return knex.schema
-    .alterTable('loginTokens', table => {
-      table.string('durationInMinutes').notNullable().alter()
-    }).then(() => {
-      return knex.schema
-        .alterTable('conferences', table => {
-          table.string('durationInMinutes').notNullable().alter()
-        })
-    })
 }
