@@ -130,5 +130,4 @@ window.onload = function() {
   ]
   const config2 = makeConfig('Utilisation des numéros de conférence', data.labels, datasets2)
   drawChart('free-phone-numbers-chart', config2)
-
 };

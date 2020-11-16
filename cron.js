@@ -2,11 +2,9 @@ const cron = require('cron');
 const stats = require('./lib/stats')
 
 const updateStatsJob = new cron.CronJob({
-  cronTime: '* * * * *',
+  cronTime: '*/2 * * * *',
   onTick: async () =>  {
-    const startDate = new Date()
     await stats.computeStats()
-    const endDate = new Date()
   },
   start: true,
   timeZone: 'Europe/Paris'
