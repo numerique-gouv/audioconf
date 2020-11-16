@@ -133,6 +133,14 @@ module.exports.cancelConf = async (req, res) => {
   try {
     const conference = await db.cancelConference(confId)
 
+    const isPhoneNumberInDb = await db.isPhoneNumberInDb(conference.phoneNumber)
+    if (!isPhoneNumberInDb) {
+      // This is probably a conf created using the Rooms API. Cancel it using Rooms API.
+      // todo we need roomNumber, which is not stored in db...
+      // todo when this throws, not sure errors are handled properly.
+      conferences.cancelRoom(895163176)
+    }
+
     req.flash('info', 'La conférence a bien été annulée. Si vous avez encore besoin d\'une conférence, vous pouvez en créer une nouvelle.')
     console.log(`La conférence ${confId} a été annulée`)
     return res.redirect('/')
