@@ -11,7 +11,7 @@ const createConfWithDuration = async (email, durationInMinutes) => {
   try {
     console.log(`Création d'un numéro de conférence pour ${format.hashForLogs(email)} pour ${durationInMinutes} minutes`)
     const now = new Date()
-    const freeAt = new Date(now.setMinutes(now.getMinutes() + durationInMinutes))
+    const freeAt = new Date(now.getTime() + durationInMinutes * 60 * 1000)
     const OVHconfData = await conferences.createConf(email, freeAt)
 
     const conference = await db.insertConference(email, OVHconfData.phoneNumber, durationInMinutes, OVHconfData.freeAt)
