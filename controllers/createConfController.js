@@ -59,12 +59,17 @@ module.exports.createConf = async (req, res) => {
   console.log('tokenData', tokenData)
   const email = tokenData.email
   const durationInMinutes = tokenData.durationInMinutes
-  // todo return from db as dateString ?
   const conferenceDay = tokenData.conferenceDay
+
+  if (!conferenceDay && !durationInMinutes) {
+    console.error('Login token contained no conferenceDay and no durationInMinutes. Cannot create conference.')
+    req.flash('error', 'La conférence n\'a pas pu être créée. Vous pouvez réessayer.')
+    return res.redirect('/')
+  }
 
   let conference = {}
   try {
-    if (!conferenceDay) { // todo figure out the right switch, with feature flag ?
+    if (durationInMinutes) {
       conference = await createConfWithDuration(email, durationInMinutes)
     } else {
       conference = await createConfWithDay(email, conferenceDay)
