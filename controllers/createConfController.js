@@ -7,6 +7,42 @@ const emailer = require('../lib/emailer')
 const format = require('../lib/format')
 const urls = require('../urls')
 
+const createConfWithDuration = async (email, durationInMinutes) => {
+  try {
+    console.log(`Création d'un numéro de conférence pour ${format.hashForLogs(email)} pour ${durationInMinutes} minutes`)
+    const now = new Date()
+    const freeAt = new Date(now.getTime() + durationInMinutes * 60 * 1000)
+    const OVHconfData = await conferences.createConf(freeAt)
+
+    const conference = await db.insertConference(email, OVHconfData.phoneNumber, durationInMinutes, OVHconfData.freeAt)
+    console.log('conference created in db', conference)
+    conference.pin = OVHconfData.pin
+    return conference
+  } catch (err) {
+    console.error(`Error when creating conference with duration ${durationInMinutes}`, err)
+    throw new Error(`Error when creating conference with duration ${durationInMinutes}`)
+  }
+}
+
+const createConfWithDay = async (email, conferenceDay) => {
+  try {
+    console.log(`Création d'un numéro de conférence pour ${format.hashForLogs(email)} pour le ${conferenceDay}`)
+
+    const freeAt = new Date(conferenceDay)
+    freeAt.setHours(23)
+    freeAt.setMinutes(59)
+    console.log('freeAt', format.formatFrenchDateTime(freeAt))
+    const OVHconfData = await conferences.createConf(freeAt)
+
+    const conference = await db.insertConferenceWithFreeAt(email, OVHconfData.phoneNumber, OVHconfData.freeAt)
+    console.log('conference created in db', conference)
+    conference.pin = OVHconfData.pin
+    return conference
+  } catch (err) {
+    console.error(`Error when creating conference for day ${conferenceDay}`, err)
+    throw new Error(`Error when creating conference for day ${conferenceDay}`)
+  }
+}
 
 module.exports.createConf = async (req, res) => {
   const token = req.query.token
@@ -20,16 +56,24 @@ module.exports.createConf = async (req, res) => {
   }
 
   const tokenData = tokensData[0]
+  console.log('tokenData', tokenData)
   const email = tokenData.email
   const durationInMinutes = tokenData.durationInMinutes
-  console.log(`Création d'un numéro de conférence pour ${format.hashForLogs(email)} pour ${durationInMinutes} minutes`)
+  const conferenceDay = tokenData.conferenceDay
+
+  if (!conferenceDay && !durationInMinutes) {
+    console.error('Login token contained no conferenceDay and no durationInMinutes. Cannot create conference.')
+    req.flash('error', 'La conférence n\'a pas pu être créée. Vous pouvez réessayer.')
+    return res.redirect('/')
+  }
 
   let conference = {}
   try {
-    const OVHconfData = await conferences.createConf(durationInMinutes)
-
-    conference = await db.insertConference(email, OVHconfData.phoneNumber, durationInMinutes, OVHconfData.freeAt)
-    conference.pin = OVHconfData.pin
+    if (durationInMinutes) {
+      conference = await createConfWithDuration(email, durationInMinutes)
+    } else {
+      conference = await createConfWithDay(email, conferenceDay)
+    }
   } catch (err) {
     req.flash('error', 'La conférence n\'a pas pu être créée. Vous pouvez réessayer.')
     console.error('Error when creating conference', err)
@@ -38,7 +82,7 @@ module.exports.createConf = async (req, res) => {
 
   const confUrl = `${config.PROTOCOL}://${req.get('host')}${urls.showConf.replace(":id", conference.id)}#${conference.pin}`
   try {
-    await emailer.sendConfCreatedEmail(email, conference.phoneNumber, conference.pin, durationInMinutes, conference.expiresAt, confUrl, config.POLL_URL)
+    await emailer.sendConfCreatedEmail(email, conference.phoneNumber, conference.pin, durationInMinutes, conferenceDay, conference.expiresAt, confUrl, config.POLL_URL)
 
     return res.redirect(urls.showConf.replace(":id", conference.id) + '#' + conference.pin)
   } catch (err) {
@@ -54,6 +98,7 @@ module.exports.showConf = async (req, res) => {
 
   try {
     const conference = await db.getUnexpiredConference(confId)
+    console.log('got conference for showConf', conference)
 
     if (!conference) {
       req.flash('error', 'La conférence a expiré. Vous pouvez recréer une conférence.')
@@ -61,8 +106,14 @@ module.exports.showConf = async (req, res) => {
     }
 
     if (conference.canceledAt) {
-      req.flash('error', `La conférence a été annulée le ${format.formatFrenchDate(conference.canceledAt)}. Si vous avez encore besoin d\'une conférence, vous pouvez en créer une nouvelle.`)
+      req.flash('error', `La conférence a été annulée le ${format.formatFrenchDateTime(conference.canceledAt)}. Si vous avez encore besoin d\'une conférence, vous pouvez en créer une nouvelle.`)
       return res.redirect('/')
+    }
+
+    // Whether this conf was booked for the whole day.
+    conference.isDayConference = false
+    if (!conference.durationInMinutes) {
+      conference.isDayConference = true
     }
 
     res.render('confCreated', {

@@ -2,14 +2,23 @@
 
 <div class="rf-container">
   <div class="main-paragraph">
-    <h2>Votre conférence est prête !</h2>
-
-    <p>Elle peut accueillir jusqu'à 50 personnes.</p>
+    <h2>
+      Votre conférence
+      <% if(conference.isDayConference) {  %>
+        du <%= format.formatFrenchDate(conference.expiresAt) %>
+      <% } %>
+      est réservée !
+    </h2>
 
     <div class="rf-callout">
-        <p class="rf-callout__title">Pour vous y connecter</p>
+        <p class="rf-callout__title">
+          Pour vous y connecter
+          <% if(conference.isDayConference) {  %>
+            le <%= format.formatFrenchDate(conference.expiresAt) %>
+          <% } %>
+        </p>
         <ul class="rf-callout__text">
-        <li>Appelez le <strong><%= format.formatFrenchPhoneNumber(conference.phoneNumber) %></strong> depuis un téléphone.</li>
+        <li>Appelez le <a id="phone-link" href="tel:<%= conference.phoneNumber %>"><strong><%= format.formatFrenchPhoneNumber(conference.phoneNumber) %></strong></a> (numéro non surtaxé) depuis un téléphone.</li>
         <li>
           Tapez le code d'accès :
           <strong id="pin">
@@ -20,10 +29,15 @@
       </ul>
     </div>
 
-      <p>
+    <p>
+      <% if(conference.isDayConference) {  %>
+        Ce numéro de conférence sera actif toute la journée du  <%= format.formatFrenchDate(conference.expiresAt) %>. Il pourra accueillir jusqu'à 50 personnes.
+      <% } else { %>
         Ce numéro de conférence est actif pendant <%= format.formatMinutesInHours(conference.durationInMinutes) %>.
-        Il expirera <%= format.formatFrenchDate(conference.expiresAt) %>.
-      </p>
+        Il expirera <%= format.formatFrenchDateTime(conference.expiresAt) %>.
+      <% } %>
+    </p>
+
 
       <p>Bonne discussion avec <%= appName %> !</p>
       <% if(pollUrl) {  %>
@@ -67,6 +81,9 @@
   const regex = new RegExp(`^[0-9]{${numPinDigits}}$`)
   if (regex.test(hash)) {
     document.getElementById('pin').innerHTML = formatPin(hash)
+    // todo does this work with the "#" ? Should we add the # ?
+    const phoneLink = document.getElementById('phone-link')
+    phoneLink.href = phoneLink.href + ',,' + hash
   }
 
   const useOVHRoomAPI = <%= useOVHRoomAPI %>

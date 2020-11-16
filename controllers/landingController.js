@@ -1,5 +1,6 @@
 const config = require('../config')
 const db = require('../lib/db')
+const format = require('../lib/format')
 
 const areStatsTooOldToDiplay = stats => {
   const STATS_MAX_AGE_MINUTES = 5
@@ -32,6 +33,25 @@ module.exports.getLanding = async (req, res) => {
     }
   }
 
+  // We allow booking a conf config.RESERVE_NUM_DAYS_AHEAD days in the future.
+  const incrementDate = date => {
+    return new Date(date.setDate(date.getDate() + 1))
+  }
+  const dateChoices = []
+  let date = new Date()
+  dateChoices.push({ label: 'Aujourd\'hui', value: format.formatStandardDate(date) })
+  date = incrementDate(date)
+  dateChoices.push({ label: 'Demain', value: format.formatStandardDate(date) })
+
+  const numOtherDates = (config.RESERVE_NUM_DAYS_AHEAD - 2) > 0 ? (config.RESERVE_NUM_DAYS_AHEAD - 2) : 0
+  for (let i = 0 ; i < numOtherDates; i++) {
+    date = incrementDate(date)
+    dateChoices.push({
+      label: format.formatFrenchDate(date),
+      value: format.formatStandardDate(date),
+    })
+  }
+
   res.render('landing', {
     NUM_PIN_DIGITS: config.NUM_PIN_DIGITS,
     numberOfFreePhoneNumbers: numberOfFreePhoneNumbers,
@@ -40,5 +60,7 @@ module.exports.getLanding = async (req, res) => {
     FEATURE_DISPLAY_STATS_ON_LANDING: displayStats,
     onlineParticipantsCount: statsPoint.onlineParticipantsCount,
     activeConfsCount: statsPoint.activeConfsCount,
+    dateChoices: dateChoices,
+    FEATURE_RESERVATIONS: config.FEATURE_RESERVATIONS,
   })
 }
