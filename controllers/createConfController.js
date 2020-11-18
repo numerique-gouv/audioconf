@@ -13,9 +13,9 @@ const createConfWithDuration = async (email, durationInMinutes) => {
     const now = new Date()
     const freeAt = new Date(now.getTime() + durationInMinutes * 60 * 1000)
     const OVHconfData = await conferences.createConf(freeAt)
+    console.log('conference created in db', conference)
 
     const conference = await db.insertConference(email, OVHconfData.phoneNumber, durationInMinutes, OVHconfData.freeAt)
-    console.log('conference created in db', conference)
     conference.pin = OVHconfData.pin
     return conference
   } catch (err) {

@@ -65,7 +65,7 @@
                 <% if (onlineParticipantsCount == 0) { %>
                 Actuellement, il reste <%= numberOfFreePhoneNumbers %> numéro<%= numberOfFreePhoneNumbers === 1 ? '' : 's' %> de conférence disponibles.
                 <% } else { %>
-                Actuellement, il y a <%= onlineParticipantsCount %> personne<%= onlineParticipantsCount > 1 ? 's' : '' %> dans <%= activeConfsCount %> conférence<%= activeConfsCount > 1 ? 's' : '' %> téléphoniques. 
+                Actuellement, il y a <%= onlineParticipantsCount %> personne<%= onlineParticipantsCount > 1 ? 's' : '' %> dans <%= activeConfsCount %> conférence<%= activeConfsCount > 1 ? 's' : '' %> téléphoniques. Il reste <%= numberOfFreePhoneNumbers %> numéro<%= numberOfFreePhoneNumbers === 1 ? '' : 's' %> de conférence disponibles. 
                 <% } %>
               <% } %>
             </p>
@@ -82,7 +82,7 @@
   <div class="rf-grid-row rf-grid-row--center rf-grid-row--gutter">
     <div class="rf-col-xs-12 rf-col-md-3 rf-padding-3N">
       <div class="rf-text--lg rf-padding-bottom-2N">Accessible partout</div>
-      <div class="rf-text--sm">Numéro non surtaxé pour la France métropolitaine et aux DROM.</div>
+      <div class="rf-text--sm">Numéro non surtaxé pour la France métropolitaine.</div>
     </div>
     <div class="rf-col-xs-12 rf-col-md-3 rf-padding-3N">
       <div class="rf-text--lg rf-padding-bottom-2N">Pour téléphone</div>
