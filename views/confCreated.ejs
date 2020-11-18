@@ -71,12 +71,7 @@
   const hash = window.location.hash.replace('#', '')
   const numPinDigits = <%= numPinDigits %>
 
-  const formatPin = (pin) => {
-    if (numPinDigits !== 9) {
-      return pin
-    }
-    return pin.substring(0, 3) + ' ' + pin.substring(3, 6) + ' ' + pin.substring(6, 9)
-  }
+  const formatPin = <%- format.formatPin %> // "< %-" gives unescaped content. Ok because not user-generated content.
 
   const regex = new RegExp(`^[0-9]{${numPinDigits}}$`)
   if (regex.test(hash)) {
