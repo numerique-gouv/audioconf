@@ -105,6 +105,10 @@ app.get(urls.contact, (req, res) => {
 })
 
 const init = async () => {
+  if (config.USE_OVH_ROOM_API) {
+    return
+  }
+  console.log('Using Numbers OVH API, fetching phone numbers')
   try {
      const phoneNumbers = await conferences.getAllPhoneNumbers()
      await Promise.all(phoneNumbers.map(phoneNumber => db.insertPhoneNumber(phoneNumber)))
@@ -114,6 +118,6 @@ const init = async () => {
 }
 
 module.exports = app.listen(config.PORT, () => {
-  init();
+  init()
   console.log(`It is ${format.formatFrenchDateTime(new Date())}, ${config.APP_NAME} listening at http://localhost:${config.PORT}`)
 })
