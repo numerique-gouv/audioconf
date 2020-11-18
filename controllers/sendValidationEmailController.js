@@ -33,6 +33,10 @@ const generateToken = () => {
 module.exports.sendValidationEmail = async (req, res) => {
   const email = req.body.email
   const conferenceDurationInMinutes = req.body.durationInMinutes
+  const conferenceDayString = req.body.day
+  if (typeof conferenceDayString === 'undefined' && typeof conferenceDurationInMinutes === 'undefined') {
+    throw new Error('Both conferenceDayString and conferenceDurationInMinutes are undefined. This should not happen.')
+  }
 
   if (!isValidEmail(email)) {
     req.flash('error', 'Email invalide. Avez vous bien tapé votre email ? Vous pouvez réessayer.')
@@ -52,7 +56,7 @@ module.exports.sendValidationEmail = async (req, res) => {
   tokenExpirationDate.setMinutes(tokenExpirationDate.getMinutes() + config.TOKEN_DURATION_IN_MINUTES)
 
   try {
-    await db.insertToken(email, token, conferenceDurationInMinutes, tokenExpirationDate)
+    await db.insertToken(email, token, tokenExpirationDate, conferenceDurationInMinutes, conferenceDayString)
     console.log(`Login token créé pour ${format.hashForLogs(email)}, il expire à ${tokenExpirationDate}`)
 
     const validationUrl = `${config.PROTOCOL}://${req.get('host')}${urls.createConf}?token=${encodeURIComponent(token)}`

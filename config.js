@@ -75,8 +75,11 @@ if (!isPresent('TZ')) {
 }
 console.log('Using timezone', process.env.TZ)
 
+config.RESERVE_NUM_DAYS_AHEAD = process.env.RESERVE_NUM_DAYS_AHEAD || 14
+
 /* Feature flags */
 config.FEATURE_DISPLAY_STATS_ON_LANDING = (process.env.FEATURE_DISPLAY_STATS_ON_LANDING === 'true') || false
 config.FEATURE_STATS_PAGE = (process.env.FEATURE_STATS_PAGE === 'true') || false
+config.FEATURE_RESERVATIONS = (process.env.FEATURE_RESERVATIONS === 'true') || false
 
 module.exports = config

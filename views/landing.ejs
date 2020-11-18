@@ -5,7 +5,7 @@
     <div class="rf-col rf-col-lg-8">
       <div id="je-cree-une-conf" class="main-paragraph">
         <h2>
-          Créer une conférence téléphonique
+          Réserver une conférence téléphonique
         </h2>
           <% if (errors.length) { %>
             <% errors.forEach(function(error) { %>
@@ -28,25 +28,37 @@
           <% if(numberOfFreePhoneNumbers) { %>
             <form action="<%= urls.sendValidationEmail %>" method="POST">
               <div class="rf-input-group">
-                  <label class="rf-label" for="email">Votre email professionnel :</label>
-                  <input class="rf-input" type="email" id="email" name="email" required>
+                <label class="rf-label" for="email">Votre email professionnel :</label>
+                <input class="rf-input" type="email" id="email" name="email" required>
               </div>
-              <div class="rf-input-group">
+              <% if(FEATURE_RESERVATIONS) { %>
+                <div class="rf-input-group">
+                  <label class="rf-label" for="day">Date de votre conférence :</label>
+                  <p class="rf-hint-text" id="day-hint">La conférence vous sera réservée pour la journée choisie.</p>
+                  <select class="rf-select" id="day" name="day" aria-describedby="day-hint">
+                    <% dateChoices.forEach(function(dateChoice) { %>
+                      <option value="<%= dateChoice.value %>"><%= dateChoice.label %></option>
+                    <% }) %>
+                  </select>
+                </div>
+              <% } else { %>
+                <div class="rf-input-group">
                   <label class="rf-label" for="duration">Durée de la réservation</label>
                   <select class="rf-select" id="duration" name="durationInMinutes">
-                      <option value="60">1 heure</option>
-                      <option value="120" selected>2 heures</option>
-                      <option value="240">4 heures</option>
-                      <option value="720">12 heures</option>
-                      <option value="1440">24 heures</option>
+                    <option value="60">1 heure</option>
+                    <option value="120" selected>2 heures</option>
+                    <option value="240">4 heures</option>
+                    <option value="720">12 heures</option>
+                    <option value="1440">24 heures</option>
                   </select>
-              </div>
+                </div>
+              <% } %>
               <div class="rf-input-group">
-                  <button type="submit" class="rf-btn" title="Démarrer ma conférence">Démarrer ma conférence</button>
+                <button type="submit" class="rf-btn" title="Réserver ma conférence">Réserver ma conférence</button>
               </div>
             </form>
           <% } else { %>
-            <%- include('partials/notificationInfo', {info: `Nous n'avons plus de numéro de conférence disponible. Prochain numéro libre ${format.formatFrenchDate(nextFreePhoneNumberAt)}.`}) -%>
+            <%- include('partials/notificationInfo', {info: `Nous n'avons plus de numéro de conférence disponible. Prochain numéro libre ${format.formatFrenchDateTime(nextFreePhoneNumberAt)}.`}) -%>
           <% } %>
             <p class="rf-text--s">
               <% if (FEATURE_DISPLAY_STATS_ON_LANDING) { %>
@@ -93,20 +105,33 @@
         </h2>
         <div>
           <div class="sub-paragraph">
-            <h3>Je démarre une conférence</h3>
-            <p>Renseignez votre email professionnel pour recevoir un lien de création : en un clic, votre conférence sera prête ! </p>
+            <h3>Je réserve une conférence</h3>
+            <p>
+              Choisissez la
+              <% if(FEATURE_RESERVATIONS) { %>
+                date
+              <% } else { %>
+                durée
+              <% } %>
+              pour laquelle vous voulez réserver un numéro et validez votre réservation avec votre email professionnel.
+            </p>
           </div>
           <div class="sub-paragraph">
-            <h3>J'invite les participants</h3>
+            <h3>Je transmets les informations aux participants</h3>
             <p>
-              Transmettez aux participants le <b>numéro de téléphone de la conférence</b> et le code d’accès à  <%= NUM_PIN_DIGITS %> chiffres.<br>
-Chaque participant peut appeler le numéro depuis son téléphone professionnel ou personnel puis taper le code d'accès à la conférence.
+              Partagez aux participants le <b>numéro de téléphone de la conférence</b> et le <b>code d’accès</b> à <%= NUM_PIN_DIGITS %> chiffres.<br>
             </p>
           </div>
           <div class="sub-paragraph">
             <h3>C'est parti !</h3>
-            Chaque personne appelle le numéro depuis son téléphone (pro ou perso, peu importe)
-            et tape les <%= NUM_PIN_DIGITS %> chiffres du code d'accès à la conférence.
+            <p>
+              <% if(FEATURE_RESERVATIONS) { %>
+                Le jour de la conférence, chaque
+              <% } else { %>
+                Chaque
+              <% } %>
+              participant pourra appeler le numéro (non surtaxé) depuis son téléphone fixe ou mobile puis taper le code d'accès à la conférence.
+            </p>
           </div>
         </div>
       </div>
