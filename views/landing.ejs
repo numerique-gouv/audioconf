@@ -63,7 +63,7 @@
           <p class="rf-text--s">
             <% if (FEATURE_DISPLAY_STATS_ON_LANDING) { %>
               <% if (onlineParticipantsCount > 0) { %>
-                Actuellement, il y a <%= onlineParticipantsCount %> personne<%= onlineParticipantsCount > 1 ? 's' : '' %> dans <%= activeConfsCount %> conférence<%= activeConfsCount > 1 ? 's' : '' %> téléphoniques.
+                Actuellement, il y a <%= onlineParticipantsCount %> personne<%= onlineParticipantsCount > 1 ? 's' : '' %> dans <%= activeConfsCount %> conférence<%= activeConfsCount > 1 ? 's' : '' %> téléphonique<%= activeConfsCount > 1 ? 's' : '' %>.
               <% } %>
               <% if (!useOVHRoomAPI) { %>
                 Il reste <%= numberOfFreePhoneNumbers %> numéro<%= numberOfFreePhoneNumbers === 1 ? '' : 's' %> de conférence disponibles.
