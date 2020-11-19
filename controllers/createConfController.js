@@ -13,7 +13,6 @@ const createConfWithDuration = async (email, durationInMinutes) => {
     const now = new Date()
     const freeAt = new Date(now.getTime() + durationInMinutes * 60 * 1000)
     const OVHconfData = await conferences.createConf(freeAt)
-    console.log('conference created in db', conference)
 
     const conference = await db.insertConference(email, OVHconfData.phoneNumber, durationInMinutes, OVHconfData.freeAt)
     conference.pin = OVHconfData.pin
@@ -35,7 +34,6 @@ const createConfWithDay = async (email, conferenceDay) => {
     const OVHconfData = await conferences.createConf(freeAt)
 
     const conference = await db.insertConferenceWithFreeAt(email, OVHconfData.phoneNumber, OVHconfData.freeAt)
-    console.log('conference created in db', conference)
     conference.pin = OVHconfData.pin
     return conference
   } catch (err) {
@@ -56,7 +54,6 @@ module.exports.createConf = async (req, res) => {
   }
 
   const tokenData = tokensData[0]
-  console.log('tokenData', tokenData)
   const email = tokenData.email
   const durationInMinutes = tokenData.durationInMinutes
   const conferenceDay = tokenData.conferenceDay
@@ -98,7 +95,6 @@ module.exports.showConf = async (req, res) => {
 
   try {
     const conference = await db.getUnexpiredConference(confId)
-    console.log('got conference for showConf', conference)
 
     if (!conference) {
       req.flash('error', 'La conférence a expiré. Vous pouvez recréer une conférence.')
