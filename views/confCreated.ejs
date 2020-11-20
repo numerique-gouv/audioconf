@@ -73,21 +73,21 @@
 
 <script type="text/javascript">
   // If the pin is in the hash, display it in the page.
-  const hash = window.location.hash.replace('#', '')
-  const numPinDigits = <%= numPinDigits %>
-  const useOVHRoomAPI = <%= useOVHRoomAPI %>
+  const hash = window.location.hash.replace('#', '');
+  const numPinDigits = <%= numPinDigits %>;
+  const useOVHRoomAPI = <%= useOVHRoomAPI %>;
 
-  const formatPin = <%- format.formatPin %> // "< %-" gives unescaped content. Ok because not user-generated content.
+  const formatPin = <%- format.formatPin %>; // "< %-" gives unescaped content. Ok because not user-generated content.
 
-  const regex = new RegExp(`^[0-9]{${numPinDigits}}$`)
+  const regex = new RegExp(`^[0-9]{${numPinDigits}}$`);
   if (regex.test(hash)) {
-    document.getElementById('pin').innerHTML = formatPin(hash)
-    const phoneLink = document.getElementById('phone-link')
-    phoneLink.href = phoneLink.href + ',,' + hash + (useOVHRoomAPI ? '#' : '')
+    document.getElementById('pin').innerHTML = formatPin(hash);
+    const phoneLink = document.getElementById('phone-link');
+    phoneLink.href = phoneLink.href + ',,' + hash + (useOVHRoomAPI ? '#' : '');
   }
 
   if (useOVHRoomAPI) {
-    document.getElementById('press-pound').style.display = 'inline'
+    document.getElementById('press-pound').style.display = 'inline';
   }
 </script>
 
