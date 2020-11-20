@@ -69,11 +69,11 @@
 
 <script>
   // If the pin is in the hash, display it in the page.
-  const hash = window.location.hash.replace('#', '')
+  const hash = window.location.hash.replace('#', '');
   if (/^[0-9]{4}$/.test(hash)) {
-    document.getElementById('pin').innerHTML = hash
-    const phoneLink = document.getElementById('phone-link')
-    phoneLink.href = phoneLink.href + ',,' + hash
+    document.getElementById('pin').innerHTML = hash;
+    const phoneLink = document.getElementById('phone-link');
+    phoneLink.href = phoneLink.href + ',,' + hash;
   }
 </script>
 
