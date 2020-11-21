@@ -74,3 +74,6 @@ module.exports.sendValidationEmail = async (req, res) => {
     return res.redirect('/')
   }
 }
+
+module.exports.isAcceptedEmail = isAcceptedEmail
+module.exports.isValidEmail = isValidEmail

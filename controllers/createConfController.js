@@ -6,6 +6,7 @@ const db = require('../lib/db')
 const emailer = require('../lib/emailer')
 const format = require('../lib/format')
 const urls = require('../urls')
+const emailValidation = require('./sendValidationEmailController')
 
 const createConfWithDuration = async (email, durationInMinutes) => {
   try {
@@ -44,7 +45,6 @@ const createConfWithDay = async (email, conferenceDay) => {
 
 module.exports.createConf = async (req, res) => {
   const token = req.query.token
-
   const tokensData = await db.getToken(token)
   const isTokenValid = tokensData.length === 1
 
@@ -52,11 +52,24 @@ module.exports.createConf = async (req, res) => {
     req.flash('error', 'Ce lien de confirmation ne marche plus, il a expiré. Entrez votre email ci-dessous pour recommencer.')
     return res.redirect('/')
   }
-
   const tokenData = tokensData[0]
   const email = tokenData.email
   const durationInMinutes = tokenData.durationInMinutes
   const conferenceDay = tokenData.conferenceDay
+
+  //Check Acceptable email 
+  if(!emailValidation.isValidEmail(email)){
+    console.error('Email invalide:'+email)
+    req.flash('error', 'Email invalide.')
+    return res.redirect('/')
+  }
+
+  //Check Acceptable email 
+  if(!emailValidation.isAcceptedEmail(email)){
+    console.error('Email invalide:'+email)
+    req.flash('error', 'Cet email ne correspond pas à une agence de l\'État. Si vous appartenez à un service de l\'État mais votre email n\'est pas reconnu par AudioConf, contactez-nous pour que nous le rajoutions!')
+    return res.redirect('/')
+  }
 
   if (!conferenceDay && !durationInMinutes) {
     console.error('Login token contained no conferenceDay and no durationInMinutes. Cannot create conference.')
@@ -76,7 +89,6 @@ module.exports.createConf = async (req, res) => {
     console.error('Error when creating conference', err)
     return res.redirect('/')
   }
-
   const confUrl = `${config.PROTOCOL}://${req.get('host')}${urls.showConf.replace(":id", conference.id)}#${conference.pin}`
   try {
     await emailer.sendConfCreatedEmail(email, conference.phoneNumber, conference.pin, durationInMinutes, conferenceDay, conference.expiresAt, confUrl, config.POLL_URL)

@@ -41,6 +41,7 @@ Pour utiliser d'autres commandes, le [CLI de KnexJS](http://knexjs.org/#Migratio
 - Créer les tables de la DB : `docker-compose run web npm run migrate`
 - Créer une migration : `docker-compose run web npm run makeMigration <nom de la migration>`
 - Lancer le service : `docker-compose up` ou `docker-compose run -p 8080:8080 web npm run dev`
+- Lancer les test : `docker-compose run web npm run test`
 
 ## Test de charge Locust
 
