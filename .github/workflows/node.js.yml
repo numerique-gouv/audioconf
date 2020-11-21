@@ -42,6 +42,7 @@ jobs:
         MAIL_PASS: fakepass
         MAIL_SERVICE: debug
         MAIL_USER: fakeuser
+        MAIL_SENDER_EMAIL: sender@example.com
         SECRET: fakesessionsecret
         DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
 
