@@ -1,5 +1,5 @@
 # conferences
-Des audio (et video?) conférences pour les fonctionnaires de l'Etat.
+Des audio conférences pour les agents de l'Etat.
 
 
 ## Générer clé API OVH
