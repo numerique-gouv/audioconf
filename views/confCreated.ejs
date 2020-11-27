@@ -11,19 +11,20 @@
     </h2>
 
     <div class="rf-callout">
-        <p class="rf-callout__title">
-          Pour vous y connecter
-          <% if(conference.isDayConference) {  %>
-            le <%= format.formatFrenchDate(conference.expiresAt) %>
-          <% } %>
-        </p>
-        <ul class="rf-callout__text">
+      <p class="rf-callout__title">
+        Pour vous y connecter
+        <% if(conference.isDayConference) {  %>
+          le <%= format.formatFrenchDate(conference.expiresAt) %>
+        <% } %>
+      </p>
+      <ul class="rf-callout__text">
         <li>Appelez le <a id="phone-link" href="tel:<%= conference.phoneNumber %>"><strong><%= format.formatFrenchPhoneNumber(conference.phoneNumber) %></strong></a> (numéro non surtaxé) depuis un téléphone.</li>
         <li>
           Tapez le code d'accès :
           <strong id="pin">
             **** (Vous avez reçu le code d'accès par email, si vous l'avez perdu, annuler cette conférence et démarrer une nouvelle conférence)
           </strong>
+          <span id="press-pound" style="display: none;">et appuyez sur "#"</span>
         </li>
       </ul>
     </div>
@@ -38,17 +39,19 @@
     </p>
 
 
-      <p>Bonne discussion avec <%= appName %> !</p>
-      <% if(pollUrl) {  %>
-        <hr />
-        <p>Partagez vos impressions</p>
+    <p>Bonne discussion avec <%= appName %> !</p>
+    <% if(pollUrl) {  %>
+      <hr />
+      <p>Partagez vos impressions</p>
 
-        <div class="rf-input-group">
-          <a class="rf-btn rf-btn rf-margin-right-2N rf-btn--primary" title="Donner mon avis" rel="noopener noreferrer nofollow" target="_blank" href="<%= pollUrl %>">
-            Donner mon avis
-          </a>
-        </div>
-      <% } %>
+      <div class="rf-input-group">
+        <a class="rf-btn rf-btn rf-margin-right-2N rf-btn--primary" title="Donner mon avis" rel="noopener noreferrer nofollow" target="_blank" href="<%= pollUrl %>">
+          Donner mon avis
+        </a>
+      </div>
+    <% } %>
+
+    <% if (!useOVHRoomAPI) { %>
       <hr />
       <p id="annuler">
         <strong>Vous n'allez pas utiliser ce numéro de conférence ? Libérez-le pour qu'il soit réutilisé : </strong>
@@ -64,16 +67,27 @@
           <button type="submit" class="rf-btn" title="Annuler la conférence" id="cancel-button" disabled>Annuler la conférence</button>
         </div>
       </form>
+    <% } %>
   </div>
 </div>
 
 <script>
   // If the pin is in the hash, display it in the page.
   const hash = window.location.hash.replace('#', '');
-  if (/^[0-9]{4}$/.test(hash)) {
-    document.getElementById('pin').innerHTML = hash;
+  const numPinDigits = <%= numPinDigits %>;
+  const useOVHRoomAPI = <%= useOVHRoomAPI %>;
+
+  const formatPin = <%- format.formatPin %>; // "< %-" gives unescaped content. Ok because not user-generated content.
+
+  const regex = new RegExp(`^[0-9]{${numPinDigits}}$`);
+  if (regex.test(hash)) {
+    document.getElementById('pin').innerHTML = formatPin(hash);
     const phoneLink = document.getElementById('phone-link');
-    phoneLink.href = phoneLink.href + ',,' + hash;
+    phoneLink.href = phoneLink.href + ',,' + hash + (useOVHRoomAPI ? '#' : '');
+  }
+
+  if (useOVHRoomAPI) {
+    document.getElementById('press-pound').style.display = 'inline';
   }
 </script>
 

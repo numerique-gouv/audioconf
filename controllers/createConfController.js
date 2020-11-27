@@ -12,7 +12,7 @@ const createConfWithDuration = async (email, durationInMinutes) => {
     console.log(`Création d'un numéro de conférence pour ${format.hashForLogs(email)} pour ${durationInMinutes} minutes`)
     const now = new Date()
     const freeAt = new Date(now.getTime() + durationInMinutes * 60 * 1000)
-    const OVHconfData = await conferences.createConf(email, freeAt)
+    const OVHconfData = await conferences.createConf(freeAt)
 
     const conference = await db.insertConference(email, OVHconfData.phoneNumber, durationInMinutes, OVHconfData.freeAt)
     conference.pin = OVHconfData.pin
@@ -31,7 +31,7 @@ const createConfWithDay = async (email, conferenceDay) => {
     freeAt.setHours(23)
     freeAt.setMinutes(59)
     console.log('freeAt', format.formatFrenchDateTime(freeAt))
-    const OVHconfData = await conferences.createConf(email, freeAt)
+    const OVHconfData = await conferences.createConf(freeAt)
 
     const conference = await db.insertConferenceWithFreeAt(email, OVHconfData.phoneNumber, OVHconfData.freeAt)
     conference.pin = OVHconfData.pin
@@ -123,12 +123,11 @@ module.exports.showConf = async (req, res) => {
   }
 }
 
-
+// Note : if called for a conf created with Rooms API, this will do nothing.
 module.exports.cancelConf = async (req, res) => {
   const confId = req.params.id
   try {
     const conference = await db.cancelConference(confId)
-
     req.flash('info', 'La conférence a bien été annulée. Si vous avez encore besoin d\'une conférence, vous pouvez en créer une nouvelle.')
     console.log(`La conférence ${confId} a été annulée`)
     return res.redirect('/')

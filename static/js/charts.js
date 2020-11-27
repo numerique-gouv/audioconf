@@ -111,23 +111,40 @@ window.onload = function() {
   const config = makeConfig('Statistiques d\'utilisation', data.labels, datasets)
   drawChart('conf-stats-chart', config)
 
-  const datasets2 = [
-    {
-      label: 'Numéros de conférence réservés',
-      color: 'cyan',
-      data: data.bookedPhoneNumbersSeries,
-    },
-    {
-      label: 'Numéros de conférence actifs',
-      color: '#000091',
-      data: data.activeConfsSeries,
-    },
-    {
-      label: 'Tous les numéros de conférence',
-      color: 'black',
-      data: data.phoneNumbersSeries,
-    },
-  ]
-  const config2 = makeConfig('Utilisation des numéros de conférence', data.labels, datasets2)
-  drawChart('free-phone-numbers-chart', config2)
-};
+  if (data.USE_OVH_ROOM_API) {
+    const datasets2 = [
+      {
+        label: 'Salles de conférence réservées',
+        color: 'cyan',
+        data: data.bookedRoomsSeries,
+      },
+      {
+        label: 'Salles de conférence actives',
+        color: '#000091',
+        data: data.activeConfsSeries,
+      },
+    ]
+    const config2 = makeConfig('Utilisation des salles de conférence', data.labels, datasets2)
+    drawChart('conf-booking-chart', config2)
+  } else {
+    const datasets2 = [
+      {
+        label: 'Numéros de conférence réservés',
+        color: 'cyan',
+        data: data.bookedPhoneNumbersSeries,
+      },
+      {
+        label: 'Numéros de conférence actifs',
+        color: '#000091',
+        data: data.activeConfsSeries,
+      },
+      {
+        label: 'Tous les numéros de conférence',
+        color: 'black',
+        data: data.phoneNumbersSeries,
+      },
+    ]
+    const config2 = makeConfig('Utilisation des numéros de conférence', data.labels, datasets2)
+    drawChart('conf-booking-chart', config2)
+  }
+}

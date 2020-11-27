@@ -25,7 +25,7 @@
             <% }) %>
           <% } %>
 
-          <% if(numberOfFreePhoneNumbers) { %>
+          <% if(useOVHRoomAPI || numberOfFreePhoneNumbers) { %>
             <form action="<%= urls.sendValidationEmail %>" method="POST">
               <div class="rf-input-group">
                 <label class="rf-label" for="email">Votre email professionnel :</label>
@@ -60,15 +60,16 @@
           <% } else { %>
             <%- include('partials/notificationInfo', {info: `Nous n'avons plus de numéro de conférence disponible. Prochain numéro libre ${format.formatFrenchDateTime(nextFreePhoneNumberAt)}.`}) -%>
           <% } %>
-            <p class="rf-text--s">
-              <% if (FEATURE_DISPLAY_STATS_ON_LANDING) { %>
-                <% if (onlineParticipantsCount == 0) { %>
-                Actuellement, il reste <%= numberOfFreePhoneNumbers %> numéro<%= numberOfFreePhoneNumbers === 1 ? '' : 's' %> de conférence disponibles.
-                <% } else { %>
-                Actuellement, il y a <%= onlineParticipantsCount %> personne<%= onlineParticipantsCount > 1 ? 's' : '' %> dans <%= activeConfsCount %> conférence<%= activeConfsCount > 1 ? 's' : '' %> téléphoniques. Il reste <%= numberOfFreePhoneNumbers %> numéro<%= numberOfFreePhoneNumbers === 1 ? '' : 's' %> de conférence disponibles. 
-                <% } %>
+          <p class="rf-text--s">
+            <% if (FEATURE_DISPLAY_STATS_ON_LANDING) { %>
+              <% if (onlineParticipantsCount > 0) { %>
+                Actuellement, il y a <%= onlineParticipantsCount %> personne<%= onlineParticipantsCount > 1 ? 's' : '' %> dans <%= activeConfsCount %> conférence<%= activeConfsCount > 1 ? 's' : '' %> téléphonique<%= activeConfsCount > 1 ? 's' : '' %>.
               <% } %>
-            </p>
+              <% if (!useOVHRoomAPI) { %>
+                Il reste <%= numberOfFreePhoneNumbers %> numéro<%= numberOfFreePhoneNumbers === 1 ? '' : 's' %> de conférence disponibles.
+              <% } %>
+            <% } %>
+          </p>
       </div>
 
     </div>

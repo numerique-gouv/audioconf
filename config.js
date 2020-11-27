@@ -54,6 +54,22 @@ config.OVH_APP_SECRET = process.env.OVH_APP_SECRET
 config.OVH_CONSUMER_KEY = process.env.OVH_CONSUMER_KEY
 config.OVH_ACCOUNT_NUMBER = process.env.OVH_ACCOUNT_NUMBER
 
+config.USE_OVH_ROOM_API = (process.env.USE_OVH_ROOM_API === 'true') || false
+if (config.USE_OVH_ROOM_API) {
+  if (!isPresent('OVH_ROOM_APP_KEY') ||
+    !isPresent('OVH_ROOM_APP_SECRET') ||
+    !isPresent('OVH_ROOM_CONSUMER_KEY') ||
+    !isPresent('OVH_ROOM_ACCOUNT_NUMBER') ||
+    !isPresent('OVH_ROOM_PHONE_NUMBER')) {
+    throw new Error('OVH Rooms API is not set up correctly')
+  }
+  config.OVH_ROOM_APP_KEY = process.env.OVH_ROOM_APP_KEY
+  config.OVH_ROOM_APP_SECRET = process.env.OVH_ROOM_APP_SECRET
+  config.OVH_ROOM_CONSUMER_KEY = process.env.OVH_ROOM_CONSUMER_KEY
+  config.OVH_ROOM_ACCOUNT_NUMBER = process.env.OVH_ROOM_ACCOUNT_NUMBER
+  config.OVH_ROOM_PHONE_NUMBER = process.env.OVH_ROOM_PHONE_NUMBER
+}
+
 
 if (!isPresent('DATABASE_URL')) {
   throw new Error('Env vars DATABASE_URL should be set')
@@ -61,7 +77,7 @@ if (!isPresent('DATABASE_URL')) {
 config.DATABASE_URL = process.env.DATABASE_URL
 
 
-config.NUM_PIN_DIGITS = process.env.NUM_PIN_DIGITS || 4
+config.NUM_PIN_DIGITS = process.env.NUM_PIN_DIGITS || (config.USE_OVH_ROOM_API ? 9 : 4)
 config.CONFERENCE_MAX_DURATION_IN_MINUTES = process.env.CONFERENCE_MAX_DURATION_IN_MINUTES || 1440
 config.TOKEN_DURATION_IN_MINUTES = process.env.TOKEN_DURATION_IN_MINUTES || 120
 config.POLL_URL = process.env.POLL_URL
