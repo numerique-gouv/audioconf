@@ -1,0 +1,12 @@
+{
+  "extends": ["prettier", "plugin:node/recommended"],
+  "plugins": ["prettier", "ejs"],
+  "rules": {
+    "prettier/prettier": "error",
+    "no-unused-vars": "warn",
+    "no-console": "off",
+    "func-names": "off",
+    "no-process-exit": "off",
+    "object-shorthand": "off"
+  }
+}

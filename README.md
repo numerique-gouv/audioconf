@@ -1,12 +1,12 @@
 # Audioconf
 Des audio conférences pour les agents de l'Etat.
 
-
 ## Générer clé API OVH
 
 Lien : https://eu.api.ovh.com/createToken/
 
 - Nécessaires pour les fonctionalités en cours, pour l'API des numéros de téléphone
+
 ```
 GET /telephony/${OVH_ACCOUNT_NUMBER}/conference
 PUT /telephony/${OVH_ACCOUNT_NUMBER}/conference/*/settings
@@ -16,14 +16,15 @@ GET /telephony/${OVH_ACCOUNT_NUMBER}/conference/*/informations
 ```
 
 - Nécessaires pour les fonctionalités en cours, pour le nouvel API Rooms
+
 ```
 POST /telephony/${OVH_ROOM_ACCOUNT_NUMBER}/conference/${OVH_ROOM_PHONE_NUMBER}/rooms
 PUT /telephony/${OVH_ROOM_ACCOUNT_NUMBER}/conference/${OVH_ROOM_PHONE_NUMBER}/rooms/*
 GET /telephony/${OVH_ROOM_ACCOUNT_NUMBER}/conference/${OVH_ROOM_PHONE_NUMBER}/roomsStats
 ```
 
-
 ### Créer des migrations
+
 [KnexJS](http://knexjs.org/#Migrations) permet de créer des migrations de base de données. Un shortcut a été ajouté au `package.json` pour créer une migration :
 
 ```
@@ -42,6 +43,11 @@ Pour utiliser d'autres commandes, le [CLI de KnexJS](http://knexjs.org/#Migratio
 ./node_modules/knex/bin/cli.js migrate:rollback
 ```
 
+## Développement
+
+L'environnement de développement est préconfiguré pour Visual Code.
+Pour profiter de l'intégration avec ESLint et Prettier, installer les plugins du même nom.
+
 ## Docker compose
 
 - Récupérer les dépendences : `docker-compose run -u root web npm install`
@@ -56,12 +62,15 @@ Pour utiliser d'autres commandes, le [CLI de KnexJS](http://knexjs.org/#Migratio
 - Ouvrir http://localhost:8089/
 
 ## Tester que le HTML d'un site est valide
+
 ```
 npm run checkHTML --  <url du site à tester>
 ```
+
 Si on veut checker pour une PR donnée, utiliser l'url de la review app de la PR (voir les checks dans la PR).
 
 Pour valider le code en local :
+
 ```
 npm run checkHTMLLocal
 ```
