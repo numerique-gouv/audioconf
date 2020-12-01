@@ -15,6 +15,9 @@ const sendValidationEmailController = require('./controllers/sendValidationEmail
 const stats = require('./lib/stats')
 const urls = require('./urls')
 
+console.debug('Found config : ')
+console.dir(config)
+
 const app = express()
 
 app.set('view engine', 'ejs')
