@@ -1,6 +1,6 @@
 {
   "extends": ["prettier", "plugin:node/recommended"],
-  "plugins": ["prettier", "ejs"],
+  "plugins": ["prettier"],
   "rules": {
     "prettier/prettier": "error",
     "no-unused-vars": "warn",
