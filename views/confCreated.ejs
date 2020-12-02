@@ -24,7 +24,6 @@
           <strong id="pin">
             **** (Vous avez reçu le code d'accès par email, si vous l'avez perdu, annuler cette conférence et démarrer une nouvelle conférence)
           </strong>
-          <span id="press-pound" style="display: none;">et appuyez sur "#"</span>
         </li>
       </ul>
     </div>
@@ -83,11 +82,7 @@
   if (regex.test(hash)) {
     document.getElementById('pin').innerHTML = formatPin(hash);
     const phoneLink = document.getElementById('phone-link');
-    phoneLink.href = phoneLink.href + ',,' + hash + (useOVHRoomAPI ? '#' : '');
-  }
-
-  if (useOVHRoomAPI) {
-    document.getElementById('press-pound').style.display = 'inline';
+    phoneLink.href = phoneLink.href + ',,' + hash;
   }
 </script>
 
