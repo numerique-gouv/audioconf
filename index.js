@@ -15,26 +15,9 @@ const sendValidationEmailController = require('./controllers/sendValidationEmail
 const stats = require('./lib/stats')
 const urls = require('./urls')
 
-function obfuscate({config, secretKeys}) {
-  const res = {...config}
-  for (let key of secretKeys) {
-    res[key] = "·····"
-  }
-  return res
+if (config.NODE_ENV === "development") {
+  console.dir({ config });
 }
-
-const secretKeys = [
-  "MAIL_PASS",
-  "OVH_ROOM_APP_KEY",
-  "OVH_ROOM_APP_SECRET",
-  "OVH_ROOM_CONSUMER_KEY",
-  "DATABASE_URL",
-  "SECRET",
-];
-
-const debugConfig = config.NODE_ENV === "development" ? config : obfuscate({config, secretKeys})
-
-console.dir({config: debugConfig})
 
 const app = express()
 
