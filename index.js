@@ -15,6 +15,10 @@ const sendValidationEmailController = require('./controllers/sendValidationEmail
 const stats = require('./lib/stats')
 const urls = require('./urls')
 
+if (config.NODE_ENV === "development") {
+  console.dir({ config });
+}
+
 const app = express()
 
 app.set('view engine', 'ejs')
