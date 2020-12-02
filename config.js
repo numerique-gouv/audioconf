@@ -4,6 +4,7 @@ dotenv.config({ path: '.env.email_whitelist' })
 
 const config = {}
 
+config.NODE_ENV = process.env.NODE_ENV || "production"
 config.PORT = process.env.PORT || 8080
 config.PROTOCOL = process.env.PROTOCOL || "https"
 
