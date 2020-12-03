@@ -2,7 +2,7 @@ const conferences = require('../lib/conferences')
 const config = require("../config")
 
 /*
-GET /status
+GET /api/status
 code 200 -> all is well
 code 500 -> error
 */
@@ -49,9 +49,6 @@ module.exports.getStatus = async (req, res) => {
   }
 
   status.status = status.OVHStatus && status.DBStatus
-  if (status.status) {
-    return res.status(200).json(status)
-  } else {
-    return res.status(500).json(status)
-  }
+  const statusCode = status.status ? 200 : 500
+  return res.status(statusCode).json(status)
 }
