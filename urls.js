@@ -8,6 +8,7 @@ module.exports = {
   showConf : '/conferences/:id',
   cancelConf : '/conferences/:id/annuler',
   stats: '/stats',
-  status: '/status',
   contact: '/contact',
+
+  status: '/api/status',
 }
