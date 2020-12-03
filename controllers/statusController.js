@@ -37,6 +37,7 @@ module.exports.getStatus = async (req, res) => {
     const lastMigration = await knex('knex_migrations').select()
       .orderBy('id', 'desc')
       .limit(1)
+      .timeout(10 * 1000, {cancel: true})
     if (lastMigration.length === 0) {
       console.error('error with DB : no migrations')
       status.DBStatus = false
