@@ -4,22 +4,25 @@ const sinon = require('sinon')
 const app = require('../index')
 const conferences = require('../lib/conferences')
 const config = require('../config')
-const knex = require('knex')
+const db = require('../lib/db')
 const urls = require('../urls')
 
 describe('statusController', function() {
   const { DATABASE_URL, USE_OVH_ROOM_API } = config
   let getRoomsStatsStub
-  let knexStub
+  let getDBStatusStub
   beforeEach(function(done) {
     config.USE_OVH_ROOM_API = true
     getRoomsStatsStub = sinon.stub(conferences, 'getRoomsStats')
       .returns(Promise.resolve({coucou: "123"}))
+    getDBStatusStub = sinon.stub(db, 'getDBStatus')
+      .returns(Promise.resolve(true))
     done()
   })
 
   afterEach(function(done) {
     getRoomsStatsStub.restore()
+    getDBStatusStub.restore()
     config.DATABASE_URL = DATABASE_URL
     config.USE_OVH_ROOM_API = USE_OVH_ROOM_API
     done()
@@ -38,7 +41,9 @@ describe('statusController', function() {
   })
 
   it('should return 500 when DB is down', function(done) {
-    config.DATABASE_URL = 'this database does not exist'
+    getDBStatusStub.restore()
+    getDBStatusStub = sinon.stub(db, 'getDBStatus')
+      .returns(Promise.resolve(false))
 
     chai.request(app)
       .get(urls.status)
@@ -71,7 +76,9 @@ describe('statusController', function() {
     getRoomsStatsStub.restore()
     getRoomsStatsStub = sinon.stub(conferences, 'getRoomsStats')
       .returns(Promise.reject('OVH is dowwwwwwnnnnn'))
-    config.DATABASE_URL = 'this database does not exist'
+    getDBStatusStub.restore()
+    getDBStatusStub = sinon.stub(db, 'getDBStatus')
+      .returns(Promise.resolve(false))
 
     chai.request(app)
       .get(urls.status)

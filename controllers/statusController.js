@@ -1,5 +1,6 @@
 const conferences = require('../lib/conferences')
 const config = require("../config")
+const db = require('../lib/db')
 
 /*
 GET /api/status
@@ -28,26 +29,7 @@ module.exports.getStatus = async (req, res) => {
     status.OVHStatus = false
   }
 
-  try {
-    const knex = require('knex')({
-      client: 'pg',
-      connection: config.DATABASE_URL,
-    })
-
-    const lastMigration = await knex('knex_migrations').select()
-      .orderBy('id', 'desc')
-      .limit(1)
-      .timeout(10 * 1000, {cancel: true})
-    if (lastMigration.length === 0) {
-      console.error('error with DB : no migrations')
-      status.DBStatus = false
-    } else {
-      status.DBStatus = true
-    }
-  } catch(err) {
-    console.error('status check got error with DB', err)
-    status.DBStatus = false
-  }
+  status.DBStatus = (await db.getDBStatus())
 
   status.status = status.OVHStatus && status.DBStatus
   const statusCode = status.status ? 200 : 500
