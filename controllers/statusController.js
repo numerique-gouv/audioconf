@@ -12,6 +12,7 @@ module.exports.getStatus = async (req, res) => {
     FEATURE_DISPLAY_STATS_ON_LANDING : config.FEATURE_DISPLAY_STATS_ON_LANDING,
     FEATURE_RESERVATIONS : config.FEATURE_RESERVATIONS,
     FEATURE_STATS_PAGE : config.FEATURE_STATS_PAGE,
+    version: require('../package').version,
   }
 
   try {
