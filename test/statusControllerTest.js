@@ -8,11 +8,11 @@ const knex = require('knex')
 const urls = require('../urls')
 
 describe('statusController', function() {
-  config.USE_OVH_ROOM_API = true
-  const DATABASE_URL = config.DATABASE_URL
+  const { DATABASE_URL, USE_OVH_ROOM_API } = config
   let getRoomsStatsStub
   let knexStub
   beforeEach(function(done) {
+    config.USE_OVH_ROOM_API = true
     getRoomsStatsStub = sinon.stub(conferences, 'getRoomsStats')
       .returns(Promise.resolve({coucou: "123"}))
     done()
@@ -21,6 +21,7 @@ describe('statusController', function() {
   afterEach(function(done) {
     getRoomsStatsStub.restore()
     config.DATABASE_URL = DATABASE_URL
+    config.USE_OVH_ROOM_API = USE_OVH_ROOM_API
     done()
   })
 
