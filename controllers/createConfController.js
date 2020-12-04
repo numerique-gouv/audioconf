@@ -23,14 +23,15 @@ const createConfWithDuration = async (email, durationInMinutes) => {
   }
 }
 
-const createConfWithDay = async (email, conferenceDay) => {
+const createConfWithDay = async (email, conferenceDay, userTimezoneOffset) => {
   try {
     console.log(`Création d'un numéro de conférence pour ${format.hashForLogs(email)} pour le ${conferenceDay}`)
 
-    const freeAt = new Date(conferenceDay)
-    freeAt.setHours(23)
-    freeAt.setMinutes(59)
-    console.log('freeAt', format.formatFrenchDateTime(freeAt))
+    const timestampUTC = Date.parse(`${conferenceDay} 23:59:59 GMT`)
+    const timestampZoned = timestampUTC + userTimezoneOffset * 60 * 1000
+    const freeAt = new Date(timestampZoned)
+    console.log('Computed freeAt with user timezone', freeAt) // todo remove log
+
     const OVHconfData = await conferences.createConf(freeAt)
 
     const conference = await db.insertConferenceWithFreeAt(email, OVHconfData.phoneNumber, OVHconfData.freeAt)
@@ -44,6 +45,9 @@ const createConfWithDay = async (email, conferenceDay) => {
 
 module.exports.createConf = async (req, res) => {
   const token = req.query.token
+
+  const userTimezoneOffset = req.query.timezoneOffset
+  console.log('Got timezoneOffset from query params', userTimezoneOffset) // todo remove log
 
   const tokensData = await db.getToken(token)
   const isTokenValid = tokensData.length === 1
@@ -69,7 +73,7 @@ module.exports.createConf = async (req, res) => {
     if (durationInMinutes) {
       conference = await createConfWithDuration(email, durationInMinutes)
     } else {
-      conference = await createConfWithDay(email, conferenceDay)
+      conference = await createConfWithDay(email, conferenceDay, userTimezoneOffset)
     }
   } catch (err) {
     req.flash('error', 'La conférence n\'a pas pu être créée. Vous pouvez réessayer.')

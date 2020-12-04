@@ -31,6 +31,12 @@ const generateToken = () => {
 }
 
 module.exports.sendValidationEmail = async (req, res) => {
+  // todo test the whole thing works with a timezone that is not the same as the server.
+  // todo test the whole thing works with a negative timezone (positive timezoneOffset).
+  const userTimezoneOffset = req.body.timezoneOffset
+  console.log('got timezoneOffset from form', userTimezoneOffset) // todo remove log
+  // todo should we save the timezone offset in db instead ?
+
   const email = req.body.email
   const conferenceDurationInMinutes = req.body.durationInMinutes
   const conferenceDayString = req.body.day
@@ -59,7 +65,7 @@ module.exports.sendValidationEmail = async (req, res) => {
     await db.insertToken(email, token, tokenExpirationDate, conferenceDurationInMinutes, conferenceDayString)
     console.log(`Login token créé pour ${format.hashForLogs(email)}, il expire à ${tokenExpirationDate}`)
 
-    const validationUrl = `${config.PROTOCOL}://${req.get('host')}${urls.createConf}?token=${encodeURIComponent(token)}`
+    const validationUrl = `${config.PROTOCOL}://${req.get('host')}${urls.createConf}?token=${encodeURIComponent(token)}&timezoneOffset=${userTimezoneOffset}`
     await emailer.sendEmailValidationEmail(email, token, tokenExpirationDate, validationUrl)
 
     res.redirect(url.format({
