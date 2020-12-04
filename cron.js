@@ -5,6 +5,7 @@ const db = require('./lib/db')
 const updateStatsJob = new cron.CronJob({
   cronTime: '*/2 * * * *',
   onTick: async () =>  {
+    console.debug("Start of computeStats job")
     await stats.computeStats()
   },
   start: true,

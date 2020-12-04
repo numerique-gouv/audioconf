@@ -76,15 +76,6 @@ app.get(urls.createConf, createConfController.createConf)
 
 app.get(urls.showConf, createConfController.showConf)
 
-app.get(urls.anonymizeConferences, async (req, res) => {
-  try {
-    const nbUpdates = await db.anonymizeConferences()
-    res.status(200).json({ "Nb conferences anonymized" : nbUpdates})
-  } catch (err) {
-    res.status(500).json({ err})
-  }
-})
-
 app.post(urls.cancelConf, createConfController.cancelConf)
 
 app.get(urls.legalNotice, (req, res) => {
