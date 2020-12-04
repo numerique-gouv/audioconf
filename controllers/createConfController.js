@@ -27,6 +27,7 @@ const createConfWithDay = async (email, conferenceDay, userTimezoneOffset) => {
   try {
     console.log(`Création d'un numéro de conférence pour ${format.hashForLogs(email)} pour le ${conferenceDay}`)
 
+    // todo test with userTimezoneOffset = 0
     const timestampUTC = Date.parse(`${conferenceDay} 23:59:59 GMT`)
     const timestampZoned = timestampUTC + userTimezoneOffset * 60 * 1000
     const freeAt = new Date(timestampZoned)
@@ -46,9 +47,6 @@ const createConfWithDay = async (email, conferenceDay, userTimezoneOffset) => {
 module.exports.createConf = async (req, res) => {
   const token = req.query.token
 
-  const userTimezoneOffset = req.query.timezoneOffset
-  console.log('Got timezoneOffset from query params', userTimezoneOffset) // todo remove log
-
   const tokensData = await db.getToken(token)
   const isTokenValid = tokensData.length === 1
 
@@ -61,6 +59,8 @@ module.exports.createConf = async (req, res) => {
   const email = tokenData.email
   const durationInMinutes = tokenData.durationInMinutes
   const conferenceDay = tokenData.conferenceDay
+  const userTimezoneOffset = tokenData.userTimezoneOffset
+  console.log('Got timezoneOffset from query params', userTimezoneOffset) // todo remove log
 
   if (!conferenceDay && !durationInMinutes) {
     console.error('Login token contained no conferenceDay and no durationInMinutes. Cannot create conference.')
