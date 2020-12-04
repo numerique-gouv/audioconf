@@ -27,7 +27,6 @@ const createConfWithDay = async (email, conferenceDay, userTimezoneOffset) => {
   try {
     console.log(`Création d'un numéro de conférence pour ${format.hashForLogs(email)} pour le ${conferenceDay}`)
 
-    // todo test with userTimezoneOffset = 0
     const timestampUTC = Date.parse(`${conferenceDay} 23:59:59 GMT`)
     const timestampZoned = timestampUTC + userTimezoneOffset * 60 * 1000
     const freeAt = new Date(timestampZoned)
