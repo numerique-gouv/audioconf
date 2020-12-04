@@ -11,4 +11,5 @@ module.exports = {
   contact: '/contact',
 
   status: '/api/status',
+  anonymizeConferences: '/api/anonymize-conferences'
 }

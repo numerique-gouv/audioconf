@@ -11,12 +11,12 @@ const updateStatsJob = new cron.CronJob({
   timeZone: 'Europe/Paris'
 });
 
-const updateAnonymizeEmails = new cron.CronJob({
+const anonymizeConferencesJob = new cron.CronJob({
   cronTime: '0 15 * * *', // everyday at 00:15
   onTick: async () =>  {
-    console.debug("Start of anonymisation cron job")
+    console.debug("Start of anonymisation job")
     await db.anonymizeConferences()
-    console.debug("End of anonymisation cron job")
+    console.debug("End of anonymisation job")
   },
   start: true,
   timeZone: 'Europe/Paris'
