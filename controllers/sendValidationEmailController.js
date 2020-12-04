@@ -31,8 +31,6 @@ const generateToken = () => {
 }
 
 module.exports.sendValidationEmail = async (req, res) => {
-  // todo test the whole thing works with a timezone that is not the same as the server.
-  // todo test the whole thing works with a negative timezone (positive timezoneOffset).
   const userTimezoneOffset = req.body.timezoneOffset
   console.log('got timezoneOffset from form', userTimezoneOffset) // todo remove log
   // todo should we save the timezone offset in db instead ?
