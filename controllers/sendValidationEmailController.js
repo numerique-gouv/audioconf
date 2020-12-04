@@ -63,7 +63,7 @@ module.exports.sendValidationEmail = async (req, res) => {
     console.log(`Login token créé pour ${format.hashForLogs(email)}, il expire à ${tokenExpirationDate}`)
 
     const validationUrl = `${config.PROTOCOL}://${req.get('host')}${urls.createConf}?token=${encodeURIComponent(token)}`
-    await emailer.sendEmailValidationEmail(email, token, tokenExpirationDate, validationUrl)
+    await emailer.sendEmailValidationEmail(email, tokenExpirationDate, validationUrl)
 
     res.redirect(url.format({
       pathname: urls.validationEmailSent,
