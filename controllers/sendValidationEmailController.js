@@ -31,7 +31,7 @@ const generateToken = () => {
 }
 
 module.exports.sendValidationEmail = async (req, res) => {
-  const userTimezoneOffset = req.body.timezoneOffset
+  const userTimezoneOffset = req.body.userTimezoneOffset
   console.log('got timezoneOffset from form', userTimezoneOffset) // todo remove log
 
   const email = req.body.email

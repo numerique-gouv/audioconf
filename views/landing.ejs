@@ -54,8 +54,8 @@
                 </div>
               <% } %>
               <div>
-                hidden input!! timezoneOffset todo hide the input
-                <input type="number" id="timezoneOffset" name="timezoneOffset" required>
+                hidden input!! userTimezoneOffset todo hide the input
+                <input type="number" id="userTimezoneOffset" name="userTimezoneOffset" required>
               </div>
               <div class="rf-input-group">
                 <button type="submit" class="rf-btn" title="Réserver ma conférence">Réserver ma conférence</button>
@@ -146,6 +146,6 @@
 
 <script>
   // Fill in the hidden input with the user's timezoneOffset
-  document.getElementById('timezoneOffset').value = new Date().getTimezoneOffset()
+  document.getElementById('userTimezoneOffset').value = new Date().getTimezoneOffset()
 </script>
 <%- include('partials/footer') -%>
