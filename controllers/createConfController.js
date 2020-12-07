@@ -23,14 +23,24 @@ const createConfWithDuration = async (email, durationInMinutes) => {
   }
 }
 
+// Compute the conf expiration date : 23:59:59, in the user's timezone.
+const computeConfExpirationDate = (conferenceDayString, userTimezoneOffset) => {
+  const expirationTimeString = '23:59:59'
+  const timestampForMidnightUTC = Date.parse(`${conferenceDayString} ${expirationTimeString} GMT`)
+
+  // Note : userTimezoneOffset is in minutes (e.g. -60 for GMT+1), while timestamps are in milliseconds.
+  const timestampForMidnightInUserTimezone = timestampForMidnightUTC + userTimezoneOffset * 60 * 1000
+
+  const freeAt = new Date(timestampForMidnightInUserTimezone)
+  console.log('Computed freeAt with user timezone', freeAt) // todo remove log
+  return freeAt
+}
+
 const createConfWithDay = async (email, conferenceDay, userTimezoneOffset) => {
   try {
     console.log(`Création d'un numéro de conférence pour ${format.hashForLogs(email)} pour le ${conferenceDay}`)
 
-    const timestampUTC = Date.parse(`${conferenceDay} 23:59:59 GMT`)
-    const timestampZoned = timestampUTC + userTimezoneOffset * 60 * 1000
-    const freeAt = new Date(timestampZoned)
-    console.log('Computed freeAt with user timezone', freeAt) // todo remove log
+    const freeAt = computeConfExpirationDate(conferenceDay, userTimezoneOffset)
 
     const OVHconfData = await conferences.createConf(freeAt)
 
