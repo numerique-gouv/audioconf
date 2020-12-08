@@ -12,7 +12,7 @@ const updateStatsJob = new cron.CronJob({
 });
 
 const anonymizeConferencesJob = new cron.CronJob({
-  cronTime: '0 15 * * *', // everyday at 00:15
+  cronTime: '15 0 * * *', // everyday at 00:15
   onTick: anonymizeConferences,
   start: true,
   timeZone: 'Europe/Paris'
