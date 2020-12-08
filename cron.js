@@ -2,12 +2,13 @@ const cron = require("cron")
 const stats = require("./lib/stats")
 const db = require("./lib/db")
 const anonymizeConferences = require("./jobs/anonymizeConferences")
+const sendSurveyEmails = require("./jobs/sendSurveyEmails")
 const computeStats = require("./jobs/computeStats")
 const config = require("./config")
 
 const jobs = [
   {
-    cronTime: "*/2 * * * *",
+    cronTime: "*/2 * * * *", // every two minutes
     onTick: computeStats,
     start: true,
     timeZone: "Europe/Paris",
@@ -21,6 +22,12 @@ const jobs = [
     timeZone: "Europe/Paris",
     isActive: config.FEATURE_JOB_ANONYMIZE_EMAILS,
     name: "Anonymize emails",
+  },
+  {
+    cronTime: "30 0 * * *", // everyday at 00:30
+    onTick: sendSurveyEmails,
+    start: true,
+    timeZone: "Europe/Paris",
   },
 ]
 
