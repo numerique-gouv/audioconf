@@ -1,4 +1,4 @@
-const db = require("../../lib/db")
+const db = require("../lib/db")
 
 module.exports = async () => {
   console.debug("Start of anonymisation job")
