@@ -56,7 +56,6 @@ module.exports.createConf = async (req, res) => {
   const durationInMinutes = tokenData.durationInMinutes
   const conferenceDay = tokenData.conferenceDay
   const userTimezoneOffset = tokenData.userTimezoneOffset
-  console.log('Got timezoneOffset from query params', userTimezoneOffset) // todo remove log
 
   if (!conferenceDay && !durationInMinutes) {
     console.error('Login token contained no conferenceDay and no durationInMinutes. Cannot create conference.')

@@ -32,8 +32,6 @@ const generateToken = () => {
 
 module.exports.sendValidationEmail = async (req, res) => {
   const userTimezoneOffset = req.body.userTimezoneOffset
-  console.log('got timezoneOffset from form', userTimezoneOffset) // todo remove log
-
   const email = req.body.email
   const conferenceDurationInMinutes = req.body.durationInMinutes
   const conferenceDayString = req.body.day
@@ -54,6 +52,7 @@ module.exports.sendValidationEmail = async (req, res) => {
     return res.redirect('/')
   }
 
+  // TODO : token creation should be done by db.js, and expose db.createAndInsertToken.
   const token = generateToken()
   const tokenExpirationDate = new Date()
   tokenExpirationDate.setMinutes(tokenExpirationDate.getMinutes() + config.TOKEN_DURATION_IN_MINUTES)
