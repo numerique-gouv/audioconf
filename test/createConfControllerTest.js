@@ -12,7 +12,6 @@ describe('createConfController', function() {
   let createConfStub
   let sendEmailStub
   beforeEach(function(done) {
-    config.EMAIL_WHITELIST = [ /.*@(.*\.|)beta\.gouv\.fr/, /.*@(.*\.|)numerique\.gouv\.fr/ ]
     createConfStub = sinon.stub(conferences, 'createConf')
         .returns(Promise.resolve({ phoneNumber: '0122334455', id: 123456}))
     sendEmailStub = sinon.stub(emailer, 'sendConfCreatedEmail')
@@ -24,21 +23,6 @@ describe('createConfController', function() {
     createConfStub.restore()
     sendEmailStub.restore()
     done()
-  })
-
-  it('should refuse email that is not in EMAIL_WHITELIST', function(done) {
-    chai.request(app)
-      .post(urls.createConf)
-      .type('form')
-      .send({
-        email: 'bad.email@not.gouv.fr',
-      })
-      .end((err, res) => {
-        testUtils.shouldRedirectToLocation(res, urls.landing)
-        sinon.assert.notCalled(createConfStub)
-        sinon.assert.notCalled(sendEmailStub)
-        done()
-      })
   })
 
   it('should react when conf was not created', function(done) {
