@@ -28,6 +28,8 @@ const jobs = [
     onTick: sendSurveyEmails,
     start: true,
     timeZone: "Europe/Paris",
+    isActive: config.FEATURE_JOB_SEND_SURVEY_EMAILS,
+    name: "Send survey emails",
   },
 ]
 
