@@ -5,13 +5,8 @@ const app = require('../index')
 const conferences = require('../lib/conferences')
 const config = require('../config')
 const emailer = require('../lib/emailer')
+const testUtils = require('./utils')
 const urls = require('../urls')
-
-const shouldRedirectToLocation = (res, location) => {
-  // Escape slashes for regex
-  const escapedLocation = location.replace('/', '\/')
-  res.should.redirectTo(new RegExp(`^http:\/\/127.0.0.1:[0-9]+${escapedLocation}$`))
-}
 
 describe('createConfController', function() {
   let createConfStub
@@ -31,21 +26,6 @@ describe('createConfController', function() {
     done()
   })
 
-  it('should refuse invalid email', function(done) {
-    chai.request(app)
-      .post(urls.createConf)
-      .type('form')
-      .send({
-        email: 'bad.email',
-      })
-      .end((err, res) => {
-        shouldRedirectToLocation(res, urls.landing)
-        sinon.assert.notCalled(createConfStub)
-        sinon.assert.notCalled(sendEmailStub)
-        done()
-      })
-  })
-
   it('should refuse email that is not in EMAIL_WHITELIST', function(done) {
     chai.request(app)
       .post(urls.createConf)
@@ -54,7 +34,7 @@ describe('createConfController', function() {
         email: 'bad.email@not.gouv.fr',
       })
       .end((err, res) => {
-        shouldRedirectToLocation(res, urls.landing)
+        testUtils.shouldRedirectToLocation(res, urls.landing)
         sinon.assert.notCalled(createConfStub)
         sinon.assert.notCalled(sendEmailStub)
         done()
@@ -73,7 +53,7 @@ describe('createConfController', function() {
         email: 'good.email@beta.gouv.fr',
       })
       .end(function(err, res) {
-        shouldRedirectToLocation(res, urls.landing)
+        testUtils.shouldRedirectToLocation(res, urls.landing)
         sinon.assert.calledOnce(createConfStub)
         sinon.assert.notCalled(sendEmailStub)
         done()
@@ -92,7 +72,7 @@ describe('createConfController', function() {
         email: 'good.email@beta.gouv.fr',
       })
       .end(function(err, res) {
-        shouldRedirectToLocation(res, urls.landing)
+        testUtils.shouldRedirectToLocation(res, urls.landing)
         sinon.assert.calledOnce(createConfStub)
         sinon.assert.calledOnce(sendEmailStub)
         done()
@@ -107,7 +87,7 @@ describe('createConfController', function() {
         email: 'good.email@beta.gouv.fr',
       })
       .end(function(err, res) {
-        shouldRedirectToLocation(res, urls.confCreated)
+        testUtils.shouldRedirectToLocation(res, urls.confCreated)
         sinon.assert.calledOnce(createConfStub)
         sinon.assert.calledOnce(sendEmailStub)
         done()
