@@ -9,6 +9,7 @@ const config = require('./config')
 const conferences = require('./lib/conferences')
 const db = require('./lib/db')
 const format = require('./lib/format')
+const cancelConfController = require('./controllers/cancelConfController')
 const createConfController = require('./controllers/createConfController')
 const landingController = require('./controllers/landingController')
 const sendValidationEmailController = require('./controllers/sendValidationEmailController')
@@ -77,7 +78,7 @@ app.get(urls.createConf, createConfController.createConf)
 
 app.get(urls.showConf, showConfController.showConf)
 
-app.post(urls.cancelConf, createConfController.cancelConf)
+app.post(urls.cancelConf, cancelConfController.cancelConf)
 
 app.get(urls.legalNotice, (req, res) => {
   res.render('legalNotice', {
