@@ -5,7 +5,6 @@ const db = require('../lib/db')
 const emailer = require('../lib/emailer')
 const sinon = require('sinon')
 const urls = require('../urls')
-const testUtils = require('./utils')
 
 describe('sendValidationEmailController', function() {
   let sendEmailStub
@@ -32,13 +31,14 @@ describe('sendValidationEmailController', function() {
   it('should refuse invalid email', function(done) {
     chai.request(app)
       .post(urls.sendValidationEmail)
+      .redirects(0) // block redirects, we don't want to test them
       .type('form')
       .send({
         email: 'bad.email',
         day: '2020-12-09',
       })
       .end((err, res) => {
-        testUtils.shouldRedirectToLocation(res, urls.landing)
+        res.should.redirectTo(urls.landing)
         sinon.assert.notCalled(sendEmailStub)
         sinon.assert.notCalled(insertTokenStub)
         done()
@@ -48,13 +48,14 @@ describe('sendValidationEmailController', function() {
   it('should refuse email that is not in EMAIL_WHITELIST', function(done) {
     chai.request(app)
       .post(urls.sendValidationEmail)
+      .redirects(0) // block redirects, we don't want to test them
       .type('form')
       .send({
         email: 'bad.email@not.betagouv.fr',
         day: '2020-12-09',
       })
       .end((err, res) => {
-        testUtils.shouldRedirectToLocation(res, urls.landing)
+        res.should.redirectTo(urls.landing)
         sinon.assert.notCalled(sendEmailStub)
         sinon.assert.notCalled(insertTokenStub)
         done()
