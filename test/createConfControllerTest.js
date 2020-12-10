@@ -3,9 +3,9 @@ const sinon = require('sinon')
 
 const app = require('../index')
 const conferences = require('../lib/conferences')
+const config = require('../config')
 const db = require('../lib/db')
 const emailer = require('../lib/emailer')
-const testUtils = require('./utils')
 const urls = require('../urls')
 
 describe('createConfController', function() {
@@ -13,12 +13,16 @@ describe('createConfController', function() {
   let sendEmailStub
   let getTokenStub
   let insertConfStub
+  let USE_OVH_ROOM_API_BCK
+
   beforeEach(function(done) {
     createConfStub = sinon.stub(conferences, 'createConf')
     sendEmailStub = sinon.stub(emailer, 'sendConfCreatedEmail')
     getTokenStub = sinon.stub(db, 'getToken')
     insertConfStub = sinon.stub(db, 'insertConferenceWithFreeAt')
 
+    USE_OVH_ROOM_API_BCK = config.USE_OVH_ROOM_API
+    config.USE_OVH_ROOM_API = true
     done()
   })
 
@@ -27,6 +31,7 @@ describe('createConfController', function() {
     sendEmailStub.restore()
     getTokenStub.restore()
     insertConfStub.restore()
+    config.USE_OVH_ROOM_API = USE_OVH_ROOM_API_BCK
     done()
   })
 
@@ -47,6 +52,7 @@ describe('createConfController', function() {
 
     chai.request(app)
       .get(urls.createConf)
+      .redirects(0) // block redirects, we don't want to test them
       .query({
         token: 'long_random_token',
       })
@@ -55,7 +61,7 @@ describe('createConfController', function() {
         sinon.assert.calledOnce(createConfStub)
         sinon.assert.calledOnce(insertConfStub)
         sinon.assert.calledOnce(sendEmailStub)
-        testUtils.shouldRedirectToLocation(res, urls.showConf.replace(":id", confUUID) + '#' + confPin)
+        res.should.redirectTo(urls.showConf.replace(":id", confUUID) + '#' + confPin)
         done()
       })
   })
@@ -75,6 +81,7 @@ describe('createConfController', function() {
 
     chai.request(app)
       .get(urls.createConf)
+      .redirects(0) // block redirects, we don't want to test them
       .query({
         token: 'long_random_token',
       })
@@ -83,7 +90,7 @@ describe('createConfController', function() {
         sinon.assert.notCalled(createConfStub)
         sinon.assert.notCalled(insertConfStub)
         sinon.assert.notCalled(sendEmailStub)
-        testUtils.shouldRedirectToLocation(res, urls.landing)
+        res.should.redirectTo(urls.landing)
         done()
       })
   })
@@ -105,6 +112,7 @@ describe('createConfController', function() {
 
     chai.request(app)
       .get(urls.createConf)
+      .redirects(0) // block redirects, we don't want to test them
       .query({
         token: 'long_random_token',
       })
@@ -113,7 +121,7 @@ describe('createConfController', function() {
         sinon.assert.calledOnce(createConfStub)
         sinon.assert.notCalled(insertConfStub)
         sinon.assert.notCalled(sendEmailStub)
-        testUtils.shouldRedirectToLocation(res, urls.landing)
+        res.should.redirectTo(urls.landing)
         done()
       })
   })
@@ -135,6 +143,7 @@ describe('createConfController', function() {
 
     chai.request(app)
       .get(urls.createConf)
+      .redirects(0) // block redirects, we don't want to test them
       .query({
         token: 'long_random_token',
       })
@@ -143,7 +152,7 @@ describe('createConfController', function() {
         sinon.assert.calledOnce(createConfStub)
         sinon.assert.calledOnce(insertConfStub)
         sinon.assert.calledOnce(sendEmailStub)
-        testUtils.shouldRedirectToLocation(res, urls.landing)
+        res.should.redirectTo(urls.landing)
         done()
       })
   })
