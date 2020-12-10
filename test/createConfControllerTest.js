@@ -19,10 +19,6 @@ describe('createConfController', function() {
     sendEmailStub = sinon.stub(emailer, 'sendConfCreatedEmail')
         .returns(Promise.resolve())
     getTokenStub = sinon.stub(db, 'getToken')
-        .returns(Promise.resolve([{
-          email: 'good.email@thing.com',
-          conferenceDay: '2020-12-09',
-        }]))
     insertConfStub = sinon.stub(db, 'insertConferenceWithFreeAt')
 
     done()
@@ -35,7 +31,7 @@ describe('createConfController', function() {
     insertConfStub.restore()
     done()
   })
-
+/*
   it('should react when conf was not created', function(done) {
     createConfStub.restore()
     createConfStub = sinon.stub(conferences, 'createConf')
@@ -72,7 +68,7 @@ describe('createConfController', function() {
         sinon.assert.calledOnce(sendEmailStub)
         done()
       })
-  })
+  })*/
 
   it('should create conf and send email', function(done) {
     const confUUID = 'long_uuid'
@@ -81,6 +77,10 @@ describe('createConfController', function() {
       id: confUUID,
       pin: confPin,
     }))
+    getTokenStub = getTokenStub.returns(Promise.resolve([{
+      email: 'good.email@thing.com',
+      conferenceDay: '2020-12-09',
+    }]))
 
     chai.request(app)
       .get(urls.createConf)
@@ -96,4 +96,30 @@ describe('createConfController', function() {
         done()
       })
   })
+
+  it('should redirect when token is bad', function(done) {
+    const confUUID = 'long_uuid'
+    const confPin = 123456789
+    insertConfStub = insertConfStub.returns(Promise.resolve({
+      id: confUUID,
+      pin: confPin,
+    }))
+    // No token found.
+    getTokenStub = getTokenStub.returns(Promise.resolve([]))
+
+    chai.request(app)
+      .get(urls.createConf)
+      .query({
+        token: 'long_random_token',
+      })
+      .end(function(err, res) {
+        sinon.assert.calledOnce(getTokenStub)
+        sinon.assert.notCalled(createConfStub)
+        sinon.assert.notCalled(insertConfStub)
+        sinon.assert.notCalled(sendEmailStub)
+        testUtils.shouldRedirectToLocation(res, urls.landing)
+        done()
+      })
+  })
+
 })
