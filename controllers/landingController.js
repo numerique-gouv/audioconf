@@ -62,5 +62,6 @@ module.exports.getLanding = async (req, res) => {
     activeConfsCount: statsPoint.activeConfsCount,
     dateChoices: dateChoices,
     FEATURE_RESERVATIONS: config.FEATURE_RESERVATIONS,
+    announcements: config.ANNOUNCEMENTS,
   })
 }

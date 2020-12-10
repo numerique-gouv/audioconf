@@ -7,6 +7,12 @@
         <h2>
           Réserver une conférence téléphonique
         </h2>
+          <% if (announcements.length) { %>
+            <% announcements.forEach(function(announcement) { %>
+              <%- include('partials/notificationInfo', {info: announcement}) -%>
+            <% }) %>
+          <% } %>
+
           <% if (errors.length) { %>
             <% errors.forEach(function(error) { %>
               <%- include('partials/notificationError', {error: error}) -%>
