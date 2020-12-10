@@ -12,6 +12,7 @@ const format = require('./lib/format')
 const createConfController = require('./controllers/createConfController')
 const landingController = require('./controllers/landingController')
 const sendValidationEmailController = require('./controllers/sendValidationEmailController')
+const showConfController = require('./controllers/showConfController')
 const statusController = require('./controllers/statusController')
 const stats = require('./lib/stats')
 const urls = require('./urls')
@@ -74,7 +75,7 @@ app.get(urls.validationEmailSent, (req, res) => {
 
 app.get(urls.createConf, createConfController.createConf)
 
-app.get(urls.showConf, createConfController.showConf)
+app.get(urls.showConf, showConfController.showConf)
 
 app.post(urls.cancelConf, createConfController.cancelConf)
 
