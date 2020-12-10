@@ -16,12 +16,14 @@ describe('showConfController', function() {
 
   it('should show conf', function(done) {
     const confUUID = 'long-id-long-long'
+    const conferenceDay = '2020-12-10'
+    const phoneNumber = '0033122334455'
 
     getConfStub = getConfStub.returns(Promise.resolve({
       id: confUUID,
       email: 'martin.rauch@ddr.de',
-      phoneNumber: '0033122334455',
-      expiresAt: new Date(),
+      phoneNumber: phoneNumber,
+      expiresAt: new Date(`${conferenceDay} 23:59:59 GMT+3`),
     }))
 
     chai.request(app)
@@ -32,7 +34,8 @@ describe('showConfController', function() {
       })
       .end(function(err, res) {
         sinon.assert.calledOnce(getConfStub)
-        chai.expect(res.text).to.have.string('réservée')
+        chai.expect(res.text).to.have.string('10 décembre 2020')
+        chai.expect(res.text).to.have.string('01 22 33 44 55')
         done()
       })
   })
