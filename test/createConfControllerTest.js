@@ -15,7 +15,6 @@ describe('createConfController', function() {
   let insertConfStub
   beforeEach(function(done) {
     createConfStub = sinon.stub(conferences, 'createConf')
-        .returns(Promise.resolve({ phoneNumber: '+330122334455', pin: 123456789, freeAt: new Date() }))
     sendEmailStub = sinon.stub(emailer, 'sendConfCreatedEmail')
         .returns(Promise.resolve())
     getTokenStub = sinon.stub(db, 'getToken')
@@ -32,25 +31,6 @@ describe('createConfController', function() {
     done()
   })
 /*
-  it('should react when conf was not created', function(done) {
-    createConfStub.restore()
-    createConfStub = sinon.stub(conferences, 'createConf')
-      .rejects('oops')
-
-    chai.request(app)
-      .post(urls.createConf)
-      .type('form')
-      .send({
-        email: 'good.email@beta.gouv.fr',
-      })
-      .end(function(err, res) {
-        testUtils.shouldRedirectToLocation(res, urls.landing)
-        sinon.assert.calledOnce(createConfStub)
-        sinon.assert.notCalled(sendEmailStub)
-        done()
-      })
-  })
-
   it('should react when email was not sent', function(done) {
     sendEmailStub.restore()
     sendEmailStub = sinon.stub(emailer, 'sendConfCreatedEmail')
@@ -73,14 +53,16 @@ describe('createConfController', function() {
   it('should create conf and send email', function(done) {
     const confUUID = 'long_uuid'
     const confPin = 123456789
-    insertConfStub = insertConfStub.returns(Promise.resolve({
-      id: confUUID,
-      pin: confPin,
-    }))
     getTokenStub = getTokenStub.returns(Promise.resolve([{
       email: 'good.email@thing.com',
       conferenceDay: '2020-12-09',
     }]))
+    createConfStub = createConfStub.returns(Promise.resolve(
+      { phoneNumber: '+330122334455', pin: confPin, freeAt: new Date() }))
+    insertConfStub = insertConfStub.returns(Promise.resolve({
+      id: confUUID,
+      pin: confPin,
+    }))
 
     chai.request(app)
       .get(urls.createConf)
@@ -104,6 +86,8 @@ describe('createConfController', function() {
       id: confUUID,
       pin: confPin,
     }))
+    createConfStub = createConfStub.returns(Promise.resolve(
+      { phoneNumber: '+330122334455', pin: confPin, freeAt: new Date() }))
     // No token found.
     getTokenStub = getTokenStub.returns(Promise.resolve([]))
 
@@ -121,5 +105,35 @@ describe('createConfController', function() {
         done()
       })
   })
+
+  it('should redirect when conf was not created', function(done) {
+    const confUUID = 'long_uuid'
+    const confPin = 123456789
+    insertConfStub = insertConfStub.returns(Promise.resolve({
+      id: confUUID,
+      pin: confPin,
+    }))
+    getTokenStub = getTokenStub.returns(Promise.resolve([{
+      email: 'good.email@thing.com',
+      conferenceDay: '2020-12-09',
+    }]))
+    // Conf creation errors
+    createConfStub = createConfStub.returns(Promise.reject(new Error('Conf not created aaaaah')))
+
+    chai.request(app)
+      .get(urls.createConf)
+      .query({
+        token: 'long_random_token',
+      })
+      .end(function(err, res) {
+        sinon.assert.calledOnce(getTokenStub)
+        sinon.assert.calledOnce(createConfStub)
+        sinon.assert.notCalled(insertConfStub)
+        sinon.assert.notCalled(sendEmailStub)
+        testUtils.shouldRedirectToLocation(res, urls.landing)
+        done()
+      })
+  })
+
 
 })
