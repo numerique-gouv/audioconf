@@ -13,4 +13,5 @@ exports.up = knex => {
 // Note : we cannot set the fields back to notNullable, because now that the column contains null values,
 // the rollback will crash.
 exports.down = knex => {
+  return Promise.resolve()
 }

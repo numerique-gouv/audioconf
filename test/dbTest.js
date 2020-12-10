@@ -1,8 +1,30 @@
 const chai = require('chai')
+const config = require('../config')
 const crypto = require('crypto')
 const db = require('../lib/db')
 
 describe('db', function() {
+  console.log('DATABASE_URL', config.DATABASE_URL)
+  const knex = require('knex')({
+    client: 'pg',
+    connection: config.DATABASE_URL,
+    acquireConnectionTimeout: 10000,
+  });
+
+  beforeEach(async function() {
+    // Apply all migrations.
+    await knex.migrate.latest({})
+
+    return Promise.resolve()
+  })
+
+  afterEach(async function() {
+    // Rollback all migrations.
+    await knex.migrate.rollback({}, true)
+
+    return Promise.resolve()
+  })
+
   describe('loginTokens table', function() {
     it('should return the same dateString for conferenceDay that was inserted', async function() {
       const conferenceDayString = '2020-12-04'
