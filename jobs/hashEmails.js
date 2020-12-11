@@ -7,7 +7,7 @@ module.exports = async () => {
   try {
     const conferences = await db.getConferencesWithNoHashedEmails()
 
-    console.debug(`Number of surveys to send : ${conferences.length || 0}`)
+    console.debug(`Number of emails which have to have hashed emails : ${conferences.length || 0}`)
 
     const updateQueries = conferences.map((conference) => db.updateHashedEmail(conference))
 

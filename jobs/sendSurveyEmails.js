@@ -17,15 +17,11 @@ module.exports = async () => {
 
     let nbEmails = 0
 
-    async function runJob({ email, hashedEmail }) {
-      console.log("🚀 email", email)
-      console.log("🚀 hashedEmail", hashedEmail)
+    const emailsToSend = emails.map(async ({ email, hashedEmail }) => {
       await sendSurveyEmail(email)
       await db.fillSurveyDateConference(hashedEmail)
       nbEmails++
-    }
-
-    const emailsToSend = emails.map((emails) => runJob(emails))
+    })
 
     await Promise.all(emailsToSend)
 
