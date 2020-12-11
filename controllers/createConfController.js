@@ -33,6 +33,8 @@ const createConfWithDay = async (email, conferenceDay, userTimezoneOffset) => {
 
     const conference = await db.insertConferenceWithFreeAt(email, OVHconfData.phoneNumber, OVHconfData.freeAt)
     conference.pin = OVHconfData.pin
+    conference.conferenceDay = conferenceDay
+    conference.userTimezoneOffset = userTimezoneOffset
     return conference
   } catch (err) {
     console.error(`Error when creating conference for day ${conferenceDay}`, err)
@@ -75,7 +77,7 @@ module.exports.createConf = async (req, res) => {
 
   const confUrl = `${config.PROTOCOL}://${req.get('host')}${urls.showConf.replace(":id", conference.id)}#${conference.pin}`
   try {
-    await emailer.sendConfCreatedEmail(email, conference.phoneNumber, conference.pin, durationInMinutes, conferenceDay, conference.expiresAt, confUrl, config.POLL_URL, userTimezoneOffset)
+    await emailer.sendConfCreatedEmail(conference, confUrl, config.POLL_URL)
 
     return res.redirect(urls.showConf.replace(":id", conference.id) + '#' + conference.pin)
   } catch (err) {
