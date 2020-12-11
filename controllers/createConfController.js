@@ -23,14 +23,12 @@ const createConfWithDuration = async (email, durationInMinutes) => {
   }
 }
 
-const createConfWithDay = async (email, conferenceDay) => {
+const createConfWithDay = async (email, conferenceDay, userTimezoneOffset) => {
   try {
     console.log(`Création d'un numéro de conférence pour ${format.hashForLogs(email)} pour le ${conferenceDay}`)
 
-    const freeAt = new Date(conferenceDay)
-    freeAt.setHours(23)
-    freeAt.setMinutes(59)
-    console.log('freeAt', format.formatFrenchDateTime(freeAt))
+    const freeAt = conferences.computeConfExpirationDate(conferenceDay, userTimezoneOffset)
+
     const OVHconfData = await conferences.createConf(freeAt)
 
     const conference = await db.insertConferenceWithFreeAt(email, OVHconfData.phoneNumber, OVHconfData.freeAt)
@@ -54,9 +52,7 @@ module.exports.createConf = async (req, res) => {
   }
 
   const tokenData = tokensData[0]
-  const email = tokenData.email
-  const durationInMinutes = tokenData.durationInMinutes
-  const conferenceDay = tokenData.conferenceDay
+  const { email, durationInMinutes, conferenceDay, userTimezoneOffset } = tokenData
 
   if (!conferenceDay && !durationInMinutes) {
     console.error('Login token contained no conferenceDay and no durationInMinutes. Cannot create conference.')
@@ -69,7 +65,7 @@ module.exports.createConf = async (req, res) => {
     if (durationInMinutes) {
       conference = await createConfWithDuration(email, durationInMinutes)
     } else {
-      conference = await createConfWithDay(email, conferenceDay)
+      conference = await createConfWithDay(email, conferenceDay, userTimezoneOffset)
     }
   } catch (err) {
     req.flash('error', 'La conférence n\'a pas pu être créée. Vous pouvez réessayer.')
@@ -79,7 +75,7 @@ module.exports.createConf = async (req, res) => {
 
   const confUrl = `${config.PROTOCOL}://${req.get('host')}${urls.showConf.replace(":id", conference.id)}#${conference.pin}`
   try {
-    await emailer.sendConfCreatedEmail(email, conference.phoneNumber, conference.pin, durationInMinutes, conferenceDay, conference.expiresAt, confUrl, config.POLL_URL)
+    await emailer.sendConfCreatedEmail(email, conference.phoneNumber, conference.pin, durationInMinutes, conferenceDay, conference.expiresAt, confUrl, config.POLL_URL, userTimezoneOffset)
 
     return res.redirect(urls.showConf.replace(":id", conference.id) + '#' + conference.pin)
   } catch (err) {

@@ -110,4 +110,6 @@ config.FEATURE_JOB_COMPUTE_STATS = process.env.FEATURE_JOB_COMPUTE_STATS === "tr
 config.FEATURE_JOB_ANONYMIZE_EMAILS = process.env.FEATURE_JOB_ANONYMIZE_EMAILS === "true" || false
 config.FEATURE_JOB_SEND_SURVEY_EMAILS = process.env.FEATURE_JOB_SEND_SURVEY_EMAILS === "true" || false
 
+config.ANNOUNCEMENTS = process.env.ANNOUNCEMENTS ? process.env.ANNOUNCEMENTS.split('|') : []
+
 module.exports = config
