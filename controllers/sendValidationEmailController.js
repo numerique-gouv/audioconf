@@ -31,6 +31,7 @@ const generateToken = () => {
 }
 
 module.exports.sendValidationEmail = async (req, res) => {
+  const userTimezoneOffset = req.body.userTimezoneOffset
   const email = req.body.email
   const conferenceDurationInMinutes = req.body.durationInMinutes
   const conferenceDayString = req.body.day
@@ -51,16 +52,17 @@ module.exports.sendValidationEmail = async (req, res) => {
     return res.redirect('/')
   }
 
+  // TODO : token creation should be done by db.js, and expose db.createAndInsertToken.
   const token = generateToken()
   const tokenExpirationDate = new Date()
   tokenExpirationDate.setMinutes(tokenExpirationDate.getMinutes() + config.TOKEN_DURATION_IN_MINUTES)
 
   try {
-    await db.insertToken(email, token, tokenExpirationDate, conferenceDurationInMinutes, conferenceDayString)
+    await db.insertToken(email, token, tokenExpirationDate, conferenceDurationInMinutes, conferenceDayString, userTimezoneOffset)
     console.log(`Login token créé pour ${format.hashForLogs(email)}, il expire à ${tokenExpirationDate}`)
 
     const validationUrl = `${config.PROTOCOL}://${req.get('host')}${urls.createConf}?token=${encodeURIComponent(token)}`
-    await emailer.sendEmailValidationEmail(email, token, tokenExpirationDate, validationUrl)
+    await emailer.sendEmailValidationEmail(email, tokenExpirationDate, validationUrl)
 
     res.redirect(url.format({
       pathname: urls.validationEmailSent,

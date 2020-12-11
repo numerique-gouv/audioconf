@@ -38,9 +38,11 @@ describe('createConfController', function() {
   it('should create conf and send email', function(done) {
     const confUUID = 'long_uuid'
     const confPin = 123456789
+    const email = 'good.email@thing.com'
     getTokenStub = getTokenStub.returns(Promise.resolve([{
-      email: 'good.email@thing.com',
+      email,
       conferenceDay: '2020-12-09',
+      userTimezoneOffset: '-180',
     }]))
     createConfStub = createConfStub.returns(Promise.resolve(
       { phoneNumber: '+330122334455', pin: confPin, freeAt: new Date() }))
@@ -60,6 +62,7 @@ describe('createConfController', function() {
         sinon.assert.calledOnce(getTokenStub)
         sinon.assert.calledOnce(createConfStub)
         sinon.assert.calledOnce(insertConfStub)
+        chai.assert(insertConfStub.getCall(0).calledWith(email))
         sinon.assert.calledOnce(sendEmailStub)
         res.should.redirectTo(urls.showConf.replace(":id", confUUID) + '#' + confPin)
         done()
@@ -105,6 +108,7 @@ describe('createConfController', function() {
     getTokenStub = getTokenStub.returns(Promise.resolve([{
       email: 'good.email@thing.com',
       conferenceDay: '2020-12-09',
+      userTimezoneOffset: '-180',
     }]))
     sendEmailStub = sendEmailStub.returns(Promise.resolve())
     // Conf creation errors
@@ -132,6 +136,7 @@ describe('createConfController', function() {
     getTokenStub = getTokenStub.returns(Promise.resolve([{
       email: 'good.email@thing.com',
       conferenceDay: '2020-12-09',
+      userTimezoneOffset: '-180',
     }]))
     createConfStub = createConfStub.returns(Promise.resolve(
       { phoneNumber: '+330122334455', pin: confPin, freeAt: new Date() }))
