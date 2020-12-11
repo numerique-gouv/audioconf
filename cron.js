@@ -24,7 +24,7 @@ const jobs = [
     name: "Anonymize emails",
   },
   {
-    cronTime: "30 0 * * *", // everyday at 00:30
+    cronTime: "30 8 * * *", // everyday at 08:30
     onTick: sendSurveyEmails,
     start: true,
     timeZone: "Europe/Paris",

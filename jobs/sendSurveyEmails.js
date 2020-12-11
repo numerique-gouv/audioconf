@@ -5,20 +5,31 @@ const config = require("../config")
 module.exports = async () => {
   console.debug("Start of sendSurveyEmails job")
 
-  if (!config.POLL_URL) {
+  if (!config.SURVEY_URL) {
     console.log("No survey to send.")
     return
   }
 
   try {
-    const emails = await db.getEmailsFromLast24hConferences()
+    const emails = await db.getEmailsForSurvey()
 
     console.debug(`Number of surveys to send : ${emails.length || 0}`)
 
-    const emailsToSend = emails.map((email) => sendSurveyEmail(email))
+    let nbEmails = 0
 
-    const nbMails = await Promise.all(emailsToSend)
+    async function runJob({ email, hashedEmail }) {
+      console.log("🚀 email", email)
+      console.log("🚀 hashedEmail", hashedEmail)
+      await sendSurveyEmail(email)
+      await db.fillSurveyDateConference(hashedEmail)
+      nbEmails++
+    }
 
+    const emailsToSend = emails.map((emails) => runJob(emails))
+
+    await Promise.all(emailsToSend)
+
+    console.debug(`Number of sent surveys :`, nbEmails)
     console.debug("End of sendSurveyEmails job")
   } catch (error) {
     console.error("Error during sendSurveyEmails", error)
