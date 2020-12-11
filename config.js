@@ -89,7 +89,7 @@ config.NUM_PIN_DIGITS = process.env.NUM_PIN_DIGITS || (config.USE_OVH_ROOM_API ?
 config.CONFERENCE_MAX_DURATION_IN_MINUTES = process.env.CONFERENCE_MAX_DURATION_IN_MINUTES || 1440
 config.TOKEN_DURATION_IN_MINUTES = process.env.TOKEN_DURATION_IN_MINUTES || 120
 config.POLL_URL = process.env.POLL_URL
-config.SURVEY_URL = process.env.SURVEY_URL
+config.AFTER_MEETING_SURVEY_URL = process.env.AFTER_MEETING_SURVEY_URL
 
 config.SECRET = process.env.SECRET
 
@@ -108,7 +108,6 @@ config.FEATURE_STATS_PAGE = (process.env.FEATURE_STATS_PAGE === 'true') || false
 config.FEATURE_RESERVATIONS = (process.env.FEATURE_RESERVATIONS === 'true') || false
 config.FEATURE_JOB_COMPUTE_STATS = process.env.FEATURE_JOB_COMPUTE_STATS === "true" || false
 config.FEATURE_JOB_ANONYMIZE_EMAILS = process.env.FEATURE_JOB_ANONYMIZE_EMAILS === "true" || false
-config.FEATURE_JOB_SEND_SURVEY_EMAILS = process.env.FEATURE_JOB_SEND_SURVEY_EMAILS === "true" || false
 
 config.ANNOUNCEMENTS = process.env.ANNOUNCEMENTS ? process.env.ANNOUNCEMENTS.split('|') : []
 

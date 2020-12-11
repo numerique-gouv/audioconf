@@ -5,7 +5,7 @@ const config = require("../config")
 module.exports = async () => {
   console.debug("Start of sendSurveyEmails job")
 
-  if (!config.SURVEY_URL) {
+  if (!config.AFTER_MEETING_SURVEY_URL) {
     console.log("No survey to send.")
     return
   }

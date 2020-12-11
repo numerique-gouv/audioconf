@@ -28,7 +28,7 @@ const jobs = [
     onTick: sendSurveyEmails,
     start: true,
     timeZone: "Europe/Paris",
-    isActive: config.FEATURE_JOB_SEND_SURVEY_EMAILS,
+    isActive: Boolean(config.AFTER_MEETING_SURVEY_URL),
     name: "Send survey emails",
   },
 ]
