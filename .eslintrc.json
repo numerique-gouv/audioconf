@@ -6,7 +6,8 @@
         "node": true
     },
     "extends": [
-        //"airbnb-base"
+        // Uncomment to have full code style fix
+        // "airbnb-base"
         "eslint:recommended"
     ],
     "parserOptions": {
@@ -18,6 +19,8 @@
             "error",
             "double"
         ],
+        // Uncomment to have a homogenous indentation
+        // "indent": ["warn", 2],
         "semi": [
             "error",
             "never"
