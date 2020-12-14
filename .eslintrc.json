@@ -1,0 +1,29 @@
+{
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es2021": true,
+        "node": true
+    },
+    "extends": [
+        // Uncomment to have full code style fix
+        // "airbnb-base"
+        "eslint:recommended"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 12
+    },
+    "rules": {
+        "no-console": "off",
+        "quotes": [
+            "error",
+            "double"
+        ],
+        // Uncomment to have a homogenous indentation
+        // "indent": ["warn", 2],
+        "semi": [
+            "error",
+            "never"
+        ]
+    }
+}

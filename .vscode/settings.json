@@ -1,0 +1,9 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": false
+  },
+  "workbench.colorCustomizations": {
+    "statusBar.background": "#0031b669" // Change this color!
+  },
+  "editor.formatOnSave": false
+}
