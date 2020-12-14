@@ -51,23 +51,6 @@
       </div>
     <% } %>
 
-    <% if (!useOVHRoomAPI) { %>
-      <hr />
-      <p id="annuler">
-        <strong>Vous n'allez pas utiliser ce numéro de conférence ? Libérez-le pour qu'il soit réutilisé : </strong>
-      </p>
-      <form action="<%= urls.cancelConf.replace(":id", conference.id) %>" method="POST">
-        <div class="rf-checkbox-group">
-          <input type="checkbox" id="confirm" name="confirm" onchange="document.getElementById('cancel-button').disabled = null">
-          <label class="rf-label" for="confirm" aria-describedby="checkboxes-hint-confirm-desc-hint">En cochant cette case, je comprends que le numéro ne me sera plus réservé.</label>
-          <p class="rf-hint-text" id="checkboxes-hint-confirm-desc-hint">Je pourrais réserver un nouveau numéro.</p>
-        </div>
-        <br>
-        <div class="rf-input-group">
-          <button type="submit" class="rf-btn" title="Annuler la conférence" id="cancel-button" disabled>Annuler la conférence</button>
-        </div>
-      </form>
-    <% } %>
   </div>
 </div>
 
@@ -75,7 +58,6 @@
   // If the pin is in the hash, display it in the page.
   const hash = window.location.hash.replace('#', '');
   const numPinDigits = <%= numPinDigits %>;
-  const useOVHRoomAPI = <%= useOVHRoomAPI %>;
 
   const formatPin = <%- format.formatPin %>; // "< %-" gives unescaped content. Ok because not user-generated content.
 
@@ -83,12 +65,10 @@
   if (regex.test(hash)) {
     document.getElementById('pin').innerHTML = formatPin(hash);
     const phoneLink = document.getElementById('phone-link');
-    phoneLink.href = phoneLink.href + ',,' + hash + (useOVHRoomAPI ? '#' : '');
+    phoneLink.href = phoneLink.href + ',,' + hash + '#';
   }
 
-  if (useOVHRoomAPI) {
-    document.getElementById('press-pound').style.display = 'inline';
-  }
+  document.getElementById('press-pound').style.display = 'inline';
 </script>
 
 <%- include('partials/footer') -%>

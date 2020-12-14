@@ -31,7 +31,7 @@
             <% }) %>
           <% } %>
 
-          <% if(useOVHRoomAPI || numberOfFreePhoneNumbers) { %>
+          <% if (numberOfFreePhoneNumbers) { %>
             <form action="<%= urls.sendValidationEmail %>" method="POST">
               <div class="rf-input-group">
                 <label class="rf-label" for="email">Votre email professionnel :</label>
@@ -73,9 +73,6 @@
             <% if (FEATURE_DISPLAY_STATS_ON_LANDING) { %>
               <% if (onlineParticipantsCount > 0) { %>
                 Actuellement, il y a <%= onlineParticipantsCount %> personne<%= onlineParticipantsCount > 1 ? 's' : '' %> dans <%= activeConfsCount %> conférence<%= activeConfsCount > 1 ? 's' : '' %> téléphonique<%= activeConfsCount > 1 ? 's' : '' %>.
-              <% } %>
-              <% if (!useOVHRoomAPI) { %>
-                Il reste <%= numberOfFreePhoneNumbers %> numéro<%= numberOfFreePhoneNumbers === 1 ? '' : 's' %> de conférence disponibles.
               <% } %>
             <% } %>
           </p>
