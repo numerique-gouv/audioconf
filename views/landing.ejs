@@ -31,44 +31,41 @@
             <% }) %>
           <% } %>
 
-          <% if (numberOfFreePhoneNumbers) { %>
-            <form action="<%= urls.sendValidationEmail %>" method="POST">
+          <form action="<%= urls.sendValidationEmail %>" method="POST">
+            <div class="rf-input-group">
+              <label class="rf-label" for="email">Votre email professionnel :</label>
+              <input class="rf-input" type="email" id="email" name="email" required>
+            </div>
+            <% if(FEATURE_RESERVATIONS) { %>
               <div class="rf-input-group">
-                <label class="rf-label" for="email">Votre email professionnel :</label>
-                <input class="rf-input" type="email" id="email" name="email" required>
+                <label class="rf-label" for="day">Date de votre conférence :</label>
+                <p class="rf-hint-text" id="day-hint">La conférence vous sera réservée pour la journée choisie.</p>
+                <select class="rf-select" id="day" name="day" aria-describedby="day-hint">
+                  <% dateChoices.forEach(function(dateChoice) { %>
+                    <option value="<%= dateChoice.value %>"><%= dateChoice.label %></option>
+                  <% }) %>
+                </select>
               </div>
-              <% if(FEATURE_RESERVATIONS) { %>
-                <div class="rf-input-group">
-                  <label class="rf-label" for="day">Date de votre conférence :</label>
-                  <p class="rf-hint-text" id="day-hint">La conférence vous sera réservée pour la journée choisie.</p>
-                  <select class="rf-select" id="day" name="day" aria-describedby="day-hint">
-                    <% dateChoices.forEach(function(dateChoice) { %>
-                      <option value="<%= dateChoice.value %>"><%= dateChoice.label %></option>
-                    <% }) %>
-                  </select>
-                </div>
-              <% } else { %>
-                <div class="rf-input-group">
-                  <label class="rf-label" for="duration">Durée de la réservation</label>
-                  <select class="rf-select" id="duration" name="durationInMinutes">
-                    <option value="60">1 heure</option>
-                    <option value="120" selected>2 heures</option>
-                    <option value="240">4 heures</option>
-                    <option value="720">12 heures</option>
-                    <option value="1440">24 heures</option>
-                  </select>
-                </div>
-              <% } %>
-              <div class="hidden">
-                <input type="number" id="userTimezoneOffset" name="userTimezoneOffset" required>
-              </div>
+            <% } else { %>
               <div class="rf-input-group">
-                <button type="submit" class="rf-btn" title="Réserver ma conférence">Réserver ma conférence</button>
+                <label class="rf-label" for="duration">Durée de la réservation</label>
+                <select class="rf-select" id="duration" name="durationInMinutes">
+                  <option value="60">1 heure</option>
+                  <option value="120" selected>2 heures</option>
+                  <option value="240">4 heures</option>
+                  <option value="720">12 heures</option>
+                  <option value="1440">24 heures</option>
+                </select>
               </div>
-            </form>
-          <% } else { %>
-            <%- include('partials/notificationInfo', {info: `Nous n'avons plus de numéro de conférence disponible. Prochain numéro libre ${format.formatFrenchDateTime(nextFreePhoneNumberAt)}.`}) -%>
-          <% } %>
+            <% } %>
+            <div class="hidden">
+              <input type="number" id="userTimezoneOffset" name="userTimezoneOffset" required>
+            </div>
+            <div class="rf-input-group">
+              <button type="submit" class="rf-btn" title="Réserver ma conférence">Réserver ma conférence</button>
+            </div>
+          </form>
+
           <p class="rf-text--s">
             <% if (FEATURE_DISPLAY_STATS_ON_LANDING) { %>
               <% if (onlineParticipantsCount > 0) { %>
