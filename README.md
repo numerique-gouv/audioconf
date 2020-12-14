@@ -46,7 +46,7 @@ Pour utiliser d'autres commandes, le [CLI de KnexJS](http://knexjs.org/#Migratio
 ## Développement
 
 L'environnement de développement est préconfiguré pour Visual Code.
-Pour profiter de l'intégration avec ESLint et Prettier, installer les plugins du même nom.
+Pour profiter de l'intégration avec ESLint, il faut installer le plugin du même nom.
 
 ## Docker compose
 
