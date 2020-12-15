@@ -28,21 +28,21 @@ jobs:
       uses: Harmon758/postgresql-action@v1.0.0
       with:
         postgresql db: postgres
-        postgresql user: postgres 
+        postgresql user: postgres
         postgresql password: postgres
     - run: npm install
     - run: npm run build --if-present
     - run: npm test
       env:
         CI: true
-        OVH_APP_KEY: fakeovhkey
-        OVH_APP_SECRET: fakeovhsecret
-        OVH_CONSUMER_KEY: fakeconsumerkey
-        OVH_ACCOUNT_NUMBER: fakeaccountnumber
+        OVH_ROOM_APP_KEY: aaaaaaaaa
+        OVH_ROOM_APP_SECRET: bbbbbbbbb
+        OVH_ROOM_CONSUMER_KEY: ccccccccc
+        OVH_ROOM_ACCOUNT_NUMBER: dddddddd
+        OVH_ROOM_PHONE_NUMBER: 0033122334455
         MAIL_PASS: fakepass
         MAIL_SERVICE: debug
         MAIL_USER: fakeuser
         MAIL_SENDER_EMAIL: sender@example.com
         SECRET: fakesessionsecret
         DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
-
