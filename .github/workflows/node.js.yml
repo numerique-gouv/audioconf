@@ -35,6 +35,11 @@ jobs:
     - run: npm test
       env:
         CI: true
+        USE_OVH_ROOM_API: false
+        OVH_APP_KEY: fakeovhkey
+        OVH_APP_SECRET: fakeovhsecret
+        OVH_CONSUMER_KEY: fakeconsumerkey
+        OVH_ACCOUNT_NUMBER: fakeaccountnumber
         OVH_ROOM_APP_KEY: aaaaaaaaa
         OVH_ROOM_APP_SECRET: bbbbbbbbb
         OVH_ROOM_CONSUMER_KEY: ccccccccc
