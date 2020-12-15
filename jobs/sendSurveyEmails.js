@@ -19,7 +19,7 @@ module.exports = async () => {
 
     const emailsToSend = emails.map(async ({ email, hashedEmail }) => {
       await sendSurveyEmail(email)
-      await db.fillSurveyDateConference(hashedEmail)
+      await db.recordSurveySentAt(hashedEmail)
       nbEmails++
     })
 
