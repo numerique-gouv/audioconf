@@ -52,7 +52,6 @@ app.use(function(req, res, next){
   res.locals.supportEmail = config.SUPPORT_EMAIL
   res.locals.pollUrl = config.POLL_URL
   res.locals.numPinDigits = config.NUM_PIN_DIGITS
-  // res.locals.useOVHRoomAPI = config.USE_OVH_ROOM_API
   res.locals.errors = req.flash("error")
   res.locals.infos = req.flash("info")
   res.locals.successes = req.flash("success")
