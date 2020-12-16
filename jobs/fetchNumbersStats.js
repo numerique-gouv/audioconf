@@ -106,6 +106,7 @@ module.exports = async () => {
   }
 
   let callsInsertedCounter = 0
+  let phoneNumbersDoneCounter = 0
 
   const phoneNumbers = await getAllPhoneNumbers(ovh)
   console.log("Got", phoneNumbers.length)
@@ -125,10 +126,11 @@ module.exports = async () => {
       }
       callsInsertedCounter++
     }
-    console.log("Inserted", callsInsertedCounter, "histories in db.")
+    phoneNumbersDoneCounter++
+    console.log(phoneNumbersDoneCounter, "phoneNumbers done. Inserted", callsInsertedCounter, "call histories in db.")
   }
 
-  console.log("Total : Inserted", callsInsertedCounter, "histories in db.")
+  console.log("Total :", phoneNumbersDoneCounter, "phoneNumbers done. Inserted", callsInsertedCounter, "call histories in db.")
   console.debug("End of fetchNumbersStats job.")
   process.exit()
 }
