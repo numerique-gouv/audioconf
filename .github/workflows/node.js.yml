@@ -35,10 +35,14 @@ jobs:
     - run: npm test
       env:
         CI: true
+        OVH_ROOM_APP_KEY: aaaaaaaaa
+        OVH_ROOM_APP_SECRET: bbbbbbbbb
+        OVH_ROOM_CONSUMER_KEY: ccccccccc
+        OVH_ROOM_ACCOUNT_NUMBER: dddddddd
+        OVH_ROOM_PHONE_NUMBER: 0033122334455
         MAIL_PASS: fakepass
         MAIL_SERVICE: debug
         MAIL_USER: fakeuser
         MAIL_SENDER_EMAIL: sender@example.com
         SECRET: fakesessionsecret
         DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
-

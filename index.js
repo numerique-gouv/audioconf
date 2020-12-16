@@ -113,7 +113,6 @@ module.exports = app.listen(config.PORT, () => {
   console.log(`It is ${format.formatFrenchDateTime(new Date())}, ${config.APP_NAME} listening at http://localhost:${config.PORT}`)
 })
 
-
 process.on("unhandledRejection", error => {
   // Will print "unhandledRejection err is not defined"
   console.log("unhandledRejection erreur : ", error.message)
