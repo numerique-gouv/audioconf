@@ -38,7 +38,7 @@ const getHistoryForCall = async (ovh, phoneNumber, callId) => {
 
 const insertHistoryInDb = async(knex, phoneNumber, history) => {
   try {
-    return await knex("calls").insert({
+    return await knex("callStats").insert({
       phoneNumber: phoneNumber,
       callId: history.id,
       dateBegin: history.dateBegin,
@@ -64,27 +64,55 @@ module.exports = async () => {
     consumerKey: process.env.OVH_CONSUMER_KEY,
   })
 
+  // Todo use separate DB
   const knex = require("knex")({
     client: "pg",
-    connection: process.env.STATS_DATABASE_URL,
+    connection: process.env.DATABASE_URL,
     acquireConnectionTimeout: 10000,
   })
 
-  // todo create db if not exists
+  // Drop old table
+  try {
+    await knex.schema.dropTable("callStats")
+  } catch (err) {
+    console.error("Could not drop old callStats table.", err)
+  }
+
+  try {
+    await knex.schema
+    .createTable("callStats", (table) => {
+      table.uuid("id").primary().defaultTo(knex.raw("uuid_generate_v4()"))
+      table.text("phoneNumber").notNullable()
+      table.text("callId").notNullable()
+      table.datetime("dateBegin").notNullable()
+      table.datetime("dateEnd").notNullable()
+      table.integer("durationMinutes").notNullable()
+      table.integer("countParticipants").notNullable()
+      table.integer("countConnections").notNullable()
+    })
+    console.debug("Created callStats table")
+  } catch (err) {
+    console.error("Could not create callStats table.", err)
+  }
+
+  let callsInsertedCounter = 0
 
   const phoneNumbers = await getAllPhoneNumbers(ovh)
   console.log("Got", phoneNumbers.length)
 
-  for (const phoneNumber of phoneNumbers.slice(0, 5)) {
+  for (const phoneNumber of phoneNumbers) {
     const callIds = await getCallsForPhoneNumber(ovh, phoneNumber)
     console.log("Got", callIds.length, "calls for", phoneNumber)
 
-    for (const callId of callIds.slice(0, 5)) {
+    for (const callId of callIds) {
       const history = await getHistoryForCall(ovh, phoneNumber, callId)
       console.log("Got history for", phoneNumber, callId, ", countParticipants", history.countParticipants)
-      //  await insertHistoryInDb(knex, phoneNumber, history)
+      await insertHistoryInDb(knex, phoneNumber, history)
+      callsInsertedCounter++
     }
-
+    console.log("Inserted", callsInsertedCounter, "histories in db.")
   }
 
+  console.log("Total : Inserted", callsInsertedCounter, "histories in db.")
+  console.debug("End of fetchNumbersStats job.")
 }
