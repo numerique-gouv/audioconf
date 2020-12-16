@@ -57,6 +57,11 @@ module.exports = async () => {
 
   // Fetch env vars from config file
   dotenv.config({ path: ".env" })
+  const STATS_DRY_RUN = process.env.STATS_DRY_RUN === "true"
+  console.log("Dry run :", STATS_DRY_RUN)
+
+  const STATS_SMALL_RUN = process.env.STATS_SMALL_RUN === "true"
+  console.log("Small run :", STATS_SMALL_RUN)
 
   const ovh = ovhLib({
     appKey: process.env.OVH_APP_KEY,
@@ -67,32 +72,37 @@ module.exports = async () => {
   // Todo use separate DB
   const knex = require("knex")({
     client: "pg",
-    connection: process.env.DATABASE_URL,
+    connection: process.env.STATS_DATABASE_URL,
     acquireConnectionTimeout: 10000,
   })
 
-  // Drop old table
-  try {
-    await knex.schema.dropTable("callStats")
-  } catch (err) {
-    console.error("Could not drop old callStats table.", err)
-  }
+  // Drop old table, create new one
+  if (STATS_DRY_RUN) {
+    console.log("Dry run : not recreating db table.")
+  } else {
+    try {
+      await knex.schema.dropTable("callStats")
+    } catch (err) {
+      console.error("Could not drop old callStats table.", err)
+    }
 
-  try {
-    await knex.schema
-    .createTable("callStats", (table) => {
-      table.uuid("id").primary().defaultTo(knex.raw("uuid_generate_v4()"))
-      table.text("phoneNumber").notNullable()
-      table.text("callId").notNullable()
-      table.datetime("dateBegin").notNullable()
-      table.datetime("dateEnd").notNullable()
-      table.integer("durationMinutes").notNullable()
-      table.integer("countParticipants").notNullable()
-      table.integer("countConnections").notNullable()
-    })
-    console.debug("Created callStats table")
-  } catch (err) {
-    console.error("Could not create callStats table.", err)
+    try {
+      await knex.schema
+      .createTable("callStats", (table) => {
+        table.uuid("id").primary().defaultTo(knex.raw("uuid_generate_v4()"))
+        table.text("phoneNumber").notNullable()
+        table.text("callId").notNullable()
+        table.datetime("dateBegin").notNullable()
+        table.datetime("dateEnd").notNullable()
+        table.integer("durationMinutes").notNullable()
+        table.integer("countParticipants").notNullable()
+        table.integer("countConnections").notNullable()
+      })
+      console.debug("Created callStats table")
+    } catch (err) {
+      console.error("Could not create callStats table.", err)
+      process.exit()
+    }
   }
 
   let callsInsertedCounter = 0
@@ -100,14 +110,19 @@ module.exports = async () => {
   const phoneNumbers = await getAllPhoneNumbers(ovh)
   console.log("Got", phoneNumbers.length)
 
-  for (const phoneNumber of phoneNumbers) {
+  const numPhoneNumbersToRun = STATS_SMALL_RUN ? 5 : phoneNumbers.length
+  for (const phoneNumber of phoneNumbers.slice(0, numPhoneNumbersToRun)) {
     const callIds = await getCallsForPhoneNumber(ovh, phoneNumber)
     console.log("Got", callIds.length, "calls for", phoneNumber)
 
     for (const callId of callIds) {
       const history = await getHistoryForCall(ovh, phoneNumber, callId)
       console.log("Got history for", phoneNumber, callId, ", countParticipants", history.countParticipants)
-      await insertHistoryInDb(knex, phoneNumber, history)
+      if (STATS_DRY_RUN) {
+        console.log("DRY RUN no db insert")
+      } else {
+        await insertHistoryInDb(knex, phoneNumber, history)
+      }
       callsInsertedCounter++
     }
     console.log("Inserted", callsInsertedCounter, "histories in db.")
@@ -115,4 +130,5 @@ module.exports = async () => {
 
   console.log("Total : Inserted", callsInsertedCounter, "histories in db.")
   console.debug("End of fetchNumbersStats job.")
+  process.exit()
 }
