@@ -3,7 +3,8 @@ const db = require("../lib/db")
 module.exports = async () => {
   console.debug("Start of anonymisation job")
   try {
-    await db.anonymizeConferences()
+    const conferences = await db.anonymizeConferences()
+    console.log("Conferences modifiées", conferences)
   } catch (error) {
     console.error("Error during anonymization", error)
   }
