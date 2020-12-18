@@ -8,7 +8,7 @@
  */
 const makeConfig = (chartName, xAxisLabels, datasets) => {
   const config =  {
-    type: 'line',
+    type: "line",
     data: {
       labels: xAxisLabels,
     },
@@ -19,11 +19,11 @@ const makeConfig = (chartName, xAxisLabels, datasets) => {
         text: chartName,
       },
       tooltips: {
-        mode: 'index',
+        mode: "index",
         intersect: false,
       },
       hover: {
-        mode: 'nearest',
+        mode: "nearest",
         intersect: true,
       },
       scales: {
@@ -35,14 +35,14 @@ const makeConfig = (chartName, xAxisLabels, datasets) => {
           },
           scaleLabel: {
             display: true,
-            labelString: 'Temps',
+            labelString: "Temps",
           }
         }],
         yAxes: [{
           display: true,
           scaleLabel: {
             display: true,
-            labelString: 'Nombre',
+            labelString: "Nombre",
           },
           ticks: {
             fixedStepSize: 1,
@@ -59,28 +59,28 @@ const makeConfig = (chartName, xAxisLabels, datasets) => {
       backgroundColor: dataset.color,
       borderColor: dataset.color,
       data: dataset.data,
-      radius: '2',
+      radius: "2",
     }
   })
   return config
 }
 
 const fetchData = () => {
-  const dataEl = document.getElementById('chart-data')
+  const dataEl = document.getElementById("chart-data")
   if (!dataEl) {
-    console.error('No data element found.')
+    console.error("No data element found.")
     return
   }
   const JSONdata = dataEl.textContent
-  console.log('got JSONdata', JSONdata)
+  console.log("got JSONdata", JSONdata)
 
   const data = JSON.parse(JSONdata)
-  console.log('got data', data)
+  console.log("got data", data)
   return data
 }
 
 const drawChart = (chartElId, config) => {
-  const ctx = document.getElementById(chartElId).getContext('2d')
+  const ctx = document.getElementById(chartElId).getContext("2d")
   window.myLine = new Chart(ctx, config)
 }
 
@@ -89,62 +89,41 @@ window.onload = function() {
   try {
     data = fetchData()
   } catch (err) {
-    console.error('Could get data.', JSONdata, err)
+    console.error("Could get data.", JSONdata, err)
     return
   }
 
-  Chart.defaults.global.defaultFontFamily = '"Marianne", arial, sans-serif'
+  Chart.defaults.global.defaultFontFamily = "\"Marianne\", arial, sans-serif"
   Chart.defaults.global.defaultFontSize = 16
 
   const datasets = [
     {
-      label: 'Participants en ligne',
-      color: '#b60000',
+      label: "Participants en ligne",
+      color: "#b60000",
       data: data.onlineParticipantsSeries,
     },
     {
-      label: 'Conférences actives',
-      color: '#000091',
+      label: "Conférences actives",
+      color: "#000091",
       data: data.activeConfsSeries,
     },
   ]
-  const config = makeConfig('Statistiques d\'utilisation', data.labels, datasets)
-  drawChart('conf-stats-chart', config)
+  const config = makeConfig("Statistiques d'utilisation", data.labels, datasets)
+  drawChart("conf-stats-chart", config)
 
-  if (data.USE_OVH_ROOM_API) {
-    const datasets2 = [
-      {
-        label: 'Salles de conférence réservées',
-        color: 'cyan',
-        data: data.bookedRoomsSeries,
-      },
-      {
-        label: 'Salles de conférence actives',
-        color: '#000091',
-        data: data.activeConfsSeries,
-      },
-    ]
-    const config2 = makeConfig('Utilisation des salles de conférence', data.labels, datasets2)
-    drawChart('conf-booking-chart', config2)
-  } else {
-    const datasets2 = [
-      {
-        label: 'Numéros de conférence réservés',
-        color: 'cyan',
-        data: data.bookedPhoneNumbersSeries,
-      },
-      {
-        label: 'Numéros de conférence actifs',
-        color: '#000091',
-        data: data.activeConfsSeries,
-      },
-      {
-        label: 'Tous les numéros de conférence',
-        color: 'black',
-        data: data.phoneNumbersSeries,
-      },
-    ]
-    const config2 = makeConfig('Utilisation des numéros de conférence', data.labels, datasets2)
-    drawChart('conf-booking-chart', config2)
-  }
+  const datasets2 = [
+    {
+      label: "Salles de conférence réservées",
+      color: "cyan",
+      data: data.bookedRoomsSeries,
+    },
+    {
+      label: "Salles de conférence actives",
+      color: "#000091",
+      data: data.activeConfsSeries,
+    },
+  ]
+  const config2 = makeConfig("Utilisation des salles de conférence", data.labels, datasets2)
+  drawChart("conf-booking-chart", config2)
+
 }
