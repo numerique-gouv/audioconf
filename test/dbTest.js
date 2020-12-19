@@ -1,28 +1,18 @@
 const chai = require('chai')
-const config = require('../config')
 const crypto = require('crypto')
 const db = require('../lib/db')
+const knex = require("../knexfile")
+
+const { checkAndThrowErrorIfNotInTestEnvironment, reinitializeDB } = require("../lib/testUtils")
+
+/* global describe beforeEach it */
+checkAndThrowErrorIfNotInTestEnvironment()
 
 describe('db', function() {
-  console.log('DATABASE_URL', config.DATABASE_URL)
-  const knex = require('knex')({
-    client: 'pg',
-    connection: config.DATABASE_URL,
-    acquireConnectionTimeout: 10000,
-  });
 
-  beforeEach(async function() {
-    // Apply all migrations.
-    await knex.migrate.latest({})
-
-    return Promise.resolve()
-  })
-
-  afterEach(async function() {
-    // Rollback all migrations.
-    await knex.migrate.rollback({}, true)
-
-    return Promise.resolve()
+  beforeEach(async function () {
+    // Apply all migrations once and for all tests.
+    await reinitializeDB(knex)
   })
 
   describe('loginTokens table', function() {
