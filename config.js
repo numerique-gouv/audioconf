@@ -63,10 +63,10 @@ config.OVH_ROOM_CONSUMER_KEY = process.env.OVH_ROOM_CONSUMER_KEY
 config.OVH_ROOM_ACCOUNT_NUMBER = process.env.OVH_ROOM_ACCOUNT_NUMBER
 config.OVH_ROOM_PHONE_NUMBER = process.env.OVH_ROOM_PHONE_NUMBER
 
-
-if (!isPresent("DATABASE_URL")) {
-  throw new Error("Env vars DATABASE_URL should be set")
+if (!isPresent("DATABASE_URL") && !isPresent("TEST_DB_URL")) {
+  throw new Error("Env vars DATABASE_URL or TEST_DB_URL should be set")
 }
+
 config.DATABASE_URL = process.env.DATABASE_URL
 
 config.NUM_PIN_DIGITS = process.env.NUM_PIN_DIGITS ||  9
