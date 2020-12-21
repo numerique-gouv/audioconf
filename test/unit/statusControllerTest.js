@@ -1,11 +1,11 @@
 const chai = require("chai")
 const sinon = require("sinon")
 
-const app = require("../index")
-const conferences = require("../lib/conferences")
-const config = require("../config")
-const db = require("../lib/db")
-const urls = require("../urls")
+const app = require("../../index")
+const conferences = require("../../lib/conferences")
+const config = require("../../config")
+const db = require("../../lib/db")
+const urls = require("../../urls")
 
 describe("statusController", function() {
   const { DATABASE_URL } = config

@@ -1,5 +1,5 @@
 const chai = require('chai')
-const conferences = require('../lib/conferences')
+const conferences = require('../../lib/conferences')
 
 describe('conferences', function() {
   it('should compute the Date of end of conference in local time, for GMT+X', async function() {

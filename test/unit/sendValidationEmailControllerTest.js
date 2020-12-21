@@ -1,10 +1,10 @@
-const app = require('../index')
+const app = require('../../index')
 const chai = require('chai')
-const config = require('../config')
-const db = require('../lib/db')
-const emailer = require('../lib/emailer')
+const config = require('../../config')
+const db = require('../../lib/db')
+const emailer = require('../../lib/emailer')
 const sinon = require('sinon')
-const urls = require('../urls')
+const urls = require('../../urls')
 
 describe('sendValidationEmailController', function() {
   let sendEmailStub

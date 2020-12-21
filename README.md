@@ -75,6 +75,17 @@ Pour valider le code en local :
 npm run checkHTMLLocal
 ```
 
+## Tests
+
+There are 2 types of tests : `unit test` and `integration test`.
+
+The `unit tests` are in the `test/unit` folder. They use mock if needed.
+
+The `integration tests` are in the `test/integration` folder. They use a real database. In order to make them run, you must have a variable `TEST_DB_URL` which must be represent a database which can will erased for each test.
+
+Running the integration test requires to set an environment variable called `TEST_MODE` and to set it to true.
+This ensures that the developper is aware of the risk of erasing the `TEST_DB_URL`.
+
 ## SQL
 
 - Total de réservation par nom de domaine : `select substring(email from '@[^@]*$') as domain, count(*) from conferences group by domain order by count DESC;`

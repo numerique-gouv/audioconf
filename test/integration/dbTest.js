@@ -1,8 +1,8 @@
 const chai = require('chai')
-const config = require('../config')
+const config = require('../../config')
 const crypto = require('crypto')
-const db = require('../lib/db')
-const knex = require("../knexfile")
+const db = require('../../lib/db')
+const knex = require("../../knexfile")
 
 describe('db', function() {
 
