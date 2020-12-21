@@ -1,11 +1,11 @@
 const chai = require("chai")
 const sinon = require("sinon")
 
-const app = require("../index")
-const conferences = require("../lib/conferences")
-const db = require("../lib/db")
-const emailer = require("../lib/emailer")
-const urls = require("../urls")
+const app = require("../../index")
+const conferences = require("../../lib/conferences")
+const db = require("../../lib/db")
+const emailer = require("../../lib/emailer")
+const urls = require("../../urls")
 
 describe("createConfController", function() {
   let createConfStub

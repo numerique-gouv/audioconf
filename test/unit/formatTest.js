@@ -1,5 +1,5 @@
 const chai = require('chai')
-const format = require('../lib/format')
+const format = require('../../lib/format')
 
 describe('format', function() {
   it('should display times in default server timezone', function(done) {

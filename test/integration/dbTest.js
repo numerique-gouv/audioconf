@@ -1,22 +1,27 @@
 const chai = require('chai')
 const crypto = require('crypto')
-const db = require('../lib/db')
-const knex = require("../knexfile")
+const db = require("../../lib/db")
+const knex = require("../../knexfile")
 
-const { checkAndThrowErrorIfNotInTestEnvironment, reinitializeDB } = require("../lib/testUtils")
+const { checkAndThrowErrorIfNotInTestEnvironment, reinitializeDB, truncateAllTables } = require("../../lib/testUtils")
 
-/* global describe beforeEach it */
+/* global describe before beforeEach it */
 checkAndThrowErrorIfNotInTestEnvironment()
 
-describe('db', function() {
+describe('Tests on db.js', function () {
 
-  beforeEach(async function () {
+  before(async () => {
     // Apply all migrations once and for all tests.
     await reinitializeDB(knex)
   })
 
-  describe('loginTokens table', function() {
-    it('should return the same dateString for conferenceDay that was inserted', async function() {
+  beforeEach(async () => {
+
+    await truncateAllTables(knex)
+  })
+
+  describe('loginTokens table', function () {
+    it('should return the same dateString for conferenceDay that was inserted', async function () {
       const conferenceDayString = '2020-12-04'
       const token = crypto.randomBytes(256).toString("base64")
       const tokenExpirationDate = new Date()
