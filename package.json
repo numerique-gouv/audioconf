@@ -19,7 +19,7 @@
     "listMigrations": "knex migrate:list",
     "start": "node index.js",
     "test": "TEST_MODE=true mocha test/unit/*.js --recursive --exit --require ./test/setup.js",
-    "test:integration": "DEBUG=knex:query TEST_MODE=true mocha test/integration/*.js --recursive --exit --require ./test/setup.js "
+    "test:integration": "TEST_MODE=true mocha test/integration/*.js --recursive --exit --require ./test/setup.js "
   },
   "repository": {
     "type": "git",
