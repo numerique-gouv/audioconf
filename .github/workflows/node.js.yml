@@ -46,7 +46,7 @@ jobs:
         MAIL_SENDER_EMAIL: sender@example.com
         SECRET: fakesessionsecret
         TEST_DB_URL: postgres://postgres:postgres@localhost:5432/postgres
-    - run: npm test:integration
+    - run: npm run test:integration
       env:
         CI: true
         OVH_ROOM_APP_KEY: aaaaaaaaa
