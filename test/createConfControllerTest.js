@@ -6,23 +6,12 @@ const conferences = require("../lib/conferences")
 const db = require("../lib/db")
 const emailer = require("../lib/emailer")
 const urls = require("../urls")
-const utils = require("./utils")
-
 
 describe("createConfController", function() {
   let createConfStub
   let sendEmailStub
   let getTokenStub
   let insertConfStub
-
-  before(async () => {
-    await utils.setupTestDatabase()
-  })
-
-  after(async () => {
-    await utils.cleanUpTestDatabase()
-  })
-
 
   beforeEach(function(done) {
     createConfStub = sinon.stub(conferences, "createConf")
@@ -118,7 +107,7 @@ describe("createConfController", function() {
     }]))
     sendEmailStub = sendEmailStub.returns(Promise.resolve())
     // Conf creation errors
-    createConfStub = createConfStub.returns(Promise.reject(new Error("Conf not created aaaaah")))
+    createConfStub = createConfStub.returns(Promise.reject("Conf not created aaaaah xxx"))
 
     chai.request(app)
       .get(urls.createConf)

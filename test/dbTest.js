@@ -4,16 +4,11 @@ const db = require('../lib/db')
 
 const utils = require("./utils")
 
+/* global beforeEach describe */
 
-/* global after before describe */
-
-describe.only('db', function() {
+describe('db', function() {
   beforeEach(async () => {
-    await utils.setupTestDatabase()
-  })
-
-  afterEach(async () => {
-    await utils.cleanUpTestDatabase()
+    await utils.reinitializeDB()
   })
 
   describe('loginTokens table', function() {
@@ -37,24 +32,5 @@ describe.only('db', function() {
       return Promise.resolve() // needed for async test
     })
 
-    it('should return something', async function() {
-      const conferenceDayString = '2020-12-04'
-      const token = crypto.randomBytes(256).toString("base64")
-      const tokenExpirationDate = new Date()
-      tokenExpirationDate.setMinutes(tokenExpirationDate.getMinutes() + 60)
-
-      await db.insertToken(
-        'hello@blah.com',
-        token,
-        tokenExpirationDate,
-        undefined, // conferenceDurationInMinutes
-        conferenceDayString,
-      )
-      const fetchedTokens = await db.getToken(token)
-
-      chai.assert.equal(fetchedTokens.length, 1)
-      chai.assert.equal(fetchedTokens[0].conferenceDay, conferenceDayString)
-      return Promise.resolve() // needed for async test
-    })
   })
 })
