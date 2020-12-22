@@ -2,7 +2,7 @@ const { parse } = require("pg-connection-string")
 
 const config = require("../config")
 const { Client } = require("pg")
-const knex = require("../knexfile")
+const knex = require("../knex-client")
 
 const getConnectionStringForDB = ({ user, password, host, port, database }) => `postgres://${encodeURIComponent(user)}:${encodeURIComponent(password)}@${encodeURIComponent(host)}:${encodeURIComponent(port)}/${database}`
 
