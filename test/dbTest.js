@@ -2,7 +2,6 @@ const chai = require('chai')
 const crypto = require('crypto')
 const db = require('../lib/db')
 
-// const helpers = require("./helpers")
 const utils = require("./utils")
 
 
@@ -16,16 +15,6 @@ describe.only('db', function() {
   afterEach(async () => {
     await utils.cleanUpTestDatabase()
   })
-
-  // beforeEach(async function() {
-  //   setupTestDatabase()
-  //   await knex("loginTokens").truncate()
-  //   console.log("après truncate xxx")
-  // })
-
-  // afterEach(async function() {
-  // })
-
 
   describe('loginTokens table', function() {
     it('should return the same dateString for conferenceDay that was inserted', async function() {
