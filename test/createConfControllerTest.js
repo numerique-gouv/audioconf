@@ -107,7 +107,7 @@ describe("createConfController", function() {
     }]))
     sendEmailStub = sendEmailStub.returns(Promise.resolve())
     // Conf creation errors
-    createConfStub = createConfStub.returns(Promise.reject("Conf not created aaaaah xxx"))
+    createConfStub = createConfStub.returns(Promise.reject(new Error("Conf not created aaaaah")))
 
     chai.request(app)
       .get(urls.createConf)
