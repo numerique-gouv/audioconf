@@ -6,12 +6,23 @@ const conferences = require("../lib/conferences")
 const db = require("../lib/db")
 const emailer = require("../lib/emailer")
 const urls = require("../urls")
+const utils = require("./utils")
+
 
 describe("createConfController", function() {
   let createConfStub
   let sendEmailStub
   let getTokenStub
   let insertConfStub
+
+  before(async () => {
+    await utils.setupTestDatabase()
+  })
+
+  after(async () => {
+    await utils.cleanUpTestDatabase()
+  })
+
 
   beforeEach(function(done) {
     createConfStub = sinon.stub(conferences, "createConf")
