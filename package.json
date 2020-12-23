@@ -1,6 +1,6 @@
 {
   "name": "conferences",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "Conférences audio et vidéo pour les fonctionnaires de l'Etat",
   "main": "index.js",
   "directories": {
@@ -18,7 +18,7 @@
     "rollback": "knex migrate:rollback",
     "listMigrations": "knex migrate:list",
     "start": "node index.js",
-    "test": "mocha --recursive --exit --require ./test/setup.js"
+    "test": "mocha test/*.js --recursive --exit --require ./test/setup.js"
   },
   "repository": {
     "type": "git",
@@ -35,6 +35,7 @@
     "chart.js": "^2.9.4",
     "connect-flash": "^0.1.1",
     "connect-session-knex": "^2.0.0",
+    "cookie-parser": "^1.4.5",
     "cron": "^1.8.2",
     "date-fns": "^2.16.1",
     "dotenv": "^8.2.0",
@@ -43,6 +44,7 @@
     "express-session": "^1.17.1",
     "intl": "^1.2.5",
     "knex": "^0.21.6",
+    "memorystore": "^1.6.4",
     "nodemailer": "^6.4.14",
     "ovh": "^2.0.3",
     "pg": "^8.4.2"

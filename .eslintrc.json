@@ -17,7 +17,10 @@
         "no-console": "off",
         "quotes": [
             "error",
-            "double"
+            "double",
+            {
+                "allowTemplateLiterals": true
+            }
         ],
         // Uncomment to have a homogenous indentation
         // "indent": ["warn", 2],
