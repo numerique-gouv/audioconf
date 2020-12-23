@@ -18,7 +18,7 @@
     "rollback": "knex migrate:rollback",
     "listMigrations": "knex migrate:list",
     "start": "node index.js",
-    "test": "mocha --recursive --exit --require ./test/setup.js"
+    "test": "mocha test/*.js --recursive --exit --require ./test/setup.js"
   },
   "repository": {
     "type": "git",

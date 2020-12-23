@@ -3,7 +3,6 @@ const express = require("express")
 const flash = require("connect-flash")
 const path = require("path")
 const session = require("express-session")
-const KnexSessionStore = require("connect-session-knex")(session)
 
 const config = require("./config")
 const db = require("./lib/db")
@@ -29,22 +28,13 @@ app.use("/static", express.static("static"))
 // Hack for importing css from npm package
 app.use("/~", express.static(path.join(__dirname, "node_modules")))
 app.use(bodyParser.urlencoded({ extended: false }))
-// Session is necessary for flash.
 
-const store = new KnexSessionStore({
-  knex: db.knex,
-  tablename: "sessions",
-})
+// Only used for Flash not safe for others purposes
 app.use(session({
-  secret: config.SECRET,
-  resave: false,
-  saveUninitialized: false, // "complying with laws that require permission before setting a cookie"
-  cookie: {
-    maxAge: 300000,
-    sameSite: "lax" // todo strict would be better for prod
-  },
-  store,
- }))
+  secret: process.env.SECRET,
+  cookie: { maxAge: 300000, sameSite: "lax" }
+}))
+
 app.use(flash())
 // Populate some variables for all views
 app.use(function(req, res, next){
