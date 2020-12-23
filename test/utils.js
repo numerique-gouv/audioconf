@@ -65,9 +65,34 @@ async function reinitializeDB() {
     console.log("Data are reinitialized")
 }
 
+
+/**
+ * Insert a bunch of conferences.
+ *
+ * @param {*} conferences  array of conferences
+ */
+async function insertConferences(conferences = []) {
+    for (const conference of conferences) {
+        await knex("conferences").insert(conference)
+    }
+}
+
+/**
+ * Insert a bunch of users.
+ *
+ * @param {*} conferences  array of users
+ */
+async function insertUsers(users = []) {
+    for (const user of users) {
+        await knex("users").insert(user)
+    }
+}
+
 module.exports = {
     getConnectionStringForDB,
     setupTestDatabase,
     cleanUpTestDatabase,
+    insertConferences,
+    insertUsers,
     reinitializeDB
 }
