@@ -5,16 +5,6 @@ Des audio conférences pour les agents de l'Etat.
 
 Lien : https://eu.api.ovh.com/createToken/
 
-- Nécessaires pour les fonctionalités en cours, pour l'API des numéros de téléphone
-
-```
-GET /telephony/${OVH_ACCOUNT_NUMBER}/conference
-PUT /telephony/${OVH_ACCOUNT_NUMBER}/conference/*/settings
-GET /telephony/${OVH_ACCOUNT_NUMBER}/conference/*/participants
-POST /telephony/${OVH_ACCOUNT_NUMBER}/conference/*/participants/*/kick
-GET /telephony/${OVH_ACCOUNT_NUMBER}/conference/*/informations
-```
-
 - Nécessaires pour les fonctionalités en cours, pour le nouvel API Rooms
 
 ```
