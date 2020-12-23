@@ -65,6 +65,12 @@ Pour valider le code en local :
 npm run checkHTMLLocal
 ```
 
+## Sticky sessions
+
+Le système de session est `in memory`. Dans un environnement à plusieurs containers web, cela peut poser des problèmes. 
+Comme la production est dans ce cas, il faut activer les sticky sessions. 
+Bien vérifier donc qu'ils sont activés (dans Scalingo > Settings).
+
 ## SQL
 
 - Total de réservation par nom de domaine : `select substring(email from '@[^@]*$') as domain, count(*) from conferences group by domain order by count DESC;`
