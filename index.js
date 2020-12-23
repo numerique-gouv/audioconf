@@ -2,7 +2,9 @@ const bodyParser = require("body-parser")
 const express = require("express")
 const flash = require("connect-flash")
 const path = require("path")
+const cookieParser = require("cookie-parser")
 const session = require("express-session")
+const MemoryStore = require("memorystore")(session)
 
 const config = require("./config")
 const db = require("./lib/db")
@@ -29,10 +31,19 @@ app.use("/static", express.static("static"))
 app.use("/~", express.static(path.join(__dirname, "node_modules")))
 app.use(bodyParser.urlencoded({ extended: false }))
 
+app.use(cookieParser(config.secret))
 // Only used for Flash not safe for others purposes
 app.use(session({
-  secret: process.env.SECRET,
-  cookie: { maxAge: 300000, sameSite: "lax" }
+  secret: config.SECRET,
+  resave: false,
+  saveUninitialized: false, // "complying with laws that require permission before setting a cookie"
+  cookie: {
+    maxAge: 300000,
+    sameSite: "lax" // todo strict would be better for prod
+  },
+  store: new MemoryStore({
+    checkPeriod: 300000
+  })
 }))
 
 app.use(flash())
