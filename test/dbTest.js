@@ -1,28 +1,14 @@
 const chai = require('chai')
-const config = require('../config')
 const crypto = require('crypto')
 const db = require('../lib/db')
 
+const utils = require("./utils")
+
+/* global beforeEach describe */
+
 describe('db', function() {
-  console.log('DATABASE_URL', config.DATABASE_URL)
-  const knex = require('knex')({
-    client: 'pg',
-    connection: config.DATABASE_URL,
-    acquireConnectionTimeout: 10000,
-  });
-
-  beforeEach(async function() {
-    // Apply all migrations.
-    await knex.migrate.latest({})
-
-    return Promise.resolve()
-  })
-
-  afterEach(async function() {
-    // Rollback all migrations.
-    await knex.migrate.rollback({}, true)
-
-    return Promise.resolve()
+  beforeEach(async () => {
+    await utils.reinitializeDB()
   })
 
   describe('loginTokens table', function() {
@@ -45,5 +31,6 @@ describe('db', function() {
       chai.assert.equal(fetchedTokens[0].conferenceDay, conferenceDayString)
       return Promise.resolve() // needed for async test
     })
+
   })
 })

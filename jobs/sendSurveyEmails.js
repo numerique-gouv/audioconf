@@ -1,5 +1,5 @@
 const db = require("../lib/db")
-const { sendSurveyEmail } = require("../lib/emailer")
+const emailer = require("../lib/emailer")
 const config = require("../config")
 
 module.exports = async () => {
@@ -15,18 +15,18 @@ module.exports = async () => {
 
     console.debug(`Number of surveys to send : ${emails.length || 0}`)
 
-    let nbEmails = 0
-
     const emailsToSend = emails.map(async ({ email, hashedEmail }) => {
-      await sendSurveyEmail(email)
+      await emailer.sendSurveyEmail(email)
       await db.recordSurveySentAt(hashedEmail)
-      nbEmails++
     })
 
     await Promise.all(emailsToSend)
 
-    console.debug(`Number of sent surveys :`, nbEmails)
+    console.debug(`Number of sent surveys :`, emails.length)
     console.debug("End of sendSurveyEmails job")
+
+    return emails
+
   } catch (error) {
     console.error("Error during sendSurveyEmails", error)
   }

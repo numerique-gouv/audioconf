@@ -1,9 +1,10 @@
-require('dotenv').config();
+const config = require("./config")
 
 module.exports = {
-  client: 'postgresql',
-  connection: process.env.DATABASE_URL,
+  client: "pg",
+  connection: config.DATABASE_URL,
+  acquireConnectionTimeout: 10000,
   migrations: {
-    tableName: 'knex_migrations',
-  },
-};
+    tableName: "knex_migrations"
+  }
+}
