@@ -7,6 +7,11 @@ const config = require("../config")
 // Fetch env vars from config file
 dotenv.config({ path: ".env" })
 
+// for new API
+// 1. Get all phone numbers like now
+// 2. Get all rooms with `/telephony/${process.env.OVH_ROOM_ACCOUNT_NUMBER}/conference/${phoneNumber}/rooms`
+// 3. Get history for a room with `/telephony/{process.env.OVH_ROOM_ACCOUNT_NUMBER}/conference/{phoneNumber}/rooms/{roomNumber}/histories`
+
 // TODO: move these 3 functions in conferences.js when there will be no more fetch of data for old API
 const getAllPhoneNumbers = async (ovh) => {
   const url = `/telephony/${process.env.OVH_ACCOUNT_NUMBER}/conference`
