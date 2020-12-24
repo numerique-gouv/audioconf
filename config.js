@@ -92,6 +92,7 @@ config.FEATURE_STATS_PAGE = (process.env.FEATURE_STATS_PAGE === "true") || false
 config.FEATURE_RESERVATIONS = (process.env.FEATURE_RESERVATIONS === "true") || false
 config.FEATURE_JOB_COMPUTE_STATS = process.env.FEATURE_JOB_COMPUTE_STATS === "true" || false
 config.FEATURE_JOB_ANONYMIZE_EMAILS = process.env.FEATURE_JOB_ANONYMIZE_EMAILS === "true" || false
+config.FEATURE_JOB_OVH_STATS = process.env.FEATURE_JOB_OVH_STATS === "true" || false
 
 config.ANNOUNCEMENTS = process.env.ANNOUNCEMENTS ? process.env.ANNOUNCEMENTS.split("|") : []
 

@@ -4,6 +4,7 @@ const db = require("./lib/db")
 const anonymizeConferences = require("./jobs/anonymizeConferences")
 const sendSurveyEmails = require("./jobs/sendSurveyEmails")
 const computeStats = require("./jobs/computeStats")
+const fetchOVHStats = require("./jobs/fetchOVHStats.js")
 const config = require("./config")
 
 const jobs = [
@@ -31,6 +32,14 @@ const jobs = [
     isActive: Boolean(config.AFTER_MEETING_SURVEY_URL),
     name: "Send survey emails",
   },
+  {
+    cronTime: "30 10 * * *", // everyday at 10:30 for testing purpose (at the end, willl be run every 5 minutes)
+    onTick: fetchOVHStats,
+    start: true,
+    timeZone: "Europe/Paris",
+    isActive: config.FEATURE_JOB_OVH_STATS,
+    name: "Fetch statistics from OVH",
+  },
 ]
 
 let activeJobs = 0
@@ -38,7 +47,7 @@ let activeJobs = 0
 for (const job of jobs) {
   if (job.isActive) {
     console.log(`🚀 The job "${job.name}" is ON`)
-    const currentJob = new cron.CronJob(job)
+    new cron.CronJob(job)
     activeJobs++
   } else {
     console.log(`❌ The job "${job.name}" is OFF`)
