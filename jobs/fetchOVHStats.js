@@ -65,45 +65,48 @@ module.exports = async () => {
       consumerKey: process.env.OVH_CONSUMER_KEY,
     })
 
-  let callsInsertedCounter = 0
-  let phoneNumbersDoneCounter = 0
-
   const phoneNumbers = await getAllPhoneNumbers(ovhClient)
-  console.log("phoneNumbers.length", phoneNumbers.length)
 
   if (!phoneNumbers.length) {
     console.log("No numbers found. Check your configuration.")
     process.exit(1)
   }
 
-  const numPhoneNumbersToRun = STATS_SMALL_RUN ? 2 : phoneNumbers.length
-
-  // We sort the numbers, so the test on a subset of number will always return the same number.
-  const sortedPhoneNumbers = phoneNumbers.sort()
-
-  for (const phoneNumber of sortedPhoneNumbers.slice(0, numPhoneNumbersToRun)) {
-    const callIds = await getCallsForPhoneNumber(ovhClient, phoneNumber)
-
-    for (const callId of callIds) {
-      const history = await getHistoryForCall(ovhClient, phoneNumber, callId)
-      // console.log(`Got history for ${phoneNumber} : callId = ${callId}, countParticipants = ${history.countParticipants}`)
-      if (JOB_DRY_RUN) {
-        console.log("DRY RUN no db insert")
-      } else {
-        const id = await db.insertCallHistory(phoneNumber, history)
-        if (id) {
-          console.log(`${id} inserted`)
-        } else {
-          console.log(`${phoneNumber}_${history.id} already inserted`)
-        }
-      }
-      callsInsertedCounter++
-    }
-    phoneNumbersDoneCounter++
-    // console.log(phoneNumbersDoneCounter, "phoneNumbers done. Inserted", callsInsertedCounter, "call histories in db.")
+  const summary = {
+    phoneNumbersLength: phoneNumbers.length,
+    insertedRows: 0,
+    alreadyInsertedRows: 0,
   }
 
-  console.log(`Total : ${phoneNumbersDoneCounter} phoneNumbers done. Inserted ${callsInsertedCounter} call histories in db.`)
+  // We sort the numbers, so event in "small test", the job will always use the same numbers.
+  const sortedPhoneNumbers = phoneNumbers.sort()
+
+  const numPhoneNumbersToRun = STATS_SMALL_RUN ? 2 : phoneNumbers.length
+
+  for (const number of sortedPhoneNumbers.slice(0, numPhoneNumbersToRun)) {
+    const callIds = await getCallsForPhoneNumber(ovhClient, number)
+
+    for (const callId of callIds) {
+      const history = await getHistoryForCall(ovhClient, number, callId)
+
+      if (JOB_DRY_RUN) {
+        summary.insertedRows++
+      } else {
+        const id = await db.insertCallHistory(number, history)
+        if (id) {
+          console.log(`${id} inserted`)
+          summary.insertedRows++
+        } else {
+          console.log(`${number}_${history.id} already inserted`)
+          summary.alreadyInsertedRows++
+        }
+      }
+
+    }
+  }
+
+  console.dir({ summary })
+
   console.debug("End of fetchOVHStats job.")
   process.exit()
 }
