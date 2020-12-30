@@ -1,6 +1,6 @@
 exports.up = function (knex) {
 
-    return knex.schema.createTable("statsOvh", (table) => {
+    return knex.schema.createTable("phoneCalls", (table) => {
         // table.uuid("id").primary().defaultTo(knex.raw("uuid_generate_v4()"))
         table.text("id").primary() // will be OVH id + phoneNumber, to shuffle the data from old and new API
         table.text("phoneNumber").notNullable() // duplication but easier to use
@@ -15,5 +15,5 @@ exports.up = function (knex) {
 
 exports.down = function (knex) {
 
-    return knex.schema.dropTable("statsOvh")
+    return knex.schema.dropTable("phoneCalls")
 }
