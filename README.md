@@ -14,6 +14,7 @@ GET /telephony/${OVH_ROOM_ACCOUNT_NUMBER}/conference/${OVH_ROOM_PHONE_NUMBER}/ro
 ```
 
 ## Détail des appels API OVH utilisés
+*Création des confs*
 
 Les appels que nous faisons à l'API OVH sont les suivants :
 - Créer une conférence : `POST /telephony/${OVH_ROOM_ACCOUNT_NUMBER}/conference/${OVH_ROOM_PHONE_NUMBER}/rooms`
@@ -22,15 +23,18 @@ L'API retourne le code d'accès de la conférence (roomNumber).
 - Configurer la conférence créée : `PUT /telephony/${config.OVH_ROOM_ACCOUNT_NUMBER}/conference/${config.OVH_ROOM_PHONE_NUMBER}/rooms/${roomNumber}`
 
 On fait ce deuxième appel API pour enlever le PIN qu'on utilise pas et ajouter une date d'expiration à la conférence.
+
+*Obtenir des stats sur les confs*
+
 - Obtenir des stats sur les conférences actuellement en cours : `GET /telephony/${config.OVH_ROOM_ACCOUNT_NUMBER}/conference/${config.OVH_ROOM_PHONE_NUMBER}/roomsStats`
 
 On récupère des stats sur les confs actuellement en cours, dont : le nombre de conférences réservées (bookedRoomsCount), le nombre d'appels actuellement en cours (activeConfsCount), le nombre total de participants en ligne dans ces appels (onlineParticipantsCount).
 
-On utilise également cet appel dans la page de stats, pour vérifier que la connection à OVH marche toujours (si cet appel répond bien, on considère qu'on est bien connectés).
+On utilise également cet appel dans la page de status, pour vérifier que la connection à OVH marche toujours (si cet appel répond bien, on considère qu'on est bien connectés).
 
-- Obtenir la liste des confs passées : `GET /telephony/${OVH_ROOM_ACCOUNT_NUMBER}/conference/${OVH_ROOM_PHONE_NUMBER}/rooms` (pour l'ancien API numbers)
+- Obtenir la liste des confs passées : `GET /telephony/${process.env.OVH_ACCOUNT_NUMBER}/conference/${phoneNumber}/histories`
 
-- Obtenir l'historique d'une conf passée donnée : `GET /telephony/{process.env.OVH_ROOM_ACCOUNT_NUMBER}/conference/{OVH_ROOM_PHONE_NUMBER}/rooms/{roomNumber}/histories` (pour l'ancien API numbers)
+- Obtenir l'historique d'une conf passée donnée : `GET /telephony/${process.env.OVH_ACCOUNT_NUMBER}/conference/${phoneNumber}/histories/${callId}`
 
 
 ### Créer des migrations
