@@ -58,5 +58,4 @@ module.exports = async () => {
   console.dir({ summary })
 
   console.debug("End of fetchCallsStats job.")
-  process.exit()
 }
