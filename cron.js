@@ -1,6 +1,4 @@
 const cron = require("cron")
-const stats = require("./lib/stats")
-const db = require("./lib/db")
 const anonymizeConferences = require("./jobs/anonymizeConferences")
 const sendSurveyEmails = require("./jobs/sendSurveyEmails")
 const computeStats = require("./jobs/computeStats")
@@ -37,8 +35,8 @@ const jobs = [
     onTick: fetchOVHStats,
     start: true,
     timeZone: "Europe/Paris",
-    isActive: config.FEATURE_JOB_OVH_STATS,
-    name: "Fetch statistics from OVH",
+    isActive: config.FEATURE_JOB_CALLS_STATS,
+    name: "Fetch statistics from past calls from OVH",
   },
 ]
 
