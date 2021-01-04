@@ -31,7 +31,7 @@ const jobs = [
     name: "Send survey emails",
   },
   {
-    cronTime: "30 10 * * *", // everyday at 10:30 for testing purpose (at the end, willl be run every 5 minutes)
+    cronTime: "0 1 * * *", // everyday at 01:00 AM
     onTick: fetchCallsStats,
     start: true,
     timeZone: "Europe/Paris",
