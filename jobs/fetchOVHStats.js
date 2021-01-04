@@ -57,17 +57,10 @@ module.exports = async () => {
   const STATS_SMALL_RUN = process.env.STATS_SMALL_RUN === "true"
   console.log("Small run :", STATS_SMALL_RUN)
 
-  // TODO: remove the old API credentials
-  let ovhClient = config.USE_OVH_ROOM_API
-    ? ovhLib({
+  const ovhClient = ovhLib({
       appKey: config.OVH_ROOM_APP_KEY,
       appSecret: config.OVH_ROOM_APP_SECRET,
       consumerKey: config.OVH_ROOM_CONSUMER_KEY,
-    })
-    : ovhLib({
-      appKey: process.env.OVH_APP_KEY,
-      appSecret: process.env.OVH_APP_SECRET,
-      consumerKey: process.env.OVH_CONSUMER_KEY,
     })
 
   const phoneNumbers = await getAllPhoneNumbers(ovhClient)
