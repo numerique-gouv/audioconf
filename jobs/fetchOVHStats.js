@@ -7,14 +7,9 @@ const config = require("../config")
 // Fetch env vars from config file
 dotenv.config({ path: ".env" })
 
-// for new API
-// 1. Get all phone numbers like now
-// 2. Get all rooms with `/telephony/${process.env.OVH_ROOM_ACCOUNT_NUMBER}/conference/${phoneNumber}/rooms`
-// 3. Get history for a room with `/telephony/{process.env.OVH_ROOM_ACCOUNT_NUMBER}/conference/{phoneNumber}/rooms/{roomNumber}/histories`
-
 // TODO: move these 3 functions in conferences.js when there will be no more fetch of data for old API
 const getAllPhoneNumbers = async (ovh) => {
-  const url = `/telephony/${process.env.OVH_ACCOUNT_NUMBER}/conference`
+  const url = `/telephony/${config.OVH_ROOM_ACCOUNT_NUMBER}/conference`
 
   try {
     const result = await ovh.requestPromised("GET", url, {})
@@ -27,7 +22,7 @@ const getAllPhoneNumbers = async (ovh) => {
 }
 
 const getCallsForPhoneNumber = async (ovh, phoneNumber) => {
-  const url = `/telephony/${process.env.OVH_ACCOUNT_NUMBER}/conference/${phoneNumber}/histories`
+  const url = `/telephony/${config.OVH_ROOM_ACCOUNT_NUMBER}/conference/${phoneNumber}/histories`
 
   try {
     return await ovh.requestPromised("GET", url, {})
@@ -38,7 +33,7 @@ const getCallsForPhoneNumber = async (ovh, phoneNumber) => {
 }
 
 const getHistoryForCall = async (ovh, phoneNumber, callId) => {
-  const url = `/telephony/${process.env.OVH_ACCOUNT_NUMBER}/conference/${phoneNumber}/histories/${callId}`
+  const url = `/telephony/${config.OVH_ROOM_ACCOUNT_NUMBER}/conference/${phoneNumber}/histories/${callId}`
 
   try {
     return await ovh.requestPromised("GET", url, {})
