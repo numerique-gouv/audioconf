@@ -2,7 +2,7 @@ const cron = require("cron")
 const anonymizeConferences = require("./jobs/anonymizeConferences")
 const sendSurveyEmails = require("./jobs/sendSurveyEmails")
 const computeStats = require("./jobs/computeStats")
-const fetchOVHStats = require("./jobs/fetchOVHStats.js")
+const fetchCallsStats = require("./jobs/fetchCallsStats.js")
 const config = require("./config")
 
 const jobs = [
@@ -32,7 +32,7 @@ const jobs = [
   },
   {
     cronTime: "30 10 * * *", // everyday at 10:30 for testing purpose (at the end, willl be run every 5 minutes)
-    onTick: fetchOVHStats,
+    onTick: fetchCallsStats,
     start: true,
     timeZone: "Europe/Paris",
     isActive: config.FEATURE_JOB_CALLS_STATS,

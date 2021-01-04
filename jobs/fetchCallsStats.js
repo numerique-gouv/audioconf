@@ -7,7 +7,7 @@ const db = require("../lib/db")
 dotenv.config({ path: ".env" }) // todo is this needed ?
 
 module.exports = async () => {
-  console.debug("Start of fetchOVHStats job")
+  console.debug("Start of fetchCallsStats job")
 
   const JOB_DRY_RUN = process.env.JOB_DRY_RUN === "true"
   console.log("Dry run :", JOB_DRY_RUN)
@@ -57,6 +57,6 @@ module.exports = async () => {
 
   console.dir({ summary })
 
-  console.debug("End of fetchOVHStats job.")
+  console.debug("End of fetchCallsStats job.")
   process.exit()
 }
