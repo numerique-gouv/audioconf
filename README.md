@@ -55,6 +55,7 @@ npm test
 2. Remplir son email et son horaire
 3. Consulter le http://localhost:1080/#/ pour voir l'email envoyé par le service
 
+
 ## Créer des migrations
 
 [KnexJS](http://knexjs.org/#Migrations) permet de créer des migrations de base de données. Un shortcut a été ajouté au `package.json` pour créer une migration :
@@ -98,8 +99,8 @@ npm run checkHTMLLocal
 
 ## Sticky sessions
 
-Le système de session est `in memory`. Dans un environnement à plusieurs containers web, cela peut poser des problèmes. 
-Comme la production est dans ce cas, il faut activer les sticky sessions. 
+Le système de session est `in memory`. Dans un environnement à plusieurs containers web, cela peut poser des problèmes.
+Comme la production est dans ce cas, il faut activer les sticky sessions.
 Bien vérifier donc qu'ils sont activés (dans Scalingo > Settings).
 
 ## SQL
@@ -117,3 +118,27 @@ POST /telephony/${OVH_ROOM_ACCOUNT_NUMBER}/conference/${OVH_ROOM_PHONE_NUMBER}/r
 PUT /telephony/${OVH_ROOM_ACCOUNT_NUMBER}/conference/${OVH_ROOM_PHONE_NUMBER}/rooms/*
 GET /telephony/${OVH_ROOM_ACCOUNT_NUMBER}/conference/${OVH_ROOM_PHONE_NUMBER}/roomsStats
 ```
+
+## Détail des appels API OVH utilisés
+*Création des confs*
+
+Les appels que nous faisons à l'API OVH sont les suivants :
+- Créer une conférence : `POST /telephony/${OVH_ROOM_ACCOUNT_NUMBER}/conference/${OVH_ROOM_PHONE_NUMBER}/rooms`
+
+L'API retourne le code d'accès de la conférence (roomNumber).
+- Configurer la conférence créée : `PUT /telephony/${config.OVH_ROOM_ACCOUNT_NUMBER}/conference/${config.OVH_ROOM_PHONE_NUMBER}/rooms/${roomNumber}`
+
+On fait ce deuxième appel API pour enlever le PIN qu'on utilise pas et ajouter une date d'expiration à la conférence.
+
+*Obtenir des stats sur les confs*
+
+- Obtenir des stats sur les conférences actuellement en cours : `GET /telephony/${config.OVH_ROOM_ACCOUNT_NUMBER}/conference/${config.OVH_ROOM_PHONE_NUMBER}/roomsStats`
+
+On récupère des stats sur les confs actuellement en cours, dont : le nombre de conférences réservées (bookedRoomsCount), le nombre d'appels actuellement en cours (activeConfsCount), le nombre total de participants en ligne dans ces appels (onlineParticipantsCount).
+
+On utilise également cet appel dans la page de status, pour vérifier que la connection à OVH marche toujours (si cet appel répond bien, on considère qu'on est bien connectés).
+
+- Obtenir la liste des confs passées : `GET /telephony/${process.env.OVH_ACCOUNT_NUMBER}/conference/${phoneNumber}/histories`
+
+- Obtenir l'historique d'une conf passée donnée : `GET /telephony/${process.env.OVH_ACCOUNT_NUMBER}/conference/${phoneNumber}/histories/${callId}`
+
