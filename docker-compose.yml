@@ -22,7 +22,7 @@ services:
       - db
       - maildev
     env_file:
-      - ../.env.conferences.dev
+      - .env.conferences.dev
     environment:
       DATABASE_URL: postgres://conferences:conferences@db:5432/conferences
       MAIL_PASS: mailuser
