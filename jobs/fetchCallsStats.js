@@ -11,6 +11,7 @@ module.exports = async () => {
   console.log("Small run :", JOB_CALLS_STATS_SMALL_RUN)
 
   const phoneNumbers = await conferences.getAllPhoneNumbers()
+  console.log("Got", phoneNumbers.length, "phone numbers.")
 
   if (!phoneNumbers.length) {
     console.log("No numbers found. Check your configuration.")
@@ -30,6 +31,7 @@ module.exports = async () => {
 
   for (const number of sortedPhoneNumbers.slice(0, numPhoneNumbersToRun)) {
     const callIds = await conferences.getCallsForPhoneNumber(number)
+    console.log("Got", callIds.length, "calls for phone number", number)
 
     for (const callId of callIds) {
       const history = await conferences.getHistoryForCall(number, callId)
