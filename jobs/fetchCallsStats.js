@@ -1,10 +1,5 @@
-const dotenv = require("dotenv")
-
 const conferences = require("../lib/conferences")
 const db = require("../lib/db")
-
-// Fetch env vars from config file
-dotenv.config({ path: ".env" }) // todo is this needed ?
 
 module.exports = async () => {
   console.debug("Start of fetchCallsStats job")
