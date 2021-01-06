@@ -37,6 +37,7 @@ module.exports = async () => {
       const history = await conferences.getHistoryForCall(number, callId)
 
       if (JOB_DRY_RUN) {
+        console.log(`${history.id} not inserted, dry run`)
         summary.insertedRows++
       } else {
         const id = await db.insertCallHistory(number, history)
