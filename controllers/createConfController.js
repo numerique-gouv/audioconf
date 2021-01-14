@@ -73,7 +73,7 @@ module.exports.createConf = async (req, res) => {
     return res.redirect('/')
   }
 
-  const confUrl = `${config.PROTOCOL}://${req.get('host')}${urls.showConf.replace(":id", conference.id)}#${conference.pin}`
+  const confUrl = `${config.PROTOCOL}://${config.HOSTNAME}${urls.showConf.replace(":id", conference.id)}#${conference.pin}`
   try {
     await emailer.sendConfCreatedEmail(email, conference.phoneNumber, conference.pin, durationInMinutes, conferenceDay, conference.expiresAt, confUrl, config.POLL_URL, userTimezoneOffset)
 
