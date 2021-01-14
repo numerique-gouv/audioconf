@@ -1,6 +1,6 @@
 {
   "env": {
-    "CANONICAL_HOST_URL": {
+    "HOSTNAME": {
       "generator": "url"
     }
   }
