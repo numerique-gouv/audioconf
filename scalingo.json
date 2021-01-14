@@ -9,8 +9,11 @@
       "generator": "url",
       "template": "%URL%/admin"
     },
-    "MAYBE_APP": {
-      "template": "%APP%"
+    "AAA_APP": {
+      "template": "%APP%-coucou"
+    },
+    "AAA_PARENT": {
+      "template": "%PARENT_APP%-coucou"
     }
   }
 }
