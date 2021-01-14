@@ -1,7 +1,16 @@
 {
   "env": {
     "HOSTNAME": {
+      "description": "Url with protocol, ex: https://my-scalingo-app-pr36.scalingo.io",
       "generator": "url"
+    },
+    "ADMIN_URL": {
+      "description": "Admin URL of the application",
+      "generator": "url",
+      "template": "%URL%/admin"
+    },
+    "MAYBE_APP": {
+      "template": "%APP%"
     }
   }
 }
