@@ -7,7 +7,7 @@ const config = require("./config")
 
 const jobs = [
   {
-    cronTime: "*/2 * * * *", // every two minutes
+    cronTime: "* * * * *", // every minutes
     onTick: computeStats,
     start: true,
     timeZone: "Europe/Paris",
