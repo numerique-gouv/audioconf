@@ -1,19 +1,8 @@
 {
   "env": {
-    "HOSTNAME": {
+    "HOSTNAME_WITH_PROTOCOL": {
       "description": "Url with protocol, ex: https://my-scalingo-app-pr36.scalingo.io",
       "generator": "url"
-    },
-    "ADMIN_URL": {
-      "description": "Admin URL of the application",
-      "generator": "url",
-      "template": "%URL%/admin"
-    },
-    "AAA_APP": {
-      "template": "%APP%-coucou"
-    },
-    "AAA_PARENT": {
-      "template": "%PARENT_APP%-coucou"
     }
   }
 }
