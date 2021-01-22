@@ -20,6 +20,8 @@ if (config.NODE_ENV === "development") {
   console.dir({ config })
 }
 
+const version = require("./package.json").version
+
 const app = express()
 
 app.set("view engine", "ejs")
@@ -57,6 +59,7 @@ app.use(function(req, res, next){
   res.locals.infos = req.flash("info")
   res.locals.successes = req.flash("success")
   res.locals.urls = urls
+  res.locals.version = version
   next()
 })
 
