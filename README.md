@@ -21,7 +21,7 @@ GET /telephony/${OVH_ROOM_ACCOUNT_NUMBER}/*
 ```
 
 ### En local sans docker
-Installer et lancer postgres et maildev en local, ensuite: 
+Installer et lancer postgres et maildev en local, ensuite:
 1. `cp .env.sample .env`. Remplir le fichier avec les configurations obtenues par OVH
 2. `npm install`
 3. `npm run migrate`
@@ -34,7 +34,7 @@ Installer et lancer postgres et maildev en local, ensuite:
 4. Lancer le service : `docker-compose up` ou `docker-compose run -p 8080:8080 web npm run dev`
 
 ### Bon déroulement de l'opération
-Vous devriez normalement voir dans les logs ceci : 
+Vous devriez normalement voir dans les logs ceci :
 ```
 CoucouCollègues listening at http://localhost:8080
 ```
@@ -146,3 +146,11 @@ On utilise également cet appel dans la page de status, pour vérifier que la co
 
 - Obtenir l'historique d'une conf passée donnée : `GET /telephony/${process.env.OVH_ACCOUNT_NUMBER}/conference/${phoneNumber}/histories/${callId}`
 
+## Mise en prod
+La mise en prod est faite à la main pour le moment.
+
+Procédé basique :
+ - On incrémente le numéro de version dans package.json
+ - on merge dans la branche `prod`
+ - on fait une release sur github (https://github.com/betagouv/audioconf/releases/new) en décrivant les modifications apportées par cette release. Ce process crée un tag sur le commit de la release.
+ - on déploie la branche prod sur Scalingo.
