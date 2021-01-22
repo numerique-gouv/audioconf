@@ -4,9 +4,8 @@ dotenv.config({ path: ".env.email_whitelist" })
 
 const config = {}
 
-config.NODE_ENV = process.env.NODE_ENV || "production"
+config.NODE_ENV = process.env.NODE_ENV || "production"
 config.PORT = process.env.PORT || 8080
-config.PROTOCOL = process.env.PROTOCOL || "https"
 
 const isPresent = varName => {
   if (varName in process.env && process.env[varName].trim() !== "") {
@@ -17,6 +16,7 @@ const isPresent = varName => {
 
 config.APP_NAME = process.env.APP_NAME || "CoucouCollègues"
 
+config.HOSTNAME_WITH_PROTOCOL = process.env.HOSTNAME_WITH_PROTOCOL || `http://localhost:${config.PORT}`
 
 if (!isPresent("MAIL_USER") || !isPresent("MAIL_PASS")) {
   throw new Error("Env vars MAIL_USER and MAIL_PASS should be set")
@@ -92,6 +92,7 @@ config.FEATURE_STATS_PAGE = (process.env.FEATURE_STATS_PAGE === "true") || false
 config.FEATURE_RESERVATIONS = (process.env.FEATURE_RESERVATIONS === "true") || false
 config.FEATURE_JOB_COMPUTE_STATS = process.env.FEATURE_JOB_COMPUTE_STATS === "true" || false
 config.FEATURE_JOB_ANONYMIZE_EMAILS = process.env.FEATURE_JOB_ANONYMIZE_EMAILS === "true" || false
+config.FEATURE_JOB_CALLS_STATS = process.env.FEATURE_JOB_CALLS_STATS === "true" || false
 
 config.ANNOUNCEMENTS = process.env.ANNOUNCEMENTS ? process.env.ANNOUNCEMENTS.split("|") : []
 

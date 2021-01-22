@@ -9,7 +9,7 @@
         </h2>
           <% if (announcements.length) { %>
             <% announcements.forEach(function(announcement) { %>
-              <%- include('partials/notificationInfo', {info: announcement}) -%>
+              <%- include('partials/unsafeAnnouncementInfo', {info: announcement}) -%>
             <% }) %>
           <% } %>
 
