@@ -25,6 +25,7 @@ services:
       - .env.conferences.dev
     environment:
       DATABASE_URL: postgres://conferences:conferences@db:5432/conferences
+      # ANNOUNCEMENTS: "<a href='test'>test</a>|<h1>test</h1>"
       MAIL_PASS: mailuser
       MAIL_USER: mailpassword
       MAIL_HOST: maildev
