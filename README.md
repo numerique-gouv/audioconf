@@ -150,7 +150,23 @@ On utilise également cet appel dans la page de status, pour vérifier que la co
 La mise en prod est faite à la main pour le moment.
 
 Procédé basique :
- - On incrémente le numéro de version dans package.json
- - on merge dans la branche `prod`
+ - On fait une branche release:
+ ```
+git checkout main
+git pull
+git checkout -B release/X.Y.Z
+ ```
+ - On incrémente le numéro de version dans package.json et on commit dans la branche de release. On teste cette branche de release.
+ - on merge la release dans la branche `prod`
+ ```
+ git checkout prod
+ git merge --no-ff release/X.Y.Z
+ ```
  - on fait une release sur github (https://github.com/betagouv/audioconf/releases/new) en décrivant les modifications apportées par cette release. Ce process crée un tag sur le commit de la release.
  - on déploie la branche prod sur Scalingo.
+ - on merge `prod` dans `main` (pour récupérer le numéro de version et les éventuelles modifs de test):
+ ```
+ git checkout main
+ git pull
+ git merge --no-ff prod
+ ```
