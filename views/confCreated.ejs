@@ -4,8 +4,8 @@
   <div class="main-paragraph">
     <h2>
       Votre conférence
-      <% if(conference.isDayConference) {  %>
-        du <%= format.formatFrenchDate(conference.expiresAt) %>
+      <% if(conference.conferenceDay) {  %>
+        du <%= format.formatFrenchDate(new Date(conference.conferenceDay)) %>
       <% } %>
       est réservée !
     </h2>
@@ -13,8 +13,8 @@
     <div class="rf-callout">
       <p class="rf-callout__title">
         Pour vous y connecter
-        <% if(conference.isDayConference) {  %>
-          le <%= format.formatFrenchDate(conference.expiresAt) %>
+        <% if(conference.conferenceDay) {  %>
+          le <%= format.formatFrenchDate(new Date(conference.conferenceDay)) %>
         <% } %>
       </p>
       <ul class="rf-callout__text">
@@ -29,8 +29,8 @@
     </div>
 
     <p>
-      <% if(conference.isDayConference) {  %>
-        Ce numéro de conférence sera actif toute la journée du  <%= format.formatFrenchDate(conference.expiresAt) %>. Il pourra accueillir jusqu'à 50 personnes.
+      <% if(conference.conferenceDay) {  %>
+        Ce numéro de conférence sera actif toute la journée du  <%= format.formatFrenchDate(new Date(conference.conferenceDay)) %>. Il pourra accueillir jusqu'à 50 personnes.
       <% } else { %>
         Ce numéro de conférence est actif pendant <%= format.formatMinutesInHours(conference.durationInMinutes) %>.
         Il expirera <%= format.formatFrenchDateTime(conference.expiresAt) %>.

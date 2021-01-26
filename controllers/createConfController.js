@@ -31,7 +31,7 @@ const createConfWithDay = async (email, conferenceDay, userTimezoneOffset) => {
 
     const OVHconfData = await conferences.createConf(freeAt)
 
-    const conference = await db.insertConferenceWithFreeAt(email, OVHconfData.phoneNumber, OVHconfData.freeAt)
+    const conference = await db.insertConferenceWithDay(email, OVHconfData.phoneNumber, conferenceDay, OVHconfData.freeAt)
     conference.pin = OVHconfData.pin
     return conference
   } catch (err) {
@@ -99,12 +99,6 @@ module.exports.showConf = async (req, res) => {
     if (conference.canceledAt) {
       req.flash('error', `La conférence a été annulée le ${format.formatFrenchDateTime(conference.canceledAt)}. Si vous avez encore besoin d\'une conférence, vous pouvez en créer une nouvelle.`)
       return res.redirect('/')
-    }
-
-    // Whether this conf was booked for the whole day.
-    conference.isDayConference = false
-    if (!conference.durationInMinutes) {
-      conference.isDayConference = true
     }
 
     res.render('confCreated', {
