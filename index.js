@@ -29,8 +29,8 @@ app.set("views", path.join(__dirname, "views"))
 app.locals.format = format
 
 app.use("/static", express.static("static"))
-// Hack for importing css from npm package
-app.use("/~", express.static(path.join(__dirname, "node_modules")))
+app.use("/gouvfr", express.static(path.join(__dirname, "node_modules/@gouvfr/all/dist")))
+app.use("/chart.js", express.static(path.join(__dirname, "node_modules/chart.js/dist")))
 app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(cookieParser(config.secret))
