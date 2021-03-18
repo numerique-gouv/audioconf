@@ -93,10 +93,6 @@ app.get(urls.legalNotice, (req, res) => {
   })
 })
 
-app.get("/debug-sentry", function mainHandler(req, res) {
-  throw new Error("My first Sentry error!");
-})
-
 if (config.FEATURE_STATS_PAGE) {
   app.get(urls.stats, async (req, res) => {
     const NUM_STATS_POINTS = 1440 // 24h if 1 point per hour
