@@ -1,6 +1,6 @@
 const bodyParser = require("body-parser")
 const express = require("express")
-const Sentry = require('@sentry/node')
+const Sentry = require("@sentry/node")
 const flash = require("connect-flash")
 const path = require("path")
 const cookieParser = require("cookie-parser")
