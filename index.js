@@ -1,5 +1,6 @@
 const bodyParser = require("body-parser")
 const express = require("express")
+const Sentry = require("@sentry/node")
 const flash = require("connect-flash")
 const path = require("path")
 const cookieParser = require("cookie-parser")
@@ -23,6 +24,12 @@ if (config.NODE_ENV === "development") {
 const version = require("./package.json").version
 
 const app = express()
+
+Sentry.init({ 
+  dsn: process.env.SENTRY_DSN
+})
+
+app.use(Sentry.Handlers.requestHandler())
 
 app.set("view engine", "ejs")
 app.set("views", path.join(__dirname, "views"))
@@ -112,6 +119,8 @@ app.get(urls.contact, (req, res) => {
 })
 
 app.get(urls.status, statusController.getStatus)
+
+app.use(Sentry.Handlers.errorHandler())
 
 module.exports = app.listen(config.PORT, () => {
   console.log(`It is ${format.formatFrenchDateTime(new Date())}, ${config.APP_NAME} listening at http://localhost:${config.PORT}`)

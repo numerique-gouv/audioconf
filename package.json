@@ -32,6 +32,7 @@
   "homepage": "https://github.com/betagouv/conferences#readme",
   "dependencies": {
     "@gouvfr/all": "^0.3.1",
+    "@sentry/node": "^6.2.2",
     "chart.js": "^2.9.4",
     "connect-flash": "^0.1.1",
     "connect-session-knex": "^2.0.0",
