@@ -10,7 +10,7 @@
       est réservée !
     </h2>
 
-    <div class="fr-callout">
+    <div class="fr-callout fr-mb-3w">
       <p class="fr-callout__title">
         Pour vous y connecter
         <% if(conference.conferenceDay) {  %>
@@ -41,12 +41,13 @@
     <p>Bonne discussion avec <%= appName %> !</p>
     <% if(pollUrl) {  %>
       <hr />
-      <p>Partagez vos impressions</p>
-
-      <div class="fr-input-group">
-        <a class="fr-btn fr-btn fr-btn--primary" title="Donner mon avis" rel="noopener noreferrer nofollow" target="_blank" href="<%= pollUrl %>">
-          Donner mon avis
-        </a>
+      <div class="fr-my-3w">
+        <div class="fr-mb-2w">Partagez vos impressions sur <%= appName %> :</div>
+        <div class="fr-input-group">
+          <a class="fr-btn fr-btn fr-btn--primary" title="Donner mon avis" rel="noopener noreferrer nofollow" target="_blank" href="<%= pollUrl %>">
+            Donner mon avis
+          </a>
+        </div>
       </div>
     <% } %>
 
