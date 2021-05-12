@@ -17,39 +17,26 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/static/images/favicon/favicon-32x32.png">
 </head>
 <body>
-  <header class="fr-header">
-    <div class="fr-container">
-      <div class="fr-header__body">
-        <div class="fr-header__brand">
-          <a class="fr-logo"
-             href="/"
-             title="Direction interministérielle du numérique">
-            <span class="fr-logo__title">
-              République
-              <br>française
-            </span>
-          </a>
-        </div>
-        <div class="fr-header__navbar">
-          <div class="fr-service">
-            <a class="fr-service__title" href="/" title="<%= appName %>">
-              <%= appName %>
-            </a>
-            <p class="fr-service__tagline">
-              Conférences téléphoniques pour les agents de l'État
-            </p>
-          </div>
-        </div>
-        <div class="fr-header__tools">
-          <div class="fr-shortcuts">
-            <ul class="fr-shortcuts__list">
-              <li class="fr-shortcuts__item">
-                <div class="fr-checkbox-group">
-                  <input type="checkbox" id="fr-dark-mode-toggle-switch" name="fr-dark-mode-toggle-switch" class="ng-untouched ng-pristine ng-valid">
-                  <label for="fr-dark-mode-toggle-switch" class="fr-label"></label>
-                </div>
-              </li>
-            </ul>
+
+  <header role="banner" class="fr-header">
+    <div class="fr-header__body">
+      <div class="fr-container">
+        <div class="fr-header__body-row">
+          <div class="fr-header__brand fr-enlarge-link">
+            <div class="fr-header__brand-top">
+              <div class="fr-header__logo">
+                <p class="fr-logo">
+                  République
+                  <br>Française
+                </p>
+              </div>
+            </div>
+            <div class="fr-header__service">
+              <a href="/" title="Accueil - <%= appName %>">
+                <p class="fr-header__service-title"><%= appName %></p>
+              </a>
+              <p class="fr-header__service-tagline">Conférences téléphoniques pour les agents de l'État</p>
+            </div>
           </div>
         </div>
       </div>
