@@ -46,10 +46,10 @@ body:after{
 
 .fr-bg--alt {
   background-color: var(--bf500);
+  color: var(--g100);
 }
 
-#advantages, #advantages h3 {
-  color: var(--g100);
+.text-center {
   text-align: center;
 }
 
