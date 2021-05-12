@@ -1,10 +1,10 @@
-<div class="rf-callout rf-fi-alert-line rf-callout--scheme-soft-orange-soft rf-mb-3w">
+<div class="fr-callout fr-fi-alert-line fr-callout--scheme-soft-orange-soft fr-mb-3w">
   <% if (error.message) { %>
-    <p class="rf-callout__text"><%= error.message %></p>
+    <p class="fr-callout__text"><%= error.message %></p>
     <% if (error.withContactLink) { %>
-      <a class="rf-btn rf-btn--primary" title="Nous contacter" href="<%= urls.contact %>">Nous contacter</a>
+      <a class="fr-btn fr-btn--primary" title="Nous contacter" href="<%= urls.contact %>">Nous contacter</a>
     <% } %>
   <% } else { %>
-    <p class="rf-callout__text"><%= error %></p>
+    <p class="fr-callout__text"><%= error %></p>
   <% } %>
 </div>

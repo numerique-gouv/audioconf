@@ -1,6 +1,6 @@
 <%- include('partials/header') -%>
 
-<div class="rf-container">
+<div class="fr-container">
   <div class="main-paragraph">
     <h2>
       Votre conférence
@@ -10,14 +10,14 @@
       est réservée !
     </h2>
 
-    <div class="rf-callout">
-      <p class="rf-callout__title">
+    <div class="fr-callout">
+      <p class="fr-callout__title">
         Pour vous y connecter
         <% if(conference.conferenceDay) {  %>
           le <%= format.formatFrenchDate(new Date(conference.conferenceDay)) %>
         <% } %>
       </p>
-      <ul class="rf-callout__text">
+      <ul class="fr-callout__text">
         <li>Appelez le <a id="phone-link" href="tel:<%= conference.phoneNumber %>"><strong><%= format.formatFrenchPhoneNumber(conference.phoneNumber) %></strong></a> (numéro non surtaxé) depuis un téléphone.</li>
         <li>
           Tapez le code d'accès :
@@ -43,8 +43,8 @@
       <hr />
       <p>Partagez vos impressions</p>
 
-      <div class="rf-input-group">
-        <a class="rf-btn rf-btn rf-btn--primary" title="Donner mon avis" rel="noopener noreferrer nofollow" target="_blank" href="<%= pollUrl %>">
+      <div class="fr-input-group">
+        <a class="fr-btn fr-btn fr-btn--primary" title="Donner mon avis" rel="noopener noreferrer nofollow" target="_blank" href="<%= pollUrl %>">
           Donner mon avis
         </a>
       </div>

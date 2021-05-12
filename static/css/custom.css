@@ -15,14 +15,14 @@ body:after{
 
 .main-paragraph {
   /* todo use Sass or some other css processor to reuse rules */
-  margin-top: 56px !important; /* rf-mt-7w */
-  margin-bottom: 64px !important; /* rf-mb-8w */
+  margin-top: 56px !important; /* fr-mt-7w */
+  margin-bottom: 64px !important; /* fr-mb-8w */
 }
 
 .sub-paragraph {
   /* todo use Sass or some other css processor to reuse rules */
-  margin-top: 24px !important; /* rf-mt-3w */
-  margin-bottom: 56px !important; /* rf-mb-7w */
+  margin-top: 24px !important; /* fr-mt-3w */
+  margin-bottom: 56px !important; /* fr-mb-7w */
 }
 
 /* Todo : use callouts from the design system instead of home-made paragraphs ? */
@@ -51,7 +51,7 @@ body:after{
 }
 
 
-.rf-bg--alt {
+.fr-bg--alt {
   background-color: var(--bf500);
 }
 
