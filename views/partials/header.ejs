@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr" data-fr-theme>
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -16,6 +17,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/static/images/favicon/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/static/images/favicon/favicon-32x32.png">
 </head>
+
 <body>
 
   <header role="banner" class="fr-header">
@@ -30,10 +32,18 @@
                   <br>Française
                 </p>
               </div>
+              <div class="fr-header__navbar">
+                <button class="fr-btn--menu fr-btn" data-fr-opened="false" aria-controls="modal-menu"
+                  aria-haspopup="menu" title="Menu">
+                  Menu
+                </button>
+              </div>
             </div>
             <div class="fr-header__service">
               <a href="/" title="Accueil - <%= appName %>">
-                <p class="fr-header__service-title"><%= appName %></p>
+                <p class="fr-header__service-title">
+                  <%= appName %>
+                </p>
               </a>
               <p class="fr-header__service-tagline">Conférences téléphoniques pour les agents de l'État</p>
             </div>
@@ -48,6 +58,13 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+    <!-- Navigation principale -->
+    <div class="fr-header__menu fr-modal" id="modal-menu" aria-labelledby="button-834">
+      <div class="fr-container">
+        <button class="fr-link--close fr-link" aria-controls="modal-menu">Fermer</button>
+        <div class="fr-header__menu-links"></div>
       </div>
     </div>
   </header>
