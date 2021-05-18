@@ -25,7 +25,7 @@ const version = require("./package.json").version
 
 const app = express()
 
-Sentry.init({ 
+Sentry.init({
   dsn: process.env.SENTRY_DSN
 })
 
@@ -36,7 +36,7 @@ app.set("views", path.join(__dirname, "views"))
 app.locals.format = format
 
 app.use("/static", express.static("static"))
-app.use("/gouvfr", express.static(path.join(__dirname, "node_modules/@gouvfr/all/dist")))
+app.use("/static/gouvfr", express.static(path.join(__dirname, "node_modules/@gouvfr/dsfr/dist")))
 app.use("/chart.js", express.static(path.join(__dirname, "node_modules/chart.js/dist")))
 app.use(bodyParser.urlencoded({ extended: false }))
 
