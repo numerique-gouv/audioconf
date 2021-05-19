@@ -1,5 +1,6 @@
 const bodyParser = require("body-parser")
 const express = require("express")
+const Sentry = require("@sentry/node")
 const flash = require("connect-flash")
 const path = require("path")
 const cookieParser = require("cookie-parser")
@@ -24,12 +25,18 @@ const version = require("./package.json").version
 
 const app = express()
 
+Sentry.init({
+  dsn: process.env.SENTRY_DSN
+})
+
+app.use(Sentry.Handlers.requestHandler())
+
 app.set("view engine", "ejs")
 app.set("views", path.join(__dirname, "views"))
 app.locals.format = format
 
 app.use("/static", express.static("static"))
-app.use("/gouvfr", express.static(path.join(__dirname, "node_modules/@gouvfr/all/dist")))
+app.use("/static/gouvfr", express.static(path.join(__dirname, "node_modules/@gouvfr/dsfr/dist")))
 app.use("/chart.js", express.static(path.join(__dirname, "node_modules/chart.js/dist")))
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -112,6 +119,8 @@ app.get(urls.contact, (req, res) => {
 })
 
 app.get(urls.status, statusController.getStatus)
+
+app.use(Sentry.Handlers.errorHandler())
 
 module.exports = app.listen(config.PORT, () => {
   console.log(`It is ${format.formatFrenchDateTime(new Date())}, ${config.APP_NAME} listening at http://localhost:${config.PORT}`)

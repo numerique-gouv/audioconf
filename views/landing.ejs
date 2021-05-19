@@ -1,8 +1,8 @@
 <%- include('partials/header') -%>
 
-<div class="rf-container">
-  <div class="rf-grid-row rf-grid-row--center">
-    <div class="rf-col rf-col-lg-8">
+<div class="fr-container">
+  <div class="fr-grid-row fr-grid-row--center">
+    <div class="fr-col fr-col-lg-8">
       <div id="je-cree-une-conf" class="main-paragraph">
         <h2>
           Réserver une conférence téléphonique
@@ -32,24 +32,24 @@
           <% } %>
 
           <form action="<%= urls.sendValidationEmail %>" method="POST">
-            <div class="rf-input-group">
-              <label class="rf-label" for="email">Votre email professionnel :</label>
-              <input class="rf-input" type="email" id="email" name="email" required>
+            <div class="fr-input-group">
+              <label class="fr-label" for="email">Votre email professionnel :</label>
+              <input class="fr-input" type="email" id="email" name="email" required>
             </div>
             <% if(FEATURE_RESERVATIONS) { %>
-              <div class="rf-input-group">
-                <label class="rf-label" for="day">Date de votre conférence :</label>
-                <p class="rf-hint-text" id="day-hint">La conférence vous sera réservée pour la journée choisie.</p>
-                <select class="rf-select" id="day" name="day" aria-describedby="day-hint">
+              <div class="fr-input-group">
+                <label class="fr-label" for="day">Date de votre conférence :</label>
+                <p class="fr-hint-text" id="day-hint">La conférence vous sera réservée pour la journée choisie.</p>
+                <select class="fr-select" id="day" name="day" aria-describedby="day-hint">
                   <% dateChoices.forEach(function(dateChoice) { %>
                     <option value="<%= dateChoice.value %>"><%= dateChoice.label %></option>
                   <% }) %>
                 </select>
               </div>
             <% } else { %>
-              <div class="rf-input-group">
-                <label class="rf-label" for="duration">Durée de la réservation</label>
-                <select class="rf-select" id="duration" name="durationInMinutes">
+              <div class="fr-input-group">
+                <label class="fr-label" for="duration">Durée de la réservation</label>
+                <select class="fr-select" id="duration" name="durationInMinutes">
                   <option value="60">1 heure</option>
                   <option value="120" selected>2 heures</option>
                   <option value="240">4 heures</option>
@@ -61,12 +61,12 @@
             <div class="hidden">
               <input type="number" id="userTimezoneOffset" name="userTimezoneOffset" required>
             </div>
-            <div class="rf-input-group">
-              <button type="submit" class="rf-btn" title="Réserver ma conférence">Réserver ma conférence</button>
+            <div class="fr-input-group">
+              <button type="submit" class="fr-btn" title="Réserver ma conférence">Réserver ma conférence</button>
             </div>
           </form>
 
-          <p class="rf-text--s">
+          <p class="fr-text--s">
             <% if (FEATURE_DISPLAY_STATS_ON_LANDING) { %>
               <% if (onlineParticipantsCount > 0) { %>
                 Actuellement, il y a <%= onlineParticipantsCount %> personne<%= onlineParticipantsCount > 1 ? 's' : '' %> dans <%= activeConfsCount %> conférence<%= activeConfsCount > 1 ? 's' : '' %> téléphonique<%= activeConfsCount > 1 ? 's' : '' %>.
@@ -79,29 +79,29 @@
   </div>
 </div>
 
-<div id="advantages" class="rf-container-fluid rf-bg--alt rf-pb-6w rf-pt-2w">
-  <div class="rf-grid-row rf-grid-row--center">
-    <div class="rf-col-6"><h3 class="rf-h2">Collaborez à distance facilement</h3></div>
+<div id="advantages" class="fr-container-fluid fr-bg--alt text-center fr-p-5w">
+  <div class="fr-grid-row fr-grid-row--center">
+    <div class="fr-col-6"><h3 class="fr-h2">Collaborez à distance facilement</h3></div>
   </div>
-  <div class="rf-grid-row rf-grid-row--center rf-grid-row--gutter">
-    <div class="rf-col-xs-12 rf-col-md-3 rf-p-3w">
-      <div class="rf-text--lg rf-pb-2w">Accessible partout</div>
-      <div class="rf-text--sm">Numéro non surtaxé pour la France métropolitaine et les DROM.</div>
+  <div class="fr-grid-row fr-grid-row--center fr-grid-row--gutter">
+    <div class="fr-col-xs-12 fr-col-md-3 fr-p-3w">
+      <div class="fr-h3">Accessible partout</div>
+      <div>Numéro non surtaxé pour la France métropolitaine et les DROM.</div>
     </div>
-    <div class="rf-col-xs-12 rf-col-md-3 rf-p-3w">
-      <div class="rf-text--lg rf-pb-2w">Pour téléphone</div>
-      <div class="rf-text--sm">Adapté au téléphone fixe ou mobile. Pas besoin d'ordinateur ou de logiciel.</div>
+    <div class="fr-col-xs-12 fr-col-md-3 fr-p-3w">
+      <div class="fr-h3">Pour téléphone</div>
+      <div>Adapté au téléphone fixe ou mobile. Pas besoin d'ordinateur ou de logiciel.</div>
     </div>
-    <div class="rf-col-xs-12 rf-col-md-3 rf-p-3w">
-      <div class="rf-text--lg rf-pb-2w">Sans internet</div>
-      <div class="rf-text--sm">Technologie téléphonique, accessible sans connexion internet.</div>
+    <div class="fr-col-xs-12 fr-col-md-3 fr-p-3w">
+      <div class="fr-h3">Sans internet</div>
+      <div>Technologie téléphonique, accessible sans connexion internet.</div>
     </div>
   </div>
 </div>
 
-<div class="rf-container">
-  <div class="rf-grid-row rf-grid-row--center">
-    <div class="rf-col rf-col-lg-8">
+<div class="fr-container">
+  <div class="fr-grid-row fr-grid-row--center">
+    <div class="fr-col fr-col-lg-8">
 
       <div id="comment-ca-marche" class="main-paragraph">
         <h2>
