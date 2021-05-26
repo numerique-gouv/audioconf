@@ -15,14 +15,14 @@ body:after{
 
 .main-paragraph {
   /* todo use Sass or some other css processor to reuse rules */
-  margin-top: 56px !important; /* rf-mt-7w */
-  margin-bottom: 64px !important; /* rf-mb-8w */
+  margin-top: 56px !important; /* fr-mt-7w */
+  margin-bottom: 64px !important; /* fr-mb-8w */
 }
 
 .sub-paragraph {
   /* todo use Sass or some other css processor to reuse rules */
-  margin-top: 24px !important; /* rf-mt-3w */
-  margin-bottom: 56px !important; /* rf-mb-7w */
+  margin-top: 24px !important; /* fr-mt-3w */
+  margin-bottom: 56px !important; /* fr-mb-7w */
 }
 
 /* Todo : use callouts from the design system instead of home-made paragraphs ? */
@@ -31,32 +31,25 @@ body:after{
   color: var(--error);
 }
 
-.notification {
-  border: 1px solid var(--g800);
-  border-radius: 3px;
-  padding: 16px;
-  margin-bottom: 16px;
+.notification--error {
+  --scheme-border: var(--error);
 }
 
-.notification.error {
-  border-color: var(--error);
+.notification--info {
+  --scheme-border: var(--info);
 }
 
-.notification.info {
-  border-color: var(--info);
-}
-
-.notification.success {
-  border-color: var(--success);
+.notification--success {
+  --scheme-border: var(--success);
 }
 
 
-.rf-bg--alt {
+.fr-bg--alt {
   background-color: var(--bf500);
+  color: var(--g100);
 }
 
-#advantages, #advantages h3 {
-  color: var(--g100);
+.text-center {
   text-align: center;
 }
 
