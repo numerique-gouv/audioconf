@@ -30,7 +30,7 @@ module.exports = async () => {
   const numPhoneNumbersToRun = JOB_CALLS_STATS_SMALL_RUN ? 2 : phoneNumbers.length
 
   for (const number of sortedPhoneNumbers.slice(0, numPhoneNumbersToRun)) {
-    const latestRecordedCall = await db.getLastSuccessfullySavedPhoneCall(number)
+    const latestRecordedCall = await db.getLastSuccessfulCallStatsJob(number)
     const intervalStartDate = latestRecordedCall ? latestRecordedCall.dateBegin.toISOString() : undefined
 
     console.log("Fetching calls for phone number", number, "from", intervalStartDate, "to now")
@@ -57,7 +57,7 @@ module.exports = async () => {
 
     // Record that this batch of inserts was successful
     const lastCall = await db.getLatestCallHistory(number)
-    await db.insertLastSuccessfullySavedPhoneCall(number, lastCall)
+    await db.insertLastSuccessfulCallStatsJob(number, lastCall)
   }
 
   console.dir({ summary })
