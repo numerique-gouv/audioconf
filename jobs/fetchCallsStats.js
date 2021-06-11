@@ -30,8 +30,12 @@ module.exports = async () => {
   const numPhoneNumbersToRun = JOB_CALLS_STATS_SMALL_RUN ? 2 : phoneNumbers.length
 
   for (const number of sortedPhoneNumbers.slice(0, numPhoneNumbersToRun)) {
-    const callIds = await conferences.getCallsForPhoneNumber(number)
-    console.log("Got", callIds.length, "calls for phone number", number)
+    const latestRecordedCall = await db.getLatestCallHistory(number)
+    const intervalStartDate = latestRecordedCall ? latestRecordedCall.dateBegin.toISOString() : undefined
+
+    console.log("Fetching calls for phone number", number, "from", intervalStartDate, "to now")
+    const callIds = await conferences.getCallsForPhoneNumber(number, intervalStartDate)
+    console.log("Got", callIds.length, "calls")
 
     for (const callId of callIds) {
       const history = await conferences.getHistoryForCall(number, callId)
