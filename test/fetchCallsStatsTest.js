@@ -87,4 +87,24 @@ describe("fetchCallsStats", () => {
     const lastCall = await db.getLatestCallHistory(phoneNumber)
     chai.assert.equal(lastCall.id, savedCalls[0].id)
   })
+
+  it("should fetch data from beginning of time when there is no previous recorded job", async () => {
+    await fetchCallsStats()
+
+    const noIntervalStartDate = undefined
+    sinon.assert.calledWith(getCallsStub, phoneNumber, noIntervalStartDate)
+  })
+
+  it("should fetch data from last record when there is a previous recorded job", async () => {
+    await fetchCallsStats()
+    // run twice
+    await fetchCallsStats()
+
+    // First run : from beginning of time
+    const noIntervalStartDate = undefined
+    sinon.assert.calledWith(getCallsStub.getCall(0), phoneNumber, noIntervalStartDate)
+    // Second run : from end of previous run
+    const latestCallBeginDate = "2021-06-21T15:23:32.839Z"
+    sinon.assert.calledWith(getCallsStub.getCall(1), phoneNumber, latestCallBeginDate)
+  })
 })
