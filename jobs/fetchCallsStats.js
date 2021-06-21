@@ -39,37 +39,42 @@ module.exports = async () => {
   const JOB_CALLS_STATS_SMALL_RUN = process.env.JOB_CALLS_STATS_SMALL_RUN === "true"
   console.log("Small run :", JOB_CALLS_STATS_SMALL_RUN)
 
-  const phoneNumbers = await conferences.getAllPhoneNumbers()
-  console.log("Got", phoneNumbers.length, "phone numbers.")
-  if (!phoneNumbers.length) {
-    console.log("No numbers found. Check your configuration.")
-    process.exit(1)
-  }
-
-  const summary = {
-    phoneNumbersLength: phoneNumbers.length,
-    insertedRows: 0,
-    alreadyInsertedRows: 0,
-  }
-
-  // We sort the numbers, so event in "small test", the job will always use the same numbers.
-  const sortedPhoneNumbers = phoneNumbers.sort()
-
-  const numPhoneNumbersToRun = JOB_CALLS_STATS_SMALL_RUN ? 2 : phoneNumbers.length
-
-  for (const phoneNumber of sortedPhoneNumbers.slice(0, numPhoneNumbersToRun)) {
-    const callIds = await fetchCallIds(phoneNumber)
-
-    for (const callId of callIds) {
-      const history = await conferences.getHistoryForCall(phoneNumber, callId)
-      await insertCallHistory(history, phoneNumber, JOB_DRY_RUN, summary)
+  try {
+    const phoneNumbers = await conferences.getAllPhoneNumbers()
+    console.log("Got", phoneNumbers.length, "phone numbers.")
+    if (!phoneNumbers.length) {
+      console.log("No numbers found. Check your configuration.")
+      process.exit(1)
     }
 
-    // Record that this batch of inserts was successful
-    await recordSuccessfulJob(phoneNumber)
+    const summary = {
+      phoneNumbersLength: phoneNumbers.length,
+      insertedRows: 0,
+      alreadyInsertedRows: 0,
+    }
+
+    // We sort the numbers, so event in "small test", the job will always use the same numbers.
+    const sortedPhoneNumbers = phoneNumbers.sort()
+
+    const numPhoneNumbersToRun = JOB_CALLS_STATS_SMALL_RUN ? 2 : phoneNumbers.length
+
+    for (const phoneNumber of sortedPhoneNumbers.slice(0, numPhoneNumbersToRun)) {
+      const callIds = await fetchCallIds(phoneNumber)
+
+      for (const callId of callIds) {
+        const history = await conferences.getHistoryForCall(phoneNumber, callId)
+        await insertCallHistory(history, phoneNumber, JOB_DRY_RUN, summary)
+      }
+
+      // Record that this batch of inserts was successful
+      await recordSuccessfulJob(phoneNumber)
+    }
+
+    console.dir({ summary })
+
+    console.debug("End of fetchCallsStats job.")
+  } catch(err) {
+    console.error("fetchCallsStats job abort on error", err)
+    process.exit(1)
   }
-
-  console.dir({ summary })
-
-  console.debug("End of fetchCallsStats job.")
 }
