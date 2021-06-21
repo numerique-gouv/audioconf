@@ -44,18 +44,26 @@ describe("fetchCallsStats", () => {
     await utils.reinitializeDB()
   })
 
-  it("should fetch call stats", async () => {
+  it("should record summary of job", async () => {
     const summary = await fetchCallsStats()
 
+    // Stats are filled in
     chai.assert.equal(summary.phoneNumbersLength, 1)
     chai.assert.equal(summary.insertedRows, 2)
+  })
+
+  it("should call OVH services", async () => {
+    await fetchCallsStats()
 
     // OVH services were called
     sinon.assert.calledOnce(getPhoneNumbersStub)
     sinon.assert.calledOnce(getCallsStub)
     sinon.assert.calledTwice(getHistoryForCallStub)
+  })
 
-    // results are saved in DB
+  it("should save results in DB", async () => {
+    await fetchCallsStats()
+
     const savedCalls = await knex("phoneCalls")
       .select("*")
       .where("phoneNumber", phoneNumber)
@@ -66,8 +74,16 @@ describe("fetchCallsStats", () => {
     chai.assert.include(savedCalls[1].id, callId2, "id of saved history contains callId")
     chai.assert.include(savedCalls[0].id, phoneNumber, "id of saved history contains phoneNumber")
     chai.assert.include(savedCalls[1].id, phoneNumber, "id of saved history contains phoneNumber")
+  })
 
-    // Job success is recorded in DB
+  it("should record job success in DB", async () => {
+    await fetchCallsStats()
+
+    const savedCalls = await knex("phoneCalls")
+      .select("*")
+      .where("phoneNumber", phoneNumber)
+      .orderBy("dateBegin", "desc")
+
     const lastCall = await db.getLatestCallHistory(phoneNumber)
     chai.assert.equal(lastCall.id, savedCalls[0].id)
   })
