@@ -73,6 +73,7 @@ module.exports = async () => {
     console.dir({ summary })
 
     console.debug("End of fetchCallsStats job.")
+    return summary
   } catch(err) {
     console.error("fetchCallsStats job abort on error", err)
     process.exit(1)
