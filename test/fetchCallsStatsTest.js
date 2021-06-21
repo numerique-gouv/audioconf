@@ -1,6 +1,7 @@
 /* global afterEach describe beforeEach it */
 const chai = require("chai")
 const conferences = require("../lib/conferences")
+const db = require("../lib/db")
 const knex = require("../knex-client")
 const sinon = require("sinon")
 const utils = require("./utils")
@@ -65,5 +66,9 @@ describe("fetchCallsStats", () => {
     chai.assert.include(savedCalls[1].id, callId2, "id of saved history contains callId")
     chai.assert.include(savedCalls[0].id, phoneNumber, "id of saved history contains phoneNumber")
     chai.assert.include(savedCalls[1].id, phoneNumber, "id of saved history contains phoneNumber")
+
+    // Job success is recorded in DB
+    const lastCall = await db.getLatestCallHistory(phoneNumber)
+    chai.assert.equal(lastCall.id, savedCalls[0].id)
   })
 })
