@@ -29,35 +29,35 @@ module.exports = async () => {
 
   const numPhoneNumbersToRun = JOB_CALLS_STATS_SMALL_RUN ? 2 : phoneNumbers.length
 
-  for (const number of sortedPhoneNumbers.slice(0, numPhoneNumbersToRun)) {
-    const latestRecordedCall = await db.getLastSuccessfulCallStatsJob(number)
+  for (const phoneNumber of sortedPhoneNumbers.slice(0, numPhoneNumbersToRun)) {
+    const latestRecordedCall = await db.getLastSuccessfulCallStatsJob(phoneNumber)
     const intervalStartDate = latestRecordedCall ? latestRecordedCall.dateBegin.toISOString() : undefined
 
-    console.log("Fetching calls for phone number", number, "from", intervalStartDate, "to now")
-    const callIds = await conferences.getCallsForPhoneNumber(number, intervalStartDate)
+    console.log("Fetching calls for phone number", phoneNumber, "from", intervalStartDate, "to now")
+    const callIds = await conferences.getCallsForPhoneNumber(phoneNumber, intervalStartDate)
     console.log("Got", callIds.length, "calls")
 
     for (const callId of callIds) {
-      const history = await conferences.getHistoryForCall(number, callId)
+      const history = await conferences.getHistoryForCall(phoneNumber, callId)
 
       if (JOB_DRY_RUN) {
         console.log(`${history.id} not inserted, dry run`)
         summary.insertedRows++
       } else {
-        const id = await db.insertCallHistory(number, history)
+        const id = await db.insertCallHistory(phoneNumber, history)
         if (id) {
           console.log(`${id} inserted`)
           summary.insertedRows++
         } else {
-          console.log(`${number}_${history.id} already inserted`)
+          console.log(`${phoneNumber}_${history.id} already inserted`)
           summary.alreadyInsertedRows++
         }
       }
     }
 
     // Record that this batch of inserts was successful
-    const lastCall = await db.getLatestCallHistory(number)
-    await db.insertLastSuccessfulCallStatsJob(number, lastCall)
+    const lastCall = await db.getLatestCallHistory(phoneNumber)
+    await db.insertLastSuccessfulCallStatsJob(phoneNumber, lastCall)
   }
 
   console.dir({ summary })
