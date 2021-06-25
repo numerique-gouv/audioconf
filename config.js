@@ -96,4 +96,6 @@ config.FEATURE_JOB_CALLS_STATS = process.env.FEATURE_JOB_CALLS_STATS === "true" 
 
 config.ANNOUNCEMENTS = process.env.ANNOUNCEMENTS ? process.env.ANNOUNCEMENTS.split("|") : []
 
+config.STATS_EXTERNAL_DASHBOARD_URL = process.env.STATS_EXTERNAL_DASHBOARD_URL || "https://audioconf-prod-metabase.osc-secnum-fr1.scalingo.io/public/dashboard/0923f77a-b4c9-41ab-b7a0-5c7b1be2b974"
+
 module.exports = config
