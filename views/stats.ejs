@@ -26,23 +26,25 @@
 
 <script src="static/js/charts.js"></script>
 
-<div class="fr-container">
-  <iframe
-      id="metabase-stats"
-      src="<%= dashboardUrl %>"
-      frameborder="0"
-      width="100%"
-      allowtransparency>
-  </iframe>
-</div>
+<% if(dashboardUrl) {  %>
+  <div class="fr-container">
+    <iframe
+        id="metabase-stats"
+        src="<%= dashboardUrl %>"
+        frameborder="0"
+        width="100%"
+        allowtransparency>
+    </iframe>
+  </div>
 
-<script>
-  window.addEventListener('DOMContentLoaded', function(e) {
-    var theme = localStorage.getItem('scheme'); // theme set by dsfr
-    if (theme === 'dark') {
-      window.document.getElementById('metabase-stats').src = window.document.getElementById('metabase-stats').src + "#theme=night";
-    }
-  });
-</script>
+  <script>
+    window.addEventListener('DOMContentLoaded', function(e) {
+      var theme = localStorage.getItem('scheme'); // theme set by dsfr
+      if (theme === 'dark') {
+        window.document.getElementById('metabase-stats').src = window.document.getElementById('metabase-stats').src + "#theme=night";
+      }
+    });
+  </script>
+<% } %>
 
 <%- include('partials/footer') -%>
