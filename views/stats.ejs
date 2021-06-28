@@ -36,4 +36,13 @@
   </iframe>
 </div>
 
+<script>
+  window.addEventListener('DOMContentLoaded', function(e) {
+    var theme = localStorage.getItem('scheme'); // theme set by dsfr
+    if (theme === 'dark') {
+      window.document.getElementById('metabase-stats').src = window.document.getElementById('metabase-stats').src + "#theme=night";
+    }
+  });
+</script>
+
 <%- include('partials/footer') -%>
