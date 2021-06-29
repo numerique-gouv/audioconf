@@ -96,4 +96,6 @@ config.FEATURE_JOB_CALLS_STATS = process.env.FEATURE_JOB_CALLS_STATS === "true" 
 
 config.ANNOUNCEMENTS = process.env.ANNOUNCEMENTS ? process.env.ANNOUNCEMENTS.split("|") : []
 
+config.STATS_EXTERNAL_DASHBOARD_URL = process.env.STATS_EXTERNAL_DASHBOARD_URL
+
 module.exports = config

@@ -108,6 +108,7 @@ if (config.FEATURE_STATS_PAGE) {
     res.render("stats", {
       pageTitle: "Statistiques",
       stats: formattedStats,
+      dashboardUrl: config.STATS_EXTERNAL_DASHBOARD_URL,
     })
   })
 }
