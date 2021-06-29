@@ -69,35 +69,35 @@ th, td {
 /* XS : de 0 à 575 */
 @media (min-width: 0) {
   #metabase-stats {
-    height: 4800px;
+    height: 5600px;
   }
 }
 
 /* SM : de 576 à 767 */
 @media (min-width: 576px) {
   #metabase-stats {
-    height: 6500px;
+    height: 7500px;
   }
 }
 
 /* MD : de 768 à 991  */
 @media (min-width: 768px) {
   #metabase-stats {
-    height: 6800px;
+    height: 8000px;
   }
 }
 
-/* 803px : metabase layout jumps to desktop. */
+/* 768 - 802px : before metabase layout jumps to desktop. */
 @media (min-width: 803px) {
   #metabase-stats {
-    height: 1100px;
+    height: 1300px;
   }
 }
 
 /* LG : de 992 à 1247 */
 @media (min-width: 992px) {
   #metabase-stats {
-    height: 1400px;
+    height: 1600px;
   }
 }
 
