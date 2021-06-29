@@ -10,19 +10,14 @@ const fetchCallIds = async (phoneNumber) => {
   return callIds
 }
 
-const insertCallHistory = async (history, phoneNumber, JOB_DRY_RUN, summary) => {
-  if (JOB_DRY_RUN) {
-    console.log(`${history.id} not inserted, dry run`)
+const insertCallHistory = async (history, phoneNumber, summary) => {
+  const id = await db.insertCallHistory(phoneNumber, history)
+  if (id) {
+    console.log(`${id} inserted`)
     summary.insertedRows++
   } else {
-    const id = await db.insertCallHistory(phoneNumber, history)
-    if (id) {
-      console.log(`${id} inserted`)
-      summary.insertedRows++
-    } else {
-      console.log(`${phoneNumber}_${history.id} already inserted`)
-      summary.alreadyInsertedRows++
-    }
+    console.log(`${phoneNumber}_${history.id} already inserted`)
+    summary.alreadyInsertedRows++
   }
 }
 
@@ -33,9 +28,6 @@ const recordSuccessfulJob = async (phoneNumber) => {
 
 module.exports = async () => {
   console.debug("Start of fetchCallsStats job")
-
-  const JOB_DRY_RUN = process.env.JOB_DRY_RUN === "true"
-  console.log("Dry run :", JOB_DRY_RUN)
 
   try {
     const phoneNumbers = await conferences.getAllPhoneNumbers()
@@ -58,7 +50,7 @@ module.exports = async () => {
 
       for (const callId of callIds) {
         const history = await conferences.getHistoryForCall(phoneNumber, callId)
-        await insertCallHistory(history, phoneNumber, JOB_DRY_RUN, summary)
+        await insertCallHistory(history, phoneNumber, summary)
       }
 
       // Record that this batch of inserts was successful
