@@ -36,8 +36,6 @@ module.exports = async () => {
 
   const JOB_DRY_RUN = process.env.JOB_DRY_RUN === "true"
   console.log("Dry run :", JOB_DRY_RUN)
-  const JOB_CALLS_STATS_SMALL_RUN = process.env.JOB_CALLS_STATS_SMALL_RUN === "true"
-  console.log("Small run :", JOB_CALLS_STATS_SMALL_RUN)
 
   try {
     const phoneNumbers = await conferences.getAllPhoneNumbers()
@@ -53,12 +51,9 @@ module.exports = async () => {
       alreadyInsertedRows: 0,
     }
 
-    // We sort the numbers, so event in "small test", the job will always use the same numbers.
     const sortedPhoneNumbers = phoneNumbers.sort()
 
-    const numPhoneNumbersToRun = JOB_CALLS_STATS_SMALL_RUN ? 2 : phoneNumbers.length
-
-    for (const phoneNumber of sortedPhoneNumbers.slice(0, numPhoneNumbersToRun)) {
+    for (const phoneNumber of sortedPhoneNumbers) {
       const callIds = await fetchCallIds(phoneNumber)
 
       for (const callId of callIds) {
