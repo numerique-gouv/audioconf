@@ -1,0 +1,71 @@
+<%- include('partials/header') -%>
+
+  <div class="fr-container">
+    <div class="fr-grid-row fr-grid-row--center">
+
+      <div class="fr-col">
+        <h2 class="fr-mt-7w">Questions fréquentes</h2>
+
+        <ul class="fr-accordions-group">
+          <li>
+            <section class="fr-accordion" id="comment-creer-une-conference">
+              <h3 class="fr-accordion__title">
+                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-1">
+                  Comment créer une conférence moi-même ?
+                </button>
+              </h3>
+              <div class="fr-collapse" id="accordion-1">
+                <p>
+                  Vous pouvez créer une conférence en toute autonomie, si vous êtes un agent public (voir
+                  <a href="#qui-peut-avoir-acces">Qui peut avoir accès à AudioConf ?</a>)
+                </p>
+                <p>
+                  <ol>
+                    <li>
+                      Venez sur le site AudioConf : <%= siteUrl %>
+                    </li>
+                    <li>
+                      Saisissez votre adresse électronique professionnelle et
+                      choisissez la date de votre conférence.
+                      La conférence sera utilisable toute la journée choisie.
+                    </li>
+                    <li>
+                      Un lien de confirmation vous est envoyé par courriel. Cliquez ce lien pour confirmer votre identité.
+                      Le lien est actif 2h.
+                    </li>
+                    <li>
+                      Votre conférence est créée ! La page de confirmation vous affiche les codes de la conférence, et un email
+                      récapitulatif contenant les codes vous est également envoyé.
+                    </li>
+                  </ol>
+                </p>
+              </div>
+            </section>
+          </li>
+          <li>
+            <section class="fr-accordion" id="qui-peut-avoir-acces">
+              <h3 class="fr-accordion__title">
+                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-2">
+                  Qui peut avoir accès à AudioConf ?
+                </button>
+              </h3>
+              <div class="fr-collapse" id="accordion-2">
+                Réserver : agent public. Rejoindre une conf : tout le monde.
+              </div>
+            </section>
+          </li>
+        </ul>
+
+        <div class="fr-callout fr-mb-3w">
+          <h2 class="fr-callout__title">Email de contact </h2>
+          <p class="fr-callout__text">Nous sommes joignable à l'adresse :
+            <strong>
+              <%= supportEmail %>
+            </strong>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include('partials/footer') -%>

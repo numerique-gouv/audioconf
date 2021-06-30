@@ -9,6 +9,7 @@ module.exports = {
   cancelConf : '/conferences/:id/annuler',
   stats: '/stats',
   contact: '/contact',
+  faq: '/questions-frequentes',
 
   status: '/api/status',
 }
