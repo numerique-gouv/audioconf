@@ -140,4 +140,17 @@
     </div>
   </div>
 
+  <script>
+    const hash = window.location.hash.replace('#', '');
+    console.log('hash', hash);
+    const question = document.getElementById(hash);
+    console.log(question);
+    if (question) {
+      const button = question.getElementsByTagName('button')[0];
+      console.log(button);
+      button.setAttribute('aria-expanded', true);
+    }
+
+  </script>
+
   <%- include('partials/footer') -%>
