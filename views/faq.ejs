@@ -108,7 +108,7 @@
             </section>
           </li>
           <li>
-            <section class="fr-accordion" id="comment-annuler-une-conférence-réservée">
+            <section class="fr-accordion" id="comment-annuler-une-conference-reservee">
               <h3 class="fr-accordion__title">
                 <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-5">
                   Comment annuler une conférence réservée ?
@@ -141,16 +141,17 @@
   </div>
 
   <script>
-    const hash = window.location.hash.replace('#', '');
-    console.log('hash', hash);
-    const question = document.getElementById(hash);
-    console.log(question);
-    if (question) {
-      const button = question.getElementsByTagName('button')[0];
-      console.log(button);
-      button.setAttribute('aria-expanded', true);
+    function hashHandler() {
+      const hash = window.location.hash.replace('#', '');
+      const question = document.getElementById(hash);
+      if (question) {
+        const button = question.getElementsByTagName('button')[0];
+        button.setAttribute('aria-expanded', true);
+      }
     }
 
+    hashHandler();
+    window.addEventListener('hashchange', hashHandler, false);
   </script>
 
   <%- include('partials/footer') -%>
