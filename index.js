@@ -67,6 +67,7 @@ app.use(function(req, res, next){
   res.locals.successes = req.flash("success")
   res.locals.urls = urls
   res.locals.version = version
+  res.locals.siteUrl = config.HOSTNAME_WITH_PROTOCOL
   next()
 })
 
@@ -116,6 +117,12 @@ if (config.FEATURE_STATS_PAGE) {
 app.get(urls.contact, (req, res) => {
   res.render("contact", {
     pageTitle: "Contact",
+  })
+})
+
+app.get(urls.faq, (req, res) => {
+  res.render("faq", {
+    pageTitle: "Questions fréquentes",
   })
 })
 
