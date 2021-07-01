@@ -1,32 +1,6 @@
 <%- include('partials/header') -%>
 
-<div class="fr-container">
-  <h2>
-    Statistiques d'utilisation
-  </h2>
-  <h3>
-    En temps réel
-  </h3>
-</div>
-
-<div class="fr-container">
-  <div class="fr-p-5w">
-    <canvas id="conf-stats-chart"></canvas>
-  </div>
-  <div class="fr-p-5w">
-    <canvas id="conf-booking-chart"></canvas>
-  </div>
-</div>
-
-<script src="/chart.js/Chart.min.js"></script>
-
-<div id="chart-data" style="display: none;">
-  <%= JSON.stringify(stats) %>
-</div>
-
-<script src="static/js/charts.js"></script>
-
-<% if(dashboardUrl) {  %>
+<% if(locals.dashboardUrl) {  %>
   <div class="fr-container">
     <iframe
         id="metabase-stats"
@@ -45,6 +19,32 @@
       }
     });
   </script>
+<% } else { %>
+  <div class="fr-container">
+    <h2>
+      Statistiques d'utilisation
+    </h2>
+    <h3>
+      En temps réel
+    </h3>
+  </div>
+
+  <div class="fr-container">
+    <div class="fr-p-5w">
+      <canvas id="conf-stats-chart"></canvas>
+    </div>
+    <div class="fr-p-5w">
+      <canvas id="conf-booking-chart"></canvas>
+    </div>
+  </div>
+
+  <script src="/chart.js/Chart.min.js"></script>
+
+  <div id="chart-data" style="display: none;">
+    <%= JSON.stringify(stats) %>
+  </div>
+
+  <script src="static/js/charts.js"></script>
 <% } %>
 
 <%- include('partials/footer') -%>

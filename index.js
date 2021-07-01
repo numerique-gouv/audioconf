@@ -96,6 +96,13 @@ app.get(urls.legalNotice, (req, res) => {
 
 if (config.FEATURE_STATS_PAGE) {
   app.get(urls.stats, async (req, res) => {
+    if (config.STATS_EXTERNAL_DASHBOARD_URL) {
+      res.render("stats", {
+        pageTitle: "Statistiques",
+        dashboardUrl: config.STATS_EXTERNAL_DASHBOARD_URL,
+      })
+      return
+    }
     const NUM_STATS_POINTS = 1440 // 24h if 1 point per hour
     let latestStats = []
     try {
@@ -108,8 +115,7 @@ if (config.FEATURE_STATS_PAGE) {
 
     res.render("stats", {
       pageTitle: "Statistiques",
-      stats: formattedStats,
-      dashboardUrl: config.STATS_EXTERNAL_DASHBOARD_URL,
+      stats: formattedStats
     })
   })
 }
