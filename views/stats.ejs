@@ -1,19 +1,50 @@
 <%- include('partials/header') -%>
 
-<div class="fr-container">
-  <div class="fr-p-5w">
-    <canvas id="conf-stats-chart"></canvas>
+<% if(locals.dashboardUrl) {  %>
+  <div class="fr-container">
+    <iframe
+        id="metabase-stats"
+        src="<%= dashboardUrl %>"
+        frameborder="0"
+        width="100%"
+        allowtransparency>
+    </iframe>
   </div>
-  <div class="fr-p-5w">
-    <canvas id="conf-booking-chart"></canvas>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', function(e) {
+      var theme = localStorage.getItem('scheme'); // theme set by dsfr
+      if (theme === 'dark') {
+        window.document.getElementById('metabase-stats').src = window.document.getElementById('metabase-stats').src + "#theme=night";
+      }
+    });
+  </script>
+<% } else { %>
+  <div class="fr-container">
+    <h2>
+      Statistiques d'utilisation
+    </h2>
+    <h3>
+      En temps réel
+    </h3>
   </div>
-</div>
 
-<script src="/chart.js/Chart.min.js"></script>
+  <div class="fr-container">
+    <div class="fr-p-5w">
+      <canvas id="conf-stats-chart"></canvas>
+    </div>
+    <div class="fr-p-5w">
+      <canvas id="conf-booking-chart"></canvas>
+    </div>
+  </div>
 
-<div id="chart-data" style="display: none;">
-  <%= JSON.stringify(stats) %>
-</div>
+  <script src="/chart.js/Chart.min.js"></script>
 
-<script src="static/js/charts.js"></script>
+  <div id="chart-data" style="display: none;">
+    <%= JSON.stringify(stats) %>
+  </div>
+
+  <script src="static/js/charts.js"></script>
+<% } %>
+
 <%- include('partials/footer') -%>

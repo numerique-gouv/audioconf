@@ -108,7 +108,7 @@ window.onload = function() {
       data: data.activeConfsSeries,
     },
   ]
-  const config = makeConfig("Statistiques d'utilisation", data.labels, datasets)
+  const config = makeConfig("Actuellement au téléphone sur une AudioConf", data.labels, datasets)
   drawChart("conf-stats-chart", config)
 
   const datasets2 = [

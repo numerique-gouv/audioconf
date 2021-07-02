@@ -67,6 +67,7 @@ app.use(function(req, res, next){
   res.locals.successes = req.flash("success")
   res.locals.urls = urls
   res.locals.version = version
+  res.locals.siteUrl = config.HOSTNAME_WITH_PROTOCOL
   next()
 })
 
@@ -95,6 +96,13 @@ app.get(urls.legalNotice, (req, res) => {
 
 if (config.FEATURE_STATS_PAGE) {
   app.get(urls.stats, async (req, res) => {
+    if (config.STATS_EXTERNAL_DASHBOARD_URL) {
+      res.render("stats", {
+        pageTitle: "Statistiques",
+        dashboardUrl: config.STATS_EXTERNAL_DASHBOARD_URL,
+      })
+      return
+    }
     const NUM_STATS_POINTS = 1440 // 24h if 1 point per hour
     let latestStats = []
     try {
@@ -107,7 +115,7 @@ if (config.FEATURE_STATS_PAGE) {
 
     res.render("stats", {
       pageTitle: "Statistiques",
-      stats: formattedStats,
+      stats: formattedStats
     })
   })
 }
@@ -115,6 +123,12 @@ if (config.FEATURE_STATS_PAGE) {
 app.get(urls.contact, (req, res) => {
   res.render("contact", {
     pageTitle: "Contact",
+  })
+})
+
+app.get(urls.faq, (req, res) => {
+  res.render("faq", {
+    pageTitle: "Questions fréquentes",
   })
 })
 
