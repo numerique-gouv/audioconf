@@ -123,11 +123,11 @@
 
   <script>
     function openQuestionCorrespondingToHash() {
-      const hash = window.location.hash.replace('#', '');
+      const hash = window.location.hash.replace("#", "");
       const question = document.getElementById(hash);
       if (question) {
-        const button = question.getElementsByTagName('button')[0];
-        button.setAttribute('aria-expanded', true);
+        const button = question.getElementsByTagName("button")[0];
+        button.setAttribute("aria-expanded", true);
       }
     }
 

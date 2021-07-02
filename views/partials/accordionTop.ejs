@@ -9,10 +9,10 @@
   <script>
     // When the title of the accordion is clicked, set the hash to the corresponding question id.
     (function () {
-      var scripts = document.getElementsByTagName('script');
+      var scripts = document.getElementsByTagName("script");
       var currentScript = scripts[scripts.length - 1];
       var accordion = currentScript.parentElement.parentElement;
-      var button = accordion.getElementsByTagName('button')[0]
+      var button = accordion.getElementsByTagName("button")[0];
       button.addEventListener("click", function() {
         if (history.pushState) {
           history.pushState(null, null, "#" + accordion.id);
