@@ -38,6 +38,7 @@ app.locals.format = format
 app.use("/static", express.static("static"))
 app.use("/static/gouvfr", express.static(path.join(__dirname, "node_modules/@gouvfr/dsfr/dist")))
 app.use("/chart.js", express.static(path.join(__dirname, "node_modules/chart.js/dist")))
+app.use("/static/remixicon", express.static(path.join(__dirname, "node_modules/remixicon/fonts")))
 app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(cookieParser(config.secret))
