@@ -6,121 +6,103 @@
       <div class="fr-col">
         <h2 class="fr-mt-7w">Questions fréquentes</h2>
 
-        <ul class="fr-accordions-group">
-          <li>
-            <section class="fr-accordion" id="comment-creer-une-conference">
-              <h3 class="fr-accordion__title">
-                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-1">
-                  Comment créer une conférence moi-même ?
-                </button>
-              </h3>
-              <div class="fr-collapse" id="accordion-1">
-                <p>
-                  Si vous êtes un <a href="#qui-peut-avoir-acces">agent public de l'État</a>, vous pouvez créer une conférence en toute autonomie.
-                </p>
-                <p>
-                  <ol>
-                    <li>
-                      Allez sur <a href="<%= siteUrl %>">AudioConf</a>.
-                    </li>
-                    <li>
-                      Saisissez votre adresse électronique professionnelle.</li>
-                    <li>
-                      Choisissez la date de votre conférence. Elle sera utilisable toute la journée choisie.
-                    </li>
-                    <li>
-                      Un lien de confirmation est envoyé à votre adresse électronique. Cliquez sur ce lien pour confirmer votre identité.
-                      Le lien est actif 2h.
-                    </li>
-                    <li>
-                      Votre conférence est créée !
-                    </li>
-                    <li>Vous recevez un email récapitulatif contenant les codes. Vous pouvez transmettre ces codes d'accès aux participants de votre conférence.
-                    </li>
-                  </ol>
-                </p>
-                <p>
-                <div class="fr-mb-2w">Vous êtes prêts à faire un essai ?</div>
-                <a class="fr-btn fr-btn fr-btn"
-                  title="Réserver une conférence"
-                  rel="noopener"
-                  href="/">
-                  Réserver une conférence
-                </a>
-              </div>
-            </section>
-          </li>
-          <li>
-            <section class="fr-accordion" id="comment-rejoindre-une-conference">
-              <h3 class="fr-accordion__title">
-                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-2">
-                  Comment rejoindre une conférence ?
-                </button>
-              </h3>
-              <div class="fr-collapse" id="accordion-2">
-                <p>
-                  Il faut un téléphone (fixe ou portable) pour rejoindre une conférence AudioConf.
-                </p>
-                <p>
-                  Appelez le numéro que vous a transmis l'organisateur de la conférence, et saisissez le code d'accès
-                  sur le clavier du téléphone, puis appuyez sur #. Vous êtes dans la conférence.
-                </p>
-              </div>
-            </section>
-          </li>
-          <li>
-            <section class="fr-accordion" id="qui-peut-avoir-acces">
-              <h3 class="fr-accordion__title">
-                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-3">
-                  Qui peut avoir accès à AudioConf ?
-                </button>
-              </h3>
-              <div class="fr-collapse" id="accordion-3">
-                <p>
-                  <b>Seuls les agents de l'État peuvent réserver des conférences</b>. C'est votre email professionnel qui déterminera
-                  si vous avez accès ou non. Les agents des collectivités ne sont pas acceptés.
-                </p>
-                <p>
-                  <b>N'importe qui peut rejoindre une conférence</b> dont il/elle a les codes d'accès, depuis son téléphone.
-                </p>
-                <%- include('partials/askToAddNewService') -%>
-              </div>
-            </section>
-          </li>
-          <li>
-            <section class="fr-accordion" id="peut-on-rejoindre-une-conference-depuis-l-etranger">
-              <h3 class="fr-accordion__title">
-                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-4">
-                  Peut-on rejoindre une conférence depuis les DROM ou l'étranger ?
-                </button>
-              </h3>
-              <div class="fr-collapse" id="accordion-4">
-                <p>
-                  Oui. Chaque participant appelle le numéro de téléphone de la conférence :
-                  c'est un numéro situé en France métropolitaine.
-                  L'appel est facturé au prix habituel pour un appel vers la France métropolitaine, il n'est pas surtaxé.
-                  L'appel peut se faire de n'importe quelle région du monde.
-                </p>
-              </div>
-            </section>
-          </li>
-          <li>
-            <section class="fr-accordion" id="comment-annuler-une-conference-reservee">
-              <h3 class="fr-accordion__title">
-                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-5">
-                  Comment annuler une conférence réservée ?
-                </button>
-              </h3>
-              <div class="fr-collapse" id="accordion-5">
-                <p>
-                  Il n’y a pas besoin d’annuler les conférences non utilisées. Elles ne coûtent pas de ressources.
-                  Si vous avez changé la date de votre réunion, vous pouvez simplement réserver une nouvelle conférence
-                  pour la nouvelle date.
-                </p>
-              </div>
-            </section>
-          </li>
-        </ul>
+        <div>
+          <%- include("partials/accordionTop", {
+            title: "Comment créer une conférence moi-même ?",
+            link: "comment-creer-une-conference",
+            id: 1
+          }) -%>
+            <p>
+              Si vous êtes un <a href="#qui-peut-avoir-acces">agent public de l'État</a>, vous pouvez créer une conférence en toute autonomie.
+            </p>
+            <p>
+              <ol>
+                <li>
+                  Allez sur <a href="<%= siteUrl %>">AudioConf</a>.
+                </li>
+                <li>
+                  Saisissez votre adresse électronique professionnelle.</li>
+                <li>
+                  Choisissez la date de votre conférence. Elle sera utilisable toute la journée choisie.
+                </li>
+                <li>
+                  Un lien de confirmation est envoyé à votre adresse électronique. Cliquez sur ce lien pour confirmer votre identité.
+                  Le lien est actif 2h.
+                </li>
+                <li>
+                  Votre conférence est créée !
+                </li>
+                <li>Vous recevez un email récapitulatif contenant les codes. Vous pouvez transmettre ces codes d'accès aux participants de votre conférence.
+                </li>
+              </ol>
+            </p>
+            <div class="fr-mb-2w">Vous êtes prêts à faire un essai ?</div>
+            <a class="fr-btn fr-btn fr-btn"
+              title="Réserver une conférence"
+              rel="noopener"
+              href="/">
+              Réserver une conférence
+            </a>
+          <%- include("partials/accordionBottom") -%>
+        </div>
+        <div>
+          <%- include("partials/accordionTop", {
+            title: "Comment rejoindre une conférence ?",
+            link: "comment-rejoindre-une-conference",
+            id: 2
+          }) -%>
+            <p>
+              Il faut un téléphone (fixe ou portable) pour rejoindre une conférence AudioConf.
+            </p>
+            <p>
+              Appelez le numéro que vous a transmis l'organisateur de la conférence, et saisissez le code d'accès
+              sur le clavier du téléphone, puis appuyez sur #. Vous êtes dans la conférence.
+            </p>
+          <%- include("partials/accordionBottom") -%>
+        </div>
+        <div>
+          <%- include("partials/accordionTop", {
+            title: "Qui peut avoir accès à AudioConf ?",
+            link: "qui-peut-avoir-acces",
+            id: 3
+          }) -%>
+            <p>
+              <b>Seuls les agents de l'État peuvent réserver des conférences</b>. C'est votre email professionnel qui déterminera
+              si vous avez accès ou non. Les agents des collectivités ne sont pas acceptés.
+            </p>
+            <p>
+              <b>N'importe qui peut rejoindre une conférence</b> dont il/elle a les codes d'accès, depuis son téléphone.
+            </p>
+            <%- include('partials/askToAddNewService') -%>
+          <%- include("partials/accordionBottom") -%>
+        </div>
+        <div>
+          <%- include("partials/accordionTop", {
+            title: "Peut-on rejoindre une conférence depuis les DROM ou l'étranger ?",
+            link: "peut-on-rejoindre-une-conference-depuis-l-etranger",
+            id: 4
+          }) -%>
+            <p>
+              Oui. Chaque participant appelle le numéro de téléphone de la conférence :
+              c'est un numéro situé en France métropolitaine.
+              L'appel est facturé au prix habituel pour un appel vers la France métropolitaine, il n'est pas surtaxé.
+              L'appel peut se faire de n'importe quelle région du monde.
+            </p>
+          <%- include("partials/accordionBottom") -%>
+        </div>
+        <div>
+          <%- include("partials/accordionTop", {
+            title: "Comment annuler une conférence réservée ?",
+            link: "comment-annuler-une-conference-reservee",
+            id: 5
+          }) -%>
+            <p>
+              Il n’y a pas besoin d’annuler les conférences non utilisées. Elles ne coûtent pas de ressources.
+              Si vous avez changé la date de votre réunion, vous pouvez simplement réserver une nouvelle conférence
+              pour la nouvelle date.
+            </p>
+          <%- include("partials/accordionBottom") -%>
+        </div>
 
         <div class="fr-callout fr-my-3w">
           <h2 class="fr-callout__title"> Vous n'avez pas trouvé la réponse à votre question ? </h2>
@@ -138,17 +120,16 @@
   </div>
 
   <script>
-    function hashHandler() {
-      const hash = window.location.hash.replace('#', '');
+    function openQuestionCorrespondingToHash() {
+      const hash = window.location.hash.replace("#", "");
       const question = document.getElementById(hash);
       if (question) {
-        const button = question.getElementsByTagName('button')[0];
-        button.setAttribute('aria-expanded', true);
+        const button = question.getElementsByTagName("button")[0];
+        button.setAttribute("aria-expanded", true);
       }
     }
 
-    hashHandler();
-    window.addEventListener('hashchange', hashHandler, false);
+    openQuestionCorrespondingToHash();
   </script>
 
   <%- include('partials/footer') -%>
