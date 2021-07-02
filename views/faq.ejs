@@ -122,7 +122,7 @@
   </div>
 
   <script>
-    function hashHandler() {
+    function openQuestionCorrespondingToHash() {
       const hash = window.location.hash.replace('#', '');
       const question = document.getElementById(hash);
       if (question) {
@@ -131,8 +131,7 @@
       }
     }
 
-    hashHandler();
-    window.addEventListener('hashchange', hashHandler, false);
+    openQuestionCorrespondingToHash();
   </script>
 
   <%- include('partials/footer') -%>
