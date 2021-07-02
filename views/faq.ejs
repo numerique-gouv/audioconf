@@ -8,21 +8,11 @@
 
         <ul class="fr-accordions-group">
           <li>
-            <section class="fr-accordion" id="comment-creer-une-conference">
-              <h3 class="fr-accordion__title">
-                <button class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-1">
-                  <div>
-                    <span>
-                      Comment créer une conférence moi-même ?
-                    </span>
-                    <a href="#comment-creer-une-conference" title="Lien vers cette question">
-                      <span aria-hidden="true" class="ri-link"></span>
-                      <span class="fr-sr-only" rel="noopener noreferrer">Lien vers cette question</span>
-                    </a>
-                  </div>
-                </button>
-              </h3>
-              <div class="fr-collapse" id="accordion-1">
+            <%- include('partials/accordionTop', {
+              title: 'Comment créer une conférence moi-même ?',
+              link: 'comment-creer-une-conference',
+              id: 1
+            }) -%>
                 <p>
                   Si vous êtes un <a href="#qui-peut-avoir-acces">agent public de l'État</a>, vous pouvez créer une conférence en toute autonomie.
                 </p>
@@ -55,8 +45,7 @@
                   href="/">
                   Réserver une conférence
                 </a>
-              </div>
-            </section>
+                <%- include('partials/accordionBottom') -%>
           </li>
           <li>
             <section class="fr-accordion" id="comment-rejoindre-une-conference">
