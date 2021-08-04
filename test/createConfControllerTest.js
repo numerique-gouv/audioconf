@@ -20,7 +20,7 @@ describe("createConfController", function() {
       sendEmailStub = sinon.stub(emailer, "sendConfCreatedEmail")
       getTokenStub = sinon.stub(db, "getToken")
       insertConfStub = sinon.stub(db, "insertConferenceWithDay")
-      addPublicWebAccessToRoomStub = sinon.stub(conferences, "addPublicWebAccessToRoomStub")
+      addPublicWebAccessToRoomStub = sinon.stub(conferences, "addPublicWebAccessToRoom")
 
       done()
     })
