@@ -73,8 +73,14 @@ module.exports.createConf = async (req, res) => {
     return res.redirect('/')
   }
 
+  if (true) { // check if email is in whitelist
+    const publicWebAccess = conferences.addPublicWebAccessToRoom(conference.phoneNumber)
+    console.info('Public web access created', publicWebAccess)
+  }
+
   try {
     await emailer.sendConfCreatedEmail(email, conference.phoneNumber, conference.pin, durationInMinutes, conferenceDay, conference.expiresAt, config.POLL_URL, userTimezoneOffset)
+    await emailer.sendConfWebAccessEmail(email, conference.phoneNumber, conferenceDay)
 
     return res.redirect(urls.showConf.replace(":id", conference.id) + '#' + conference.pin)
   } catch (err) {
