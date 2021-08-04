@@ -1,0 +1,26 @@
+<style>
+    .paragraph {
+      margin-top: 20px;
+      margin-bottom: 30px;
+    }
+  </style>
+  <div>Bonjour,</div>
+  
+  <div class="paragraph">
+    <div>
+      Voici le lien pour controller votre conférence téléphonique
+      <a href="<%= HOSTNAME_WITH_PROTOCOL %>"><%= APP_NAME %></a>
+      <%= formatedConferenceDayformat %> utilisant
+      le numero <%= phoneNumber %>.
+      Vous pourrez voir qui est présent, mettre en sourdine certains participants, etc ...
+    </div>
+  </div>
+  <div class="paragraph">
+    Bonne journée avec <a href="<%= HOSTNAME_WITH_PROTOCOL %>"><%= APP_NAME %></a> !
+  </div>
+  
+  <hr />
+  <div>
+    Créez votre propre conférence téléphonique, en toute autonomie, en allant sur
+    <a href="<%= HOSTNAME_WITH_PROTOCOL %>"><%= APP_NAME %></a>
+  </div>
