@@ -13,14 +13,14 @@ describe("createConfController", function() {
     let sendEmailStub
     let getTokenStub
     let insertConfStub
-    let addPublicWebAccessToRoomStub
+    let addPublicWebAccessStub
 
     beforeEach(function(done) {
       createConfStub = sinon.stub(conferences, "createConf")
       sendEmailStub = sinon.stub(emailer, "sendConfCreatedEmail")
       getTokenStub = sinon.stub(db, "getToken")
       insertConfStub = sinon.stub(db, "insertConferenceWithDay")
-      addPublicWebAccessToRoomStub = sinon.stub(conferences, "addPublicWebAccessToRoom")
+      addPublicWebAccessStub = sinon.stub(conferences, "addPublicWebAccess")
 
       done()
     })
@@ -30,7 +30,7 @@ describe("createConfController", function() {
       sendEmailStub.restore()
       getTokenStub.restore()
       insertConfStub.restore()
-      addPublicWebAccessToRoomStub.restore()
+      addPublicWebAccessStub.restore()
       done()
     })
 
