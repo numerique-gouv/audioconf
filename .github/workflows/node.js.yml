@@ -45,5 +45,6 @@ jobs:
         MAIL_USER: fakeuser
         MAIL_SENDER_EMAIL: sender@example.com
         SECRET: fakesessionsecret
+        FEATURE_WEB_ACCESS: true
         DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
         AFTER_MEETING_SURVEY_URL: https://startupdetat.typeform.com/to/R5uC1b0k
