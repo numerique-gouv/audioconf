@@ -7,6 +7,15 @@ const emailer = require('../lib/emailer')
 const format = require('../lib/format')
 const urls = require('../urls')
 
+const isAcceptedEmailForWebAccess = email => {
+  for (const regex of config.EMAIL_WEB_ACCESS_WHITELIST) {
+    if (regex.test(email)) {
+      return true
+    }
+  }
+  return false
+}
+
 const createConfWithDuration = async (email, durationInMinutes) => {
   try {
     console.log(`Création d'un numéro de conférence pour ${format.hashForLogs(email)} pour ${durationInMinutes} minutes`)
@@ -61,6 +70,8 @@ module.exports.createConf = async (req, res) => {
   }
 
   let conference = {}
+  let publicWebAccess
+
   try {
     if (durationInMinutes) {
       conference = await createConfWithDuration(email, durationInMinutes)
@@ -73,21 +84,32 @@ module.exports.createConf = async (req, res) => {
     return res.redirect('/')
   }
 
-  if (true) { // check if email is in whitelist
-    const publicWebAccess = await conferences.addPublicWebAccess(conference.phoneNumber, conference.pin, 'write')
-    console.info('Public web access created', publicWebAccess)
-  }
-
   try {
     await emailer.sendConfCreatedEmail(email, conference.phoneNumber, conference.pin, durationInMinutes, conferenceDay, conference.expiresAt, config.POLL_URL, userTimezoneOffset)
-    await emailer.sendConfWebAccessEmail(email, conference.phoneNumber, conferenceDay)
-
-    return res.redirect(urls.showConf.replace(":id", conference.id) + '#' + conference.pin)
   } catch (err) {
     req.flash('error', 'L\'email contenant les identifiants n\'a pas pu être envoyé. Vous pouvez réessayer.')
     console.error('Error when emailing', err)
     return res.redirect('/')
   }
+
+  if (isAcceptedEmailForWebAccess(email) && config.FEATURE_WEB_ACCESS) { // check if email is in whitelist
+    try {
+      publicWebAccess = await conferences.addPublicWebAccess(conference.phoneNumber, conference.pin, 'write')
+      await emailer.sendConfWebAccessEmail({
+        email,
+        phoneNumber: conference.phoneNumber,
+        conferenceDay: conferenceDay,
+        url: publicWebAccess.url,
+        pin: conference.pin
+      })
+    } catch (err) {
+      req.flash('error', 'L\'email contenant le lien de modération n\'a pas pu être envoyé. Vous pouvez réessayer.')
+      console.error('Error when emailing', err)
+      return res.redirect('/')
+    }
+  }
+
+  return res.redirect(urls.showConf.replace(":id", conference.id) + '#' + conference.pin)
 }
 
 

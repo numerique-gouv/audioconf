@@ -8,11 +8,13 @@
   
   <div class="paragraph">
     <div>
-      Voici le lien pour controller votre conférence téléphonique
-      <a href="<%= HOSTNAME_WITH_PROTOCOL %>"><%= APP_NAME %></a>
-      <%= formatedConferenceDayformat %> utilisant
-      le numero <%= phoneNumber %>.
-      Vous pourrez voir qui est présent, mettre en sourdine certains participants, etc ...
+      Voici le lien de modération de votre conférence téléphonique du <%= formatedConferenceDayformat %>
+      (numero <%= phoneNumber %>, code d'accès <%= pin =>) :
+      <br>
+      <a href="<%= url %>"><%= url %></a>
+      <br>
+      Ce lien n'est à partager qu'avec les modérateurs de la conférence.
+      Il permet de voir qui est présent, de mettre en sourdine certains participants ou encore de les exclure.
     </div>
   </div>
   <div class="paragraph">
