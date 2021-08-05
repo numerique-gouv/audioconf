@@ -6,6 +6,7 @@ const db = require('../lib/db')
 const emailer = require('../lib/emailer')
 const format = require('../lib/format')
 const urls = require('../urls')
+const { isAcceptedEmail } = require('./utils')
 
 const isAcceptedEmailForWebAccess = email => {
   for (const regex of config.EMAIL_WEB_ACCESS_WHITELIST) {
@@ -92,7 +93,7 @@ module.exports.createConf = async (req, res) => {
     return res.redirect('/')
   }
 
-  if (isAcceptedEmailForWebAccess(email) && config.FEATURE_WEB_ACCESS) { // check if email is in whitelist
+  if (isAcceptedEmail(email, config.EMAIL_WEB_ACCESS_WHITELIST) && config.FEATURE_WEB_ACCESS) { // check if email is in whitelist
     try {
       publicWebAccess = await conferences.addPublicWebAccess(conference.phoneNumber, conference.pin, 'write')
       await emailer.sendConfWebAccessEmail({
