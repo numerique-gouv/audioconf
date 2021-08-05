@@ -14,10 +14,12 @@ describe("createConfController", function() {
     let getTokenStub
     let insertConfStub
     let addPublicWebAccessStub
+    let sendWebAccessEmailStub
 
     beforeEach(function(done) {
       createConfStub = sinon.stub(conferences, "createConf")
       sendEmailStub = sinon.stub(emailer, "sendConfCreatedEmail")
+      sendWebAccessEmailStub = sinon.stub(emailer, "sendConfWebAccessEmail")
       getTokenStub = sinon.stub(db, "getToken")
       insertConfStub = sinon.stub(db, "insertConferenceWithDay")
       addPublicWebAccessStub = sinon.stub(conferences, "addPublicWebAccess")
@@ -31,6 +33,7 @@ describe("createConfController", function() {
       getTokenStub.restore()
       insertConfStub.restore()
       addPublicWebAccessStub.restore()
+      sendWebAccessEmailStub.restore()
       done()
     })
 
@@ -63,6 +66,7 @@ describe("createConfController", function() {
           sinon.assert.calledOnce(insertConfStub)
           chai.assert(insertConfStub.getCall(0).calledWith(email))
           sinon.assert.calledOnce(sendEmailStub)
+          sinon.assert.calledOnce(sendWebAccessEmailStub)
           res.should.redirectTo(urls.showConf.replace(":id", confUUID) + "#" + confPin)
           done()
         })

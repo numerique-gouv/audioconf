@@ -136,6 +136,12 @@ GET /telephony/${OVH_ROOM_ACCOUNT_NUMBER}/conference/${OVH_ROOM_PHONE_NUMBER}/hi
 GET /telephony/${OVH_ROOM_ACCOUNT_NUMBER}/conference/${OVH_ROOM_PHONE_NUMBER}/histories/*
 ```
 
+Pour le job qui récupère le web access:
+```
+POST /telephony/${config.OVH_ROOM_ACCOUNT_NUMBER}/conference/${phoneNumber}/webAccess
+```
+
+
 ## Détail des appels API OVH utilisés
 *Création des confs*
 

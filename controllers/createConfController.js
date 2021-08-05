@@ -74,7 +74,7 @@ module.exports.createConf = async (req, res) => {
   }
 
   if (true) { // check if email is in whitelist
-    const publicWebAccess = await conferences.addPublicWebAccess(conference.phoneNumber)
+    const publicWebAccess = await conferences.addPublicWebAccess(conference.phoneNumber, 'write')
     console.info('Public web access created', publicWebAccess)
   }
 
