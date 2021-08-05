@@ -53,6 +53,9 @@ describe("createConfController", function() {
         pin: confPin,
       }))
       sendEmailStub = sendEmailStub.returns(Promise.resolve())
+      addPublicWebAccessStub.returns(Promise.resolve({
+        url: 'http://a-url-to-moderate-a-conf.ovh'
+      }))
 
       chai.request(app)
         .get(urls.createConf)
