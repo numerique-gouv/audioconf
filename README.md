@@ -138,7 +138,7 @@ GET /telephony/${OVH_ROOM_ACCOUNT_NUMBER}/conference/${OVH_ROOM_PHONE_NUMBER}/hi
 
 Pour le job qui récupère le web access:
 ```
-POST /telephony/${config.OVH_ROOM_ACCOUNT_NUMBER}/conference/${phoneNumber}/webAccess
+POST /telephony/${OVH_ROOM_ACCOUNT_NUMBER}/conference/${OVH_ROOM_PHONE_NUMBER}/rooms/*/webAccess
 ```
 
 
