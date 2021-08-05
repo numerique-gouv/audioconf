@@ -100,7 +100,7 @@ config.FEATURE_RESERVATIONS = (process.env.FEATURE_RESERVATIONS === "true") || f
 config.FEATURE_JOB_COMPUTE_STATS = process.env.FEATURE_JOB_COMPUTE_STATS === "true" || false
 config.FEATURE_JOB_ANONYMIZE_EMAILS = process.env.FEATURE_JOB_ANONYMIZE_EMAILS === "true" || false
 config.FEATURE_JOB_CALLS_STATS = process.env.FEATURE_JOB_CALLS_STATS === "true" || false
-config.FEATURE_WEB_ACCESS = process.env.FEATURE_WEB_ACCESS === "true" || false || config.NODE_ENV === "development"
+config.FEATURE_WEB_ACCESS = process.env.FEATURE_WEB_ACCESS === "true" || false
 
 config.ANNOUNCEMENTS = process.env.ANNOUNCEMENTS ? process.env.ANNOUNCEMENTS.split("|") : []
 
