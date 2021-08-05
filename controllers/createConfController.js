@@ -95,7 +95,7 @@ module.exports.createConf = async (req, res) => {
 
   if (isAcceptedEmail(email, config.EMAIL_WEB_ACCESS_WHITELIST) && config.FEATURE_WEB_ACCESS) { // check if email is in whitelist
     try {
-      publicWebAccess = await conferences.addPublicWebAccess(conference.phoneNumber, conference.pin, 'read')
+      publicWebAccess = await conferences.addPublicWebAccess(conference.phoneNumber, conference.pin, 'write')
       await emailer.sendConfWebAccessEmail({
         email,
         phoneNumber: conference.phoneNumber,
