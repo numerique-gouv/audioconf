@@ -1,4 +1,5 @@
 const url = require('url')
+const jwt = require("jsonwebtoken")
 
 const conferences = require('../lib/conferences')
 const config = require('../config')
