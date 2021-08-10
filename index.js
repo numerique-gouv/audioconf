@@ -13,6 +13,7 @@ const format = require("./lib/format")
 const createConfController = require("./controllers/createConfController")
 const landingController = require("./controllers/landingController")
 const sendValidationEmailController = require("./controllers/sendValidationEmailController")
+const dashboardController = require("./controllers/dashboardController")
 const statusController = require("./controllers/statusController")
 const stats = require("./lib/stats")
 const urls = require("./urls")
@@ -94,6 +95,8 @@ app.get(urls.legalNotice, (req, res) => {
     pageTitle: "Mentions Légales",
   })
 })
+
+app.get(urls.dashboard, dashboardController.get)
 
 if (config.FEATURE_STATS_PAGE) {
   app.get(urls.stats, async (req, res) => {

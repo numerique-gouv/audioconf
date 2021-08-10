@@ -8,15 +8,6 @@ const format = require('../lib/format')
 const urls = require('../urls')
 const { isAcceptedEmail } = require('./utils')
 
-const isAcceptedEmailForWebAccess = email => {
-  for (const regex of config.EMAIL_WEB_ACCESS_WHITELIST) {
-    if (regex.test(email)) {
-      return true
-    }
-  }
-  return false
-}
-
 const createConfWithDuration = async (email, durationInMinutes) => {
   try {
     console.log(`Création d'un numéro de conférence pour ${format.hashForLogs(email)} pour ${durationInMinutes} minutes`)
@@ -72,7 +63,6 @@ module.exports.createConf = async (req, res) => {
 
   let conference = {}
   let publicWebAccess
-
   try {
     if (durationInMinutes) {
       conference = await createConfWithDuration(email, durationInMinutes)
@@ -95,12 +85,12 @@ module.exports.createConf = async (req, res) => {
 
   if (isAcceptedEmail(email, config.EMAIL_WEB_ACCESS_WHITELIST) && config.FEATURE_WEB_ACCESS) { // check if email is in whitelist
     try {
-      publicWebAccess = await conferences.addPublicWebAccess(conference.phoneNumber, conference.pin, 'write')
+      const token = jwt.sign(conference.pin, config.SECRET, { expiresIn: '1 day' });
       await emailer.sendConfWebAccessEmail({
         email,
         phoneNumber: conference.phoneNumber,
         conferenceDay: conferenceDay,
-        url: publicWebAccess.url,
+        url: `${config.HOSTNAME_WITH_PROTOCOL}/dashboard/${token}`,
         pin: conference.pin
       })
     } catch (err) {
@@ -109,8 +99,8 @@ module.exports.createConf = async (req, res) => {
       return res.redirect('/')
     }
   }
-
   return res.redirect(urls.showConf.replace(":id", conference.id) + '#' + conference.pin)
+
 }
 
 

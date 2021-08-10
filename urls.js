@@ -10,6 +10,6 @@ module.exports = {
   stats: '/stats',
   contact: '/contact',
   faq: '/questions-frequentes',
-
+  dashboard: '/dashboard/:token',
   status: '/api/status',
 }
