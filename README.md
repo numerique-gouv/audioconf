@@ -141,6 +141,14 @@ Pour le job qui récupère le web access:
 POST /telephony/${OVH_ROOM_ACCOUNT_NUMBER}/conference/${OVH_ROOM_PHONE_NUMBER}/rooms/*/webAccess
 ```
 
+Pour le dashboard
+```
+POST /telephony/${OVH_ROOM_ACCOUNT_NUMBER}/conference/${phoneNumber}/rooms/${roomNumber}/*
+GET /telephony/${OVH_ROOM_ACCOUNT_NUMBER}/conference/${phoneNumber}/rooms/${roomNumber}/participants
+GET /telephony/${OVH_ROOM_ACCOUNT_NUMBER}/conference/${phoneNumber}/rooms/${roomNumber}/participants/${id}
+POST /telephony/${OVH_ROOM_ACCOUNT_NUMBER}/conference/${phoneNumber}/rooms/${roomNumber}/participants/${id}/*
+```
+
 
 ## Détail des appels API OVH utilisés
 *Création des confs*

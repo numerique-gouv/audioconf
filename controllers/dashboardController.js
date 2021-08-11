@@ -14,14 +14,12 @@ module.exports.get = async (req, res) => {
     try {
         const pin = jwt.verify(token, config.SECRET).pin
         const room = await conferences.getRoom(config.OVH_ROOM_PHONE_NUMBER, pin)
-        console.log('Get room', room)
-        if (!room) {
-            throw new Error(`Cette room n'existe plus ou pas`)
-        } else {
-            return res.render("dashboard", {
-                room
-            })
-        }
+        const partipantIds = await conferences.getParticipants(config.OVH_ROOM_PHONE_NUMBER, pin)
+        const partipants = await Promise.all(partipantIds.map(id => conferences.getParticipant(config.OVH_ROOM_PHONE_NUMBER, pin, id)))
+        return res.render("dashboard", {
+            room,
+            partipants
+        })
     } catch (err) {
         console.log(`Impossible de recuperer la room : ${err}`)
         req.flash(`Ce lien n'est plus valide : ${err}`)
