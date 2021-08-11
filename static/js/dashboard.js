@@ -1,8 +1,8 @@
-(function() {
+window.onload = function() {
     var initDate = new Date()
     setInterval(function() {
         var currentDate = new Date()
         var id = document.getElementById("last-update")
         id.innerText = (currentDate.getTime() - initDate.getTime())*1000 
     }, 1000)
-}())
+}
