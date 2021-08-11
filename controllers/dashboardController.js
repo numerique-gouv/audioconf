@@ -13,12 +13,11 @@ module.exports.get = async (req, res) => {
 
     try {
         const pin = jwt.verify(token, config.SECRET).pin
-        const room = await conferences.getRoom(config.OVH_ROOM_PHONE_NUMBER, pin)
         const participantIds = await conferences.getParticipants(config.OVH_ROOM_PHONE_NUMBER, pin)
         const participants = await Promise.all(participantIds.map(id => conferences.getParticipant(config.OVH_ROOM_PHONE_NUMBER, pin, id)))
         return res.render("dashboard", {
-            room,
-            participants
+            participants,
+            token
         })
     } catch (err) {
         console.log(`Impossible de recuperer la room : ${err}`)
@@ -26,3 +25,30 @@ module.exports.get = async (req, res) => {
         res.redirect("/")
     }
 }
+
+module.exports.participantAction = async (req, res) => {
+    const token = req.params.token
+    const participantId = req.params.participantId
+    const action = req.params.action
+
+    if (!token) {
+        res.redirect("/")
+    }
+
+    try {
+        const pin = jwt.verify(token, config.SECRET).pin
+        const res = await conferences.participantAction(config.OVH_ROOM_PHONE_NUMBER, pin, participantId, action)
+        const participantIds = await conferences.getParticipants(config.OVH_ROOM_PHONE_NUMBER, pin)
+        const participants = await Promise.all(participantIds.map(id => conferences.getParticipant(config.OVH_ROOM_PHONE_NUMBER, pin, id)))
+        req.flash("info", `Action ${action} bien prise en compte`)
+        return res.render("dashboard", {
+            participants,
+            token
+        })
+    } catch (err) {
+        console.log(`Impossible d'effectuer l'acction ${action} : ${err}`)
+        req.flash(`Impossible d'effectuer l'acction ${action} : ${err}`)
+        res.redirect(`/dashboard/${token}`)
+    }
+}
+

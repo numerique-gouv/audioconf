@@ -97,6 +97,7 @@ app.get(urls.legalNotice, (req, res) => {
 })
 
 app.get(urls.dashboard, dashboardController.get)
+app.get(urls.participantAction, dashboardController.participantAction)
 
 if (config.FEATURE_STATS_PAGE) {
   app.get(urls.stats, async (req, res) => {

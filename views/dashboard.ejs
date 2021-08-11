@@ -20,6 +20,7 @@
           <th>est actif</th>
           <th>peut entendre</th>
           <th>id</th>
+          <th>actions</th>
         </tr>
         <% for (var i = 0; i < participants.length; i++) { %>
           <tr>
@@ -32,6 +33,13 @@
             <td><%= participants[i].floor %></td>
             <td><%= participants[i].hear %></td>
             <td><%= participants[i].id %></td>
+            <td>
+              <% if (<%= participants[i].speak %>) { %>
+              <a href="<%= HOSTNAME_WITH_PROTOCOL %>/dashboard/<%= token %>/<%= participants[i].id %>/mute">Mute</a>
+              <% } else { %>
+                <a href="<%= HOSTNAME_WITH_PROTOCOL %>/dashboard/<%= token %>/<%= participants[i].id %>/unmute">Unmute</a>
+              % } %>
+            </td>
           </tr>
           <% } %>
       </table>
