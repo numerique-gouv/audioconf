@@ -12,7 +12,7 @@ module.exports.get = async (req, res) => {
     }
 
     try {
-        const pin = jwt.verify(token, config.SECRET)
+        const pin = jwt.verify(token, config.SECRET).pin
         const room = conferences.getRoom(pin)
         console.log('Get room', room)
         if (!room) {

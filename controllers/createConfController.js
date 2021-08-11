@@ -85,7 +85,7 @@ module.exports.createConf = async (req, res) => {
 
   if (isAcceptedEmail(email, config.EMAIL_WEB_ACCESS_WHITELIST) && config.FEATURE_WEB_ACCESS) { // check if email is in whitelist
     try {
-      const token = jwt.sign(conference.pin, config.SECRET, { expiresIn: "2 days" })
+      const token = jwt.sign({ pin: conference.pin} , config.SECRET, { expiresIn: "1d" })
       await emailer.sendConfWebAccessEmail({
         email,
         phoneNumber: conference.phoneNumber,
@@ -94,8 +94,8 @@ module.exports.createConf = async (req, res) => {
         pin: conference.pin
       })
     } catch (err) {
-      req.flash("error", "L'email contenant le lien de modération n'a pas pu être envoyé. Vous pouvez réessayer.")
       console.error("Error when emailing", err)
+      req.flash("error", "L'email contenant le lien de modération n'a pas pu être envoyé. Vous pouvez réessayer.")
       return res.redirect("/")
     }
   }
