@@ -3,9 +3,25 @@
 <div class="fr-container">
   <div class="main-paragraph">
     <h2>
-      
+      Board de votre conference
     </h2>
+    <% if (errors.length) { %>
+      <% errors.forEach(function(error) { %>
+        <%- include('partials/notificationError', {error: error}) -%>
+      <% }) %>
+    <% } %>
 
+    <% if (infos.length) { %>
+      <% infos.forEach(function(info) { %>
+        <%- include('partials/notificationInfo', {info: info}) -%>
+      <% }) %>
+    <% } %>
+
+    <% if (successes.length) { %>
+      <% successes.forEach(function(success) { %>
+        <%- include('partials/notificationSuccess', {success: success}) -%>
+      <% }) %>
+    <% } %>
     <div class="fr-callout fr-mb-3w">
       <p class="fr-callout__title">
       </p>
