@@ -39,7 +39,7 @@ module.exports.get = async (req, res) => {
 
 module.exports.participantAction = async (req, res) => {
     const token = req.params.token
-    const participantId = req.params.participantId
+    const participantId = parseInt(req.params.participantId, 10)
     const action = req.params.action
 
     if (!token) {
