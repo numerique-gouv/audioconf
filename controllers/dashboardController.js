@@ -14,11 +14,11 @@ module.exports.get = async (req, res) => {
     try {
         const pin = jwt.verify(token, config.SECRET).pin
         const room = await conferences.getRoom(config.OVH_ROOM_PHONE_NUMBER, pin)
-        const partipantIds = await conferences.getParticipants(config.OVH_ROOM_PHONE_NUMBER, pin)
-        const partipants = await Promise.all(partipantIds.map(id => conferences.getParticipant(config.OVH_ROOM_PHONE_NUMBER, pin, id)))
+        const participantIds = await conferences.getParticipants(config.OVH_ROOM_PHONE_NUMBER, pin)
+        const participants = await Promise.all(participantIds.map(id => conferences.getParticipant(config.OVH_ROOM_PHONE_NUMBER, pin, id)))
         return res.render("dashboard", {
             room,
-            partipants
+            participants
         })
     } catch (err) {
         console.log(`Impossible de recuperer la room : ${err}`)
