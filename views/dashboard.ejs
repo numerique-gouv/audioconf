@@ -25,6 +25,9 @@
     <div class="fr-callout fr-mb-3w">
       <p class="fr-callout__title">
       </p>
+        Dernière mise à jour (<%= lastUpdate %>) : <span id="last-update"></span>s 
+        <a class="fr-btn"
+        href="<%= siteUrl %>/dashboard/<%= token %>">Rafraichir</a>
       <table>
         <tr>
           <th>Numéro</th>
@@ -68,5 +71,6 @@
     <p>Bonne discussion avec <%= appName %> !</p>
   </div>
 </div>
+<script src="static/js/dashboard.js"></script>
 
 <%- include('partials/footer') -%>
