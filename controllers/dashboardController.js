@@ -16,7 +16,10 @@ module.exports.get = async (req, res) => {
         const participantIds = await conferences.getParticipants(config.OVH_ROOM_PHONE_NUMBER, pin)
         const participants = await Promise.all(participantIds.map(id => conferences.getParticipant(config.OVH_ROOM_PHONE_NUMBER, pin, id)))
         return res.render("dashboard", {
-            participants,
+            participants: participants.map(participant => ({
+                ...participant,
+                callerNumber: participant.callerNumber.slice(0, 4) + 'XXXX' + participant.callerNumber.slice(-4)
+            })),
             phoneNumber: config.OVH_ROOM_PHONE_NUMBER,
             pin,
             token,
