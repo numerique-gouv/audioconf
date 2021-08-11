@@ -13,11 +13,10 @@ module.exports.get = async (req, res) => {
 
     try {
         const pin = jwt.verify(token, config.SECRET).pin
-        const room = conferences.getRoom(pin)
+        const room = await conferences.getRoom(pin)
         console.log('Get room', room)
         if (!room) {
-            throw new Error(`Cette roon n'existe plus ou pas`)
-            
+            throw new Error(`Cette room n'existe plus ou pas`)
         } else {
             return res.render("dashboard", {
                 room
