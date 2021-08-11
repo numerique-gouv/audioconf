@@ -27,12 +27,12 @@
       </p>
       <a class="fr-btn"
       href="<%= siteUrl %>/dashboard/<%= token %>">Rafraîchir</a> Dernière mise à jour : il y a <span id="last-update">0</span>s 
+      <br>
+      <br>
       <table>
         <tr>
           <th>Numéro</th>
-          <th>Energie</th>
           <th>Heure d'arrivée</th>
-          <th>Nom (si renseigné)</th>
           <td>En train de parler</th>
           <th>peut parler</th>
           <th>est actif</th>
@@ -43,9 +43,7 @@
         <% for (var i = 0; i < participants.length; i++) { %>
           <tr>
             <td><%= participants[i].callerNumber %></td>
-            <td><%= participants[i].energy %></td>
             <td><%= participants[i].arrivalDateTime %></td>
-            <td><%= participants[i].callerName %></td>
             <td><%= participants[i].talking %></td>
             <td><%= participants[i].speak %></td>
             <td><%= participants[i].floor %></td>
