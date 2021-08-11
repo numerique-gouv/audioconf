@@ -35,9 +35,9 @@
             <td><%= participants[i].id %></td>
             <td>
               <% if (participants[i].speak) { %>
-              <a href="<%= HOSTNAME_WITH_PROTOCOL %>/dashboard/<%= token %>/<%= participants[i].id %>/mute">Mute</a>
+              <a href="<%= siteUrl %>/dashboard/<%= token %>/<%= participants[i].id %>/mute">Mute</a>
               <% } else { %>
-                <a href="<%= HOSTNAME_WITH_PROTOCOL %>/dashboard/<%= token %>/<%= participants[i].id %>/unmute">Unmute</a>
+                <a href="<%= siteUrl %>/dashboard/<%= token %>/<%= participants[i].id %>/unmute">Unmute</a>
               <% } %>
             </td>
           </tr>
