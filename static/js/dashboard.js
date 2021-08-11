@@ -3,6 +3,6 @@ window.onload = function() {
     setInterval(function() {
         var currentDate = new Date()
         var id = document.getElementById("last-update")
-        id.innerText = (currentDate.getTime() - initDate.getTime())*1000 
+        id.innerText = Math.floor((currentDate.getTime() - initDate.getTime())/1000)
     }, 1000)
 }
