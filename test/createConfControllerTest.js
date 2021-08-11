@@ -13,7 +13,6 @@ describe("createConfController", function() {
     let sendEmailStub
     let getTokenStub
     let insertConfStub
-    let addPublicWebAccessStub
     let sendWebAccessEmailStub
 
     beforeEach(function(done) {
@@ -22,7 +21,6 @@ describe("createConfController", function() {
       sendWebAccessEmailStub = sinon.stub(emailer, "sendConfWebAccessEmail")
       getTokenStub = sinon.stub(db, "getToken")
       insertConfStub = sinon.stub(db, "insertConferenceWithDay")
-      addPublicWebAccessStub = sinon.stub(conferences, "addPublicWebAccess")
 
       done()
     })
@@ -32,7 +30,6 @@ describe("createConfController", function() {
       sendEmailStub.restore()
       getTokenStub.restore()
       insertConfStub.restore()
-      addPublicWebAccessStub.restore()
       sendWebAccessEmailStub.restore()
       done()
     })
@@ -53,9 +50,6 @@ describe("createConfController", function() {
         pin: confPin,
       }))
       sendEmailStub = sendEmailStub.returns(Promise.resolve())
-      addPublicWebAccessStub.returns(Promise.resolve({
-        url: 'http://a-url-to-moderate-a-conf.ovh'
-      }))
 
       chai.request(app)
         .get(urls.createConf)
