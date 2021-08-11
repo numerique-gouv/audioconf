@@ -17,6 +17,8 @@ module.exports.get = async (req, res) => {
         const participants = await Promise.all(participantIds.map(id => conferences.getParticipant(config.OVH_ROOM_PHONE_NUMBER, pin, id)))
         return res.render("dashboard", {
             participants,
+            phoneNumber: config.OVH_ROOM_PHONE_NUMBER,
+            pin,
             token
         })
     } catch (err) {
@@ -43,7 +45,9 @@ module.exports.participantAction = async (req, res) => {
         req.flash("info", `Action ${action} bien prise en compte`)
         return res.render("dashboard", {
             participants,
-            token
+            token,
+            phoneNumber: config.OVH_ROOM_PHONE_NUMBER,
+            pin,
         })
     } catch (err) {
         console.log(`Impossible d'effectuer l'acction ${action} : ${err}`)
