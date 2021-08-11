@@ -13,7 +13,7 @@ module.exports.get = async (req, res) => {
 
     try {
         const pin = jwt.verify(token, config.SECRET).pin
-        const room = await conferences.getRoom(pin)
+        const room = await conferences.getRoom(config.OVH_ROOM_PHONE_NUMBER, pin)
         console.log('Get room', room)
         if (!room) {
             throw new Error(`Cette room n'existe plus ou pas`)
