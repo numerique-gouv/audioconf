@@ -10,6 +10,17 @@
       <p class="fr-callout__title">
       </p>
       <table>
+        <tr>
+          <th>Numéro</th>
+          <th>Energie</th>
+          <th>Heure d'arrivée</th>
+          <th>Nom (si renseigné)</th>
+          <td>En train de parler</th>
+          <th>peut parler</th>
+          <th>est actif</th>
+          <th>peut entendre</th>
+          <th>id</th>
+        </tr>
         <% for (var i = 0; i < participants.length; i++) { %>
           <tr>
             <td><%= participants[i].callerNumber %></td>
