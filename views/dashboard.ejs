@@ -34,7 +34,7 @@
             <td><%= participants[i].hear %></td>
             <td><%= participants[i].id %></td>
             <td>
-              <% if (<%= participants[i].speak %>) { %>
+              <% if (participants[i].speak) { %>
               <a href="<%= HOSTNAME_WITH_PROTOCOL %>/dashboard/<%= token %>/<%= participants[i].id %>/mute">Mute</a>
               <% } else { %>
                 <a href="<%= HOSTNAME_WITH_PROTOCOL %>/dashboard/<%= token %>/<%= participants[i].id %>/unmute">Unmute</a>
