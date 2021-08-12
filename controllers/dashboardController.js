@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken")
 
 const config = require("../config")
 const conferences = require("../lib/conferences")
+const { decrypt } = require("../lib/crypto")
 
 module.exports.get = async (req, res) => {
     const token = req.params.token
@@ -12,7 +13,7 @@ module.exports.get = async (req, res) => {
     }
 
     try {
-        const roomNumber = jwt.verify(token, config.SECRET).roomNumber
+        const roomNumber = jwt.verify(decrypt(token), config.SECRET).roomNumber
         const participantIds = await conferences.getParticipants(config.OVH_ROOM_PHONE_NUMBER, roomNumber)
         const participants = await Promise.all(participantIds.map(id => conferences.getParticipant(config.OVH_ROOM_PHONE_NUMBER, roomNumber, id)))
         return res.render("dashboard", {

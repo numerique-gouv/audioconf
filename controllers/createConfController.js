@@ -8,6 +8,7 @@ const emailer = require("../lib/emailer")
 const format = require("../lib/format")
 const urls = require("../urls")
 const { isAcceptedEmail } = require("./utils")
+const { encrypt } = require("../lib/crypto")
 
 const createConfWithDuration = async (email, durationInMinutes) => {
   try {
@@ -83,9 +84,10 @@ module.exports.createConf = async (req, res) => {
     return res.redirect("/")
   }
 
+  console.log(isAcceptedEmail(email, config.EMAIL_WEB_ACCESS_WHITELIST), config.FEATURE_WEB_ACCESS)
   if (isAcceptedEmail(email, config.EMAIL_WEB_ACCESS_WHITELIST) && config.FEATURE_WEB_ACCESS) { // check if email is in whitelist
     try {
-      const token = jwt.sign({ pin: conference.pin} , config.SECRET, { expiresIn: "15d" })
+      const token = encrypt(jwt.sign({ pin: conference.pin} , config.SECRET, { expiresIn: "15d" }))
       await emailer.sendConfWebAccessEmail({
         email,
         phoneNumber: conference.phoneNumber,
