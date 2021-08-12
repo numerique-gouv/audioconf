@@ -83,6 +83,7 @@ config.POLL_URL = process.env.POLL_URL
 config.AFTER_MEETING_SURVEY_URL = process.env.AFTER_MEETING_SURVEY_URL
 
 config.SECRET = process.env.SECRET
+config.ENCRYPT_SECRET = process.env.ENCRYPT_SECRET
 
 config.SUPPORT_EMAIL = process.env.SUPPORT_EMAIL || process.env.MAIL_SENDER_EMAIL
 
