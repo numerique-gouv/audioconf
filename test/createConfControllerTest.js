@@ -1,11 +1,14 @@
 const chai = require("chai")
 const sinon = require("sinon")
+const jwt = require("jsonwebtoken")
 
 const app = require("../index")
 const conferences = require("../lib/conferences")
 const db = require("../lib/db")
 const emailer = require("../lib/emailer")
 const urls = require("../urls")
+const { encrypt } = require("../lib/crypto")
+const config = require("../config")
 
 describe("createConfController", function() {
   describe("createConf", function() {
@@ -193,6 +196,75 @@ describe("createConfController", function() {
         .end(function(err, res) {
           chai.assert.include(res.text, "26 janvier")
           chai.assert.notInclude(res.text, "27 janvier")
+          done()
+        })
+    })
+  })
+
+  describe("should access dashboard", function() {
+    let getParticipants
+    let getParticipant
+    let clock
+
+    beforeEach(function(done) {
+      getParticipants = sinon.stub(conferences, "getParticipants").returns(Promise.resolve(
+        [
+          44545
+        ]))
+      getParticipant = sinon.stub(conferences, "getParticipant").returns(Promise.resolve(
+        {
+          arrivalDateTime: new Date(),
+          callerNumber: '+3306STEHDTSXTH',
+          talking: true,
+          speak: true,
+          floor: true,
+          hear: true,
+          id: 44545
+        }))
+      clock = sinon.useFakeTimers(new Date('2020-01-01T09:59:59+01:00'));
+      done()
+    })
+
+    afterEach(function(done) {
+      getParticipants.restore()
+      getParticipant.restore()
+      clock.restore()
+      done()
+    })
+
+    it("should not be able access dashboard with back token", function(done) {
+      const roomNumber = 123456789
+      const token = encrypt(jwt.sign({ roomNumber: roomNumber } , "abadsecret", { expiresIn: "15d" }))
+      chai.request(app)
+        .get(`/dashboard/${token}`)
+        .end(function(err, res) {
+          res.should.redirectTo(urls.landing)
+          sinon.assert.notCalled(getParticipants)
+          sinon.assert.notCalled(getParticipant)
+          done()
+        })
+    })
+
+    it("should not be able to access dashboard if jwt is expired", function(done) {
+      const roomNumber = 123456789
+      const token = encrypt(jwt.sign({ roomNumber: roomNumber } , config.SECRET, { expiresIn: "1m" }))
+      clock.tick((60*1000) + 1)
+      chai.request(app)
+        .get(`/dashboard/${token}`)
+        .end(function(err, res) {
+          res.should.redirectTo(urls.landing)
+          sinon.assert.notCalled(getParticipants)
+          sinon.assert.notCalled(getParticipant)
+          done()
+        })
+    })
+
+    it("should be able to access dashboard", function(done) {
+      const roomNumber = 123456789
+      const token = encrypt(jwt.sign({ roomNumber: roomNumber } , config.SECRET, { expiresIn: "15d" }))
+      chai.request(app)
+        .get(`/dashboard/${token}`)
+        .end(function(err, res) {
           done()
         })
     })

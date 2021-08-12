@@ -9,7 +9,7 @@ module.exports.get = async (req, res) => {
     const token = req.params.token
 
     if (!token) {
-        res.redirect("/")
+        res.redirect('/')
     }
 
     try {
@@ -34,7 +34,7 @@ module.exports.get = async (req, res) => {
     } catch (err) {
         console.log(`Impossible de recuperer la room : ${err}`)
         req.flash(`Ce lien n'est plus valide : ${err}`)
-        res.redirect("/")
+        res.redirect('/')
     }
 }
 
@@ -44,7 +44,7 @@ module.exports.participantAction = async (req, res) => {
     const action = req.params.action
 
     if (!token) {
-        res.redirect("/")
+        res.redirect('/')
     }
 
     try {
