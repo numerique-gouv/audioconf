@@ -51,10 +51,9 @@ module.exports.participantAction = async (req, res) => {
         await conferences.participantAction(config.OVH_ROOM_PHONE_NUMBER, roomNumber, participantId, action)
         req.flash("info", `Action ${action} bien prise en compte`)
     } catch (err) {
-        console.log(`Impossible d'effectuer l'acction ${action} : ${err}`)
-        req.flash(`Impossible d'effectuer l'acction ${action} : ${err}`)
+        console.log(`Impossible d'effectuer l'action ${action} : ${err}`)
+        req.flash(`Impossible d'effectuer l'action ${action} : ${err}`)
         res.redirect(`/dashboard/${token}`)
     }
     res.redirect(`/dashboard/${token}`)
 }
-
