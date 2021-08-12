@@ -87,7 +87,7 @@ module.exports.createConf = async (req, res) => {
   console.log(isAcceptedEmail(email, config.EMAIL_WEB_ACCESS_WHITELIST), config.FEATURE_WEB_ACCESS)
   if (isAcceptedEmail(email, config.EMAIL_WEB_ACCESS_WHITELIST) && config.FEATURE_WEB_ACCESS) { // check if email is in whitelist
     try {
-      const token = encrypt(jwt.sign({ roomNumber: conference.pin} , config.SECRET, { expiresIn: `${durationInMinutes}m` }))
+      const token = encrypt(jwt.sign({ roomNumber: conference.pin} , config.SECRET, { expiresIn: durationInMinutes * 60 }))
       await emailer.sendConfWebAccessEmail({
         email,
         phoneNumber: conference.phoneNumber,
