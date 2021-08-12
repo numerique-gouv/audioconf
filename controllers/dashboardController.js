@@ -48,7 +48,7 @@ module.exports.participantAction = async (req, res) => {
     }
 
     try {
-        const roomNumber = jwt.verify(token, config.SECRET).roomNumber
+        const roomNumber = jwt.verify(decrypt(token), config.SECRET).roomNumber
         await conferences.participantAction(config.OVH_ROOM_PHONE_NUMBER, roomNumber, participantId, action)
         req.flash("info", `Action ${action} bien prise en compte`)
     } catch (err) {
