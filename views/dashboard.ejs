@@ -35,7 +35,7 @@
           <th>Heure d'arrivée</th>
           <td>En train de parler</th>
           <th>peut parler</th>
-          <th>est actif</th>
+          <th>actif</th>
           <th>peut entendre</th>
           <th>id</th>
           <th>actions</th>
@@ -44,16 +44,16 @@
           <tr>
             <td><%= participants[i].callerNumber %></td>
             <td><%= participants[i].arrivalTime %></td>
-            <td><%= participants[i].talking %></td>
-            <td><%= participants[i].speak %></td>
-            <td><%= participants[i].floor %></td>
-            <td><%= participants[i].hear %></td>
+            <td><%= participants[i].talking ? 'oui' : 'non' %></td>
+            <td><%= participants[i].speak ? 'oui' : 'non' %></td>
+            <td><%= participants[i].floor ? 'oui' : 'non' %></td>
+            <td><%= participants[i].hear ? 'oui' : 'non' %></td>
             <td><%= participants[i].id %></td>
             <td>
               <% if (participants[i].speak) { %>
-              <a href="<%= siteUrl %>/dashboard/<%= token %>/<%= participants[i].id %>/mute">Mute</a>
+              <a href="<%= siteUrl %>/dashboard/<%= token %>/<%= participants[i].id %>/mute">mettre en sourdine</a>
               <% } else { %>
-                <a href="<%= siteUrl %>/dashboard/<%= token %>/<%= participants[i].id %>/unmute">Unmute</a>
+                <a href="<%= siteUrl %>/dashboard/<%= token %>/<%= participants[i].id %>/unmute">enlever la sourdine</a>
               <% } %>
             </td>
           </tr>
