@@ -30,6 +30,7 @@ module.exports = async () => {
   console.debug("Start of fetchCallsStats job")
 
   try {
+    var runWithoutErrors = true
     const phoneNumbers = await conferences.getAllPhoneNumbers()
     console.log("Got", phoneNumbers.length, "phone numbers.")
     if (!phoneNumbers.length) {
@@ -49,12 +50,21 @@ module.exports = async () => {
       const callIds = await fetchCallIds(phoneNumber)
 
       for (const callId of callIds) {
-        const history = await conferences.getHistoryForCall(phoneNumber, callId)
-        await insertCallHistory(history, phoneNumber, summary)
+        try {
+          const history = await conferences.getHistoryForCall(phoneNumber, callId)
+          await insertCallHistory(history, phoneNumber, summary)
+        } catch(err) {
+          console.error("fetchCallsStats: error with callId",callId," ", err)
+          runWithoutErrors = false
+        }
       }
 
-      // Record that this batch of inserts was successful
-      await recordSuccessfulJob(phoneNumber)
+      if(runWithoutErrors) {
+        // Record that this batch of inserts was successful
+        await recordSuccessfulJob(phoneNumber)
+      } else {
+        console.error("fetchCallsStats: sucessfullJob not recorded for number=",phoneNumber)
+      }
     }
 
     console.dir({ summary })
