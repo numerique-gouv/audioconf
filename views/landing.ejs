@@ -4,6 +4,35 @@
   <div class="fr-grid-row fr-grid-row--center">
     <div class="fr-col fr-col-lg-8">
       <div id="je-cree-une-conf" class="main-paragraph">
+
+        <button id="myButton" >FRANCE CONNECT YOUHOUUU</button>
+        <script type="text/javascript">
+            document.getElementById("myButton").onclick = function () {
+              // france connect staging
+              const authUrl = "https://fcp.integ01.dev-franceconnect.fr/api/v1/authorize"
+              const params = {
+                response_type: "code",
+                // test value for france connect staging
+                client_id: "211286433e39cce01db448d80181bdfd005554b19cd51b3fe7943f6b3b86ab6e",
+                redirect_uri: encodeURIComponent("http://localhost:8080/callback"),
+                scope: "openid",
+                // Champ obligatoire, généré aléatoirement par le FS, que FC renvoie tel quel dans la
+                // redirection qui suit l'authentification, pour être ensuite vérifié par le FS.
+                // Il est utilisé afin d’empêcher l’exploitation de failles CSRF
+                state: Math.floor(Math.random() * 1000), //"estellestate",
+                // Champ obligatoire, généré aléatoirement par le FS que FC renvoie tel quel dans la
+                // réponse à l'appel à /token, pour être ensuite vérifié par le FS.
+                // Il est utilisé pour empêcher les attaques par rejeu
+                nonce: Math.floor(Math.random() * 1000), //"estellenonce",
+                // European thing. 1 = standard.
+                acr_values: "eidas1",
+              }
+              const fullUrl = authUrl + "?" + new URLSearchParams(params).toString();
+              console.log(fullUrl)
+              location.href = fullUrl;
+            };
+        </script>
+
         <h2>
           Réserver une conférence téléphonique
         </h2>

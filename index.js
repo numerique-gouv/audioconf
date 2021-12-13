@@ -133,6 +133,13 @@ app.get(urls.faq, (req, res) => {
   })
 })
 
+app.get(urls.franceConnectCallback, (req, res) => {
+  console.log("Auth callback !")
+  console.log("code", req.query.code)
+  console.log("state", req.query.state)
+  res.json({ code: req.query.code, state: req.query.state })
+})
+
 app.get(urls.status, statusController.getStatus)
 
 app.use(Sentry.Handlers.errorHandler())
