@@ -3,6 +3,7 @@ const express = require("express")
 const Sentry = require("@sentry/node")
 const flash = require("connect-flash")
 const path = require("path")
+const querystring = require("querystring")
 const cookieParser = require("cookie-parser")
 const session = require("express-session")
 const MemoryStore = require("memorystore")(session)
@@ -131,6 +132,31 @@ app.get(urls.faq, (req, res) => {
   res.render("faq", {
     pageTitle: "Questions fréquentes",
   })
+})
+
+app.get(urls.startFranceConnect, (req, res) => {
+  console.log("Auth start !")
+  const authUrl = "https://fcp.integ01.dev-franceconnect.fr/api/v1/authorize"
+  const params = {
+    response_type: "code",
+    // test value for france connect staging
+    client_id: "211286433e39cce01db448d80181bdfd005554b19cd51b3fe7943f6b3b86ab6e",
+    redirect_uri: "http://localhost:8080/callback",
+    scope: "openid",
+    // Champ obligatoire, généré aléatoirement par le FS, que FC renvoie tel quel dans la
+    // redirection qui suit l'authentification, pour être ensuite vérifié par le FS.
+    // Il est utilisé afin d’empêcher l’exploitation de failles CSRF
+    state: Math.floor(Math.random() * 1000),
+    // Champ obligatoire, généré aléatoirement par le FS que FC renvoie tel quel dans la
+    // réponse à l'appel à /token, pour être ensuite vérifié par le FS.
+    // Il est utilisé pour empêcher les attaques par rejeu
+    nonce: Math.floor(Math.random() * 1000),
+    // European thing. 1 = standard.
+    acr_values: "eidas1",
+  }
+  const fullUrl = `${authUrl}?${querystring.stringify(params)}`
+  console.log("fullUrl", fullUrl)
+  return res.redirect(fullUrl)
 })
 
 app.get(urls.franceConnectCallback, (req, res) => {

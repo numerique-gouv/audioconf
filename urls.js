@@ -11,6 +11,6 @@ module.exports = {
   contact: "/contact",
   faq: "/questions-frequentes",
   franceConnectCallback: "/callback",
-
+  startFranceConnect: "/login",
   status: "/api/status",
 }
