@@ -73,7 +73,7 @@ window.dashboard = {
         if (!token) {
             throw new Error(`Il n'y a pas de token`)
         }
-        var participants = postRequest("/dashboard", token)
+        var participants = postRequest("/dashboard/get-participants", token)
         var $participantTable = document.getElementById("participant-table")
         $participantTable.innerHTML = ""
         $participantTable.appendChild(createTableHeader())
