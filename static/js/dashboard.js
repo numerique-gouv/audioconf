@@ -26,43 +26,43 @@ function postRequest(url, token, callback) {
 }
 
 var PARTICIPANT_PROPERTIES = [
-    'callerNumber',
-    'arrivalTime',
-    'talking', 
-    'speak'
-];
+    "callerNumber",
+    "arrivalTime",
+    "talking", 
+    "speak"
+]
 
 function createAction(action, id) {
-    var $actionBtn = document.createElement('span')
-    $actionBtn.id = id + '-' + action
-    $actionBtn.onclick = "dashboard.participantAction(" + id + ", " + action + ")";
-    return $actionBtn;
+    var $actionBtn = document.createElement("span")
+    $actionBtn.id = id + "-" + action
+    $actionBtn.onclick = "dashboard.participantAction(" + id + ", " + action + ")"
+    return $actionBtn
 }
 
 function createParticipantPropertyBox(property) {
-    var $box = document.createElement('td');
-    $box.innerHTML = '<td>' + property + '<td>';
+    var $box = document.createElement("td")
+    $box.innerHTML = "<td>" + property + "<td>"
     return $box
 }
 
 function createTableHeader() {
-    $tableHeader = document.createElement('tr'); 
+    var $tableHeader = document.createElement("tr") 
     for (var i=0; i <= PARTICIPANT_PROPERTIES.length; i++) {
-        $tableHeader.innerHTML += '<th>' + PARTICIPANT_PROPERTIES[i] + '</th>';
+        $tableHeader.innerHTML += "<th>" + PARTICIPANT_PROPERTIES[i] + "</th>"
     }
     return $tableHeader
 }
 
 function createParticipantRow(participantInfo) {
-    var $row = document.createElement('tr');
+    var $row = document.createElement("tr")
     $row.id = participantInfo.id
     for (var i=0; i <= PARTICIPANT_PROPERTIES.length; i++) {
-        $row.appendChild(createParticipantPropertyBox(participantInfo[properties[i]]);
+        $row.appendChild(createParticipantPropertyBox(participantInfo[PARTICIPANT_PROPERTIES[i]]))
     }
-    if (participantInfo['speak']) {
-        $row.appendChild(createAction('mute'));
+    if (participantInfo["speak"]) {
+        $row.appendChild(createAction("mute"))
     } else {
-        $row.appendChild(createAction('unmute'));
+        $row.appendChild(createAction("unmute"))
     }
     return $row
 }
@@ -73,11 +73,11 @@ window.dashboard = {
             throw new Error(`Il n'y a pas de token`)
         }
         var participants = postRequest("/dashboard", token)
-        var $participantTable = document.getElementById('participant-table');
-        $participantTable.innerHTML = '';
+        var $participantTable = document.getElementById("participant-table")
+        $participantTable.innerHTML = ""
         $participantTable.appendChild(createTableHeader())
         for (var i=0; i <= participants.length; i++) {
-            var $row = createParticipantRow(participants[i]);
+            var $row = createParticipantRow(participants[i])
             $participantTable.appendChild($row)
         }
     },
@@ -87,7 +87,7 @@ window.dashboard = {
         }
         postRequest("/dashboard/" + participantId + "/" + action, token, function() {
             setTimeout(function() {
-                dashboard.getParticipants()
+                window.dashboard.getParticipants()
             }, 1000)
         })       
     },
