@@ -17,11 +17,10 @@ module.exports.get = async (req, res) => {
 module.exports.getParticipants = async (req, res) => {
     const token = req.body.token
 
-    if (!token) {
-        throw new Error("Token manquant")
-    }
-
     try {
+        if (!token) {
+            throw new Error("Token manquant")
+        }
         const roomNumber = jwt.verify(decrypt(token), config.SECRET).roomNumber
         const participantIds = await conferences.getParticipants(config.OVH_ROOM_PHONE_NUMBER, roomNumber)
         const participants = await Promise.all(participantIds.map(id => conferences.getParticipant(config.OVH_ROOM_PHONE_NUMBER, roomNumber, id)))
@@ -41,7 +40,7 @@ module.exports.getParticipants = async (req, res) => {
         })
     } catch (err) {
         console.log(`Impossible de récuperer la room : ${err}`)
-        throw new Error("Token manquant")
+        res.status(401)
     }
 }
 

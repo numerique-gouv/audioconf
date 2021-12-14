@@ -74,12 +74,12 @@ window.dashboard = {
             throw new Error(`Il n'y a pas de token`)
         }
         postRequest("/dashboard/get-participants", token, function(req) {
-            var participants = JSON.parse(req.responseText)
+            var data = JSON.parse(req.responseText)
             var $participantTable = document.getElementById("participant-table")
             $participantTable.innerHTML = ""
             $participantTable.appendChild(createTableHeader())
-            for (var i=0; i <= participants.length; i++) {
-                var $row = createParticipantRow(participants[i])
+            for (var i=0; i <= data.participants.length; i++) {
+                var $row = createParticipantRow(data.participants[i])
                 $participantTable.appendChild($row)
             }
         })
