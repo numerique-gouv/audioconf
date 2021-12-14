@@ -34,10 +34,12 @@ var PARTICIPANT_PROPERTIES = [
 ]
 
 function createAction(action, id) {
-    var $actionBtn = document.createElement("span")
+    var $actionBtn = document.createElement("button")
     $actionBtn.id = id + "-" + action
     $actionBtn.innerText = action === "mute" ? "mettre en sourdine" : "retirer la sourdine"
-    $actionBtn.onclick = "dashboard.participantAction(" + id + ", " + action + ")"
+    $actionBtn.addEventListener("click", function(event) {
+        window.dashboard.participantAction(id, action)
+    })
     return $actionBtn
 }
 
@@ -63,9 +65,9 @@ function createParticipantRow(participantInfo) {
         $row.appendChild(createParticipantPropertyBox(participantInfo[PARTICIPANT_PROPERTIES[i]]))
     }
     if (participantInfo["speak"]) {
-        $row.appendChild(createAction("mute"))
+        $row.appendChild(createAction("mute", participantInfo.id))
     } else {
-        $row.appendChild(createAction("unmute"))
+        $row.appendChild(createAction("unmute", participantInfo.id))
     }
     return $row
 }
