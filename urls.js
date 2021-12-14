@@ -11,6 +11,6 @@ module.exports = {
   contact: '/contact',
   faq: '/questions-frequentes',
   participantAction: '/dashboard/:participantId/:action',
-  dashboard: '/dashboard/:token',
+  dashboard: '/dashboard',
   status: '/api/status',
 }
