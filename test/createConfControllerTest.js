@@ -243,7 +243,6 @@ describe("createConfController", function() {
         })
         .redirects(0) // block redirects, we don't want to test them
         .end(function(err, res) {
-          res.should.redirectTo("")
           sinon.assert.notCalled(getParticipants)
           sinon.assert.notCalled(getParticipant)
           done()

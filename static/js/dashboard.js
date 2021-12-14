@@ -18,7 +18,7 @@ function postRequest(url, token, callback) {
     xhr.onreadystatechange = function() { 
         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
             if (typeof callback === "function") {
-                callback()
+                callback(xhr)
             }
             // Requête finie, traitement ici.
         }
@@ -73,14 +73,17 @@ window.dashboard = {
         if (!token) {
             throw new Error(`Il n'y a pas de token`)
         }
-        var participants = postRequest("/dashboard/get-participants", token)
-        var $participantTable = document.getElementById("participant-table")
-        $participantTable.innerHTML = ""
-        $participantTable.appendChild(createTableHeader())
-        for (var i=0; i <= participants.length; i++) {
-            var $row = createParticipantRow(participants[i])
-            $participantTable.appendChild($row)
-        }
+        postRequest("/dashboard/get-participants", token, function(req) {
+            var participants = JSON.parse(req.responseText)
+            var $participantTable = document.getElementById("participant-table")
+            $participantTable.innerHTML = ""
+            $participantTable.appendChild(createTableHeader())
+            for (var i=0; i <= participants.length; i++) {
+                var $row = createParticipantRow(participants[i])
+                $participantTable.appendChild($row)
+            }
+        })
+        
     },
     participantAction: function(participantId, action) {
         if (!token) {

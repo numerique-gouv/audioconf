@@ -18,14 +18,14 @@ module.exports.getParticipants = async (req, res) => {
     const token = req.body.token
 
     if (!token) {
-        res.redirect('/')
+        throw new Error("Token manquant")
     }
 
     try {
         const roomNumber = jwt.verify(decrypt(token), config.SECRET).roomNumber
         const participantIds = await conferences.getParticipants(config.OVH_ROOM_PHONE_NUMBER, roomNumber)
         const participants = await Promise.all(participantIds.map(id => conferences.getParticipant(config.OVH_ROOM_PHONE_NUMBER, roomNumber, id)))
-        return res.render("dashboard", {
+        return res.json({
             participants: participants.map(participant => {
                 const arrivalDateTime = participant.arrivalDateTime
                 const date = new Date(arrivalDateTime)
@@ -40,9 +40,8 @@ module.exports.getParticipants = async (req, res) => {
             lastUpdate: new Date()
         })
     } catch (err) {
-        console.log(`Impossible de recuperer la room : ${err}`)
-        req.flash(`Ce lien n'est plus valide`)
-        res.redirect('/')
+        console.log(`Impossible de récuperer la room : ${err}`)
+        throw new Error("Token manquant")
     }
 }
 
@@ -53,7 +52,7 @@ module.exports.participantAction = async (req, res) => {
     const action = req.params.action
 
     if (!token) {
-        res.redirect('/')
+        res.redirect("/")
     }
 
     try {
