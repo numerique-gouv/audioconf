@@ -97,7 +97,7 @@ app.get(urls.legalNotice, (req, res) => {
 })
 
 app.get(urls.dashboard, dashboardController.get)
-app.get(urls.participantAction, dashboardController.participantAction)
+app.post(urls.participantAction, dashboardController.participantAction)
 app.post(urls.getParticipants, dashboardController.getParticipants)
 
 

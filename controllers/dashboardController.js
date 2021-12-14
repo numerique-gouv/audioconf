@@ -46,7 +46,6 @@ module.exports.getParticipants = async (req, res) => {
 
 module.exports.participantAction = async (req, res) => {
     const token = req.body.token
-    console.log(token)
     const participantId = parseInt(req.params.participantId, 10)
     const action = req.params.action
 
