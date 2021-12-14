@@ -1,10 +1,10 @@
 var token = window.location.hash.substring(1)
 
 var FRONT_LABELS = {
-    callerNumber: () => "Numéro",
-    arrivalTime: () => "Heure d'arrivée",
-    talking: () => "En train de parler",
-    speak: () => "En sourdine",
+    callerNumber: "Numéro",
+    arrivalTime: "Heure d'arrivée",
+    talking: "En train de parler",
+    speak: "En sourdine",
 }
 
 window.onload = function() {
@@ -52,10 +52,10 @@ function createAction(action, id) {
 
 function createParticipantPropertyBox(property) {
     var propertiesFrontValue = {
-        callerNumber: (value) => value,
-        arrivalTime: (value) => value,
-        talking: (value) => value ? "oui" : "non",
-        speak: (value) => value ? "oui" : "non",
+        callerNumber: function(value) { return value},
+        arrivalTime: function(value) { return value},
+        talking: function(value) { return value ? "oui" : "non" },
+        speak: function(value) { return value ? "oui" : "non" },
     }
     var $box = document.createElement("td")
     $box.innerHTML = "<td>" + propertiesFrontValue[property]() + "<td>"
