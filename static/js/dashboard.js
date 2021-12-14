@@ -36,6 +36,7 @@ var PARTICIPANT_PROPERTIES = [
 function createAction(action, id) {
     var $actionBtn = document.createElement("span")
     $actionBtn.id = id + "-" + action
+    $actionBtn.innerText = action === "mute" ? "mettre en sourdine" : "retirer la sourdine"
     $actionBtn.onclick = "dashboard.participantAction(" + id + ", " + action + ")"
     return $actionBtn
 }
@@ -48,16 +49,17 @@ function createParticipantPropertyBox(property) {
 
 function createTableHeader() {
     var $tableHeader = document.createElement("tr") 
-    for (var i=0; i <= PARTICIPANT_PROPERTIES.length; i++) {
+    for (var i=0; i < PARTICIPANT_PROPERTIES.length; i++) {
         $tableHeader.innerHTML += "<th>" + PARTICIPANT_PROPERTIES[i] + "</th>"
     }
+    $tableHeader.innerHTML += "<th>action</th>"
     return $tableHeader
 }
 
 function createParticipantRow(participantInfo) {
     var $row = document.createElement("tr")
     $row.id = participantInfo.id
-    for (var i=0; i <= PARTICIPANT_PROPERTIES.length; i++) {
+    for (var i=0; i < PARTICIPANT_PROPERTIES.length; i++) {
         $row.appendChild(createParticipantPropertyBox(participantInfo[PARTICIPANT_PROPERTIES[i]]))
     }
     if (participantInfo["speak"]) {
@@ -78,7 +80,7 @@ window.dashboard = {
             var $participantTable = document.getElementById("participant-table")
             $participantTable.innerHTML = ""
             $participantTable.appendChild(createTableHeader())
-            for (var i=0; i <= data.participants.length; i++) {
+            for (var i=0; i < data.participants.length; i++) {
                 var $row = createParticipantRow(data.participants[i])
                 $participantTable.appendChild($row)
             }
