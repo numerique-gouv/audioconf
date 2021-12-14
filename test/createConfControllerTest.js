@@ -236,7 +236,7 @@ describe("createConfController", function() {
       const roomNumber = 123456789
       const token = encrypt(jwt.sign({ roomNumber: roomNumber } , "abadsecret", { expiresIn: "15d" }))
       chai.request(app)
-        .get(`/dashboard/#${token}`)
+        .get(`/dashboard#${token}`)
         .redirects(0) // block redirects, we don't want to test them
         .end(function(err, res) {
           res.should.redirectTo(urls.landing)
@@ -251,7 +251,7 @@ describe("createConfController", function() {
       const token = encrypt(jwt.sign({ roomNumber: roomNumber } , config.SECRET, { expiresIn: "1m" }))
       clock.tick((60*1000) + 1)
       chai.request(app)
-        .get(`/dashboard/#${token}`)
+        .get(`/dashboard#${token}`)
         .redirects(0) // block redirects, we don't want to test them
         .end(function(err, res) {
           res.should.redirectTo(urls.landing)
@@ -265,7 +265,7 @@ describe("createConfController", function() {
       const roomNumber = 123456789
       const token = encrypt(jwt.sign({ roomNumber: roomNumber } , config.SECRET, { expiresIn: "15d" }))
       chai.request(app)
-        .get(`/dashboard/#${token}`)
+        .get(`/dashboard#${token}`)
         .end(function(err, res) {
           sinon.assert.called(getParticipants)
           sinon.assert.called(getParticipant)
