@@ -50,7 +50,7 @@ function createAction(action, id) {
     return $actionBtn
 }
 
-function createParticipantPropertyBox(property) {
+function createParticipantPropertyBox(property, value) {
     var propertiesFrontValue = {
         callerNumber: function(value) { return value},
         arrivalTime: function(value) { return value},
@@ -58,7 +58,7 @@ function createParticipantPropertyBox(property) {
         speak: function(value) { return value ? "oui" : "non" },
     }
     var $box = document.createElement("td")
-    $box.innerHTML = "<td>" + propertiesFrontValue[property]() + "<td>"
+    $box.innerHTML = "<td>" + propertiesFrontValue[property](value) + "<td>"
     return $box
 }
 
@@ -75,7 +75,7 @@ function createParticipantRow(participantInfo) {
     var $row = document.createElement("tr")
     $row.id = participantInfo.id
     for (var i=0; i < PARTICIPANT_PROPERTIES.length; i++) {
-        $row.appendChild(createParticipantPropertyBox(participantInfo[PARTICIPANT_PROPERTIES[i]]))
+        $row.appendChild(createParticipantPropertyBox(PARTICIPANT_PROPERTIES[i], participantInfo[PARTICIPANT_PROPERTIES[i]]))
     }
     if (participantInfo["speak"]) {
         $row.appendChild(createAction("mute", participantInfo.id))
