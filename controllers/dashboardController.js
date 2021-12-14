@@ -39,7 +39,8 @@ module.exports.get = async (req, res) => {
 }
 
 module.exports.participantAction = async (req, res) => {
-    const token = req.params.token
+    const token = req.body.token
+    console.log(token)
     const participantId = parseInt(req.params.participantId, 10)
     const action = req.params.action
 
@@ -54,9 +55,9 @@ module.exports.participantAction = async (req, res) => {
     } catch (err) {
         console.log(`Impossible d'effectuer l'action ${action} : ${err}`)
         req.flash(`Impossible d'effectuer l'action ${action} : ${err}`)
-        res.redirect(`/dashboard/${token}`)
+        res.redirect(`/dashboard/#${token}`)
     }
     setTimeout(() => { // wait for mute property to be updated
-        res.redirect(`/dashboard/${token}`)
+        res.redirect(`/dashboard/#${token}`)
     }, 1000)
 }
