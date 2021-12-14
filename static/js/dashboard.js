@@ -2,8 +2,8 @@ var token = window.location.hash.substring(1)
 
 window.onload = function() {
     var initDate = new Date()
-    window.dashboard.getParticipants()
     setInterval(function() {
+        window.dashboard.getParticipants()
         var currentDate = new Date()
         var id = document.getElementById("last-update")
         id.innerText = Math.floor((currentDate.getTime() - initDate.getTime())/1000)
