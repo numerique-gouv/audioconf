@@ -8,12 +8,12 @@ var FRONT_LABELS = {
 }
 
 window.onload = function() {
-    var initDate = new Date()
+    // var initDate = new Date()
     setInterval(function() {
         window.dashboard.getParticipants()
-        var currentDate = new Date()
-        var id = document.getElementById("last-update")
-        id.innerText = Math.floor((currentDate.getTime() - initDate.getTime())/1000)
+        // var currentDate = new Date()
+        // var id = document.getElementById("last-update")
+        // id.innerText = Math.floor((currentDate.getTime() - initDate.getTime())/1000)
     }, 1000)
 }
 
@@ -55,7 +55,7 @@ function createParticipantPropertyBox(property, value) {
         callerNumber: function(value) { return value},
         arrivalTime: function(value) { return value},
         talking: function(value) { return value ? "oui" : "non" },
-        speak: function(value) { return value ? "oui" : "non" },
+        speak: function(value) { return value ? "non" : "oui" },
     }
     var $box = document.createElement("td")
     $box.innerHTML = "<td>" + propertiesFrontValue[property](value) + "<td>"
