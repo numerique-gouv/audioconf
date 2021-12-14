@@ -1,5 +1,12 @@
 var token = window.location.hash.substring(1)
 
+var FRONT_LABELS = {
+    callerNumber: () => "Numéro",
+    arrivalTime: () => "Heure d'arrivée",
+    talking: () => "En train de parler",
+    speak: () => "En sourdine",
+}
+
 window.onload = function() {
     var initDate = new Date()
     setInterval(function() {
@@ -7,7 +14,7 @@ window.onload = function() {
         var currentDate = new Date()
         var id = document.getElementById("last-update")
         id.innerText = Math.floor((currentDate.getTime() - initDate.getTime())/1000)
-    }, 5000)
+    }, 1000)
 }
 
 function postRequest(url, token, callback) {
@@ -44,15 +51,21 @@ function createAction(action, id) {
 }
 
 function createParticipantPropertyBox(property) {
+    var propertiesFrontValue = {
+        callerNumber: (value) => value,
+        arrivalTime: (value) => value,
+        talking: (value) => value ? "oui" : "non",
+        speak: (value) => value ? "oui" : "non",
+    }
     var $box = document.createElement("td")
-    $box.innerHTML = "<td>" + property + "<td>"
+    $box.innerHTML = "<td>" + propertiesFrontValue[property]() + "<td>"
     return $box
 }
 
 function createTableHeader() {
     var $tableHeader = document.createElement("tr") 
     for (var i=0; i < PARTICIPANT_PROPERTIES.length; i++) {
-        $tableHeader.innerHTML += "<th>" + PARTICIPANT_PROPERTIES[i] + "</th>"
+        $tableHeader.innerHTML += "<th>" + FRONT_LABELS[PARTICIPANT_PROPERTIES[i]] + "</th>"
     }
     $tableHeader.innerHTML += "<th>action</th>"
     return $tableHeader
