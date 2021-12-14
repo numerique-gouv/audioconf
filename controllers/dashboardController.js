@@ -40,7 +40,7 @@ module.exports.getParticipants = async (req, res) => {
         })
     } catch (err) {
         console.log(`Impossible de récuperer la room : ${err}`)
-        res.status(401)
+        res.status(401).send({ error: "Identification de la salle de conférence impossible" })
     }
 }
 
