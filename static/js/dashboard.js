@@ -9,32 +9,86 @@ window.onload = function() {
     }, 1000)
 }
 
-window.dashboard = {
-    postRequest: function(url, token, callback) {
-        var xhr = new XMLHttpRequest()
-        xhr.open("POST", url)
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+function postRequest(url, token, callback) {
+    var xhr = new XMLHttpRequest()
+    xhr.open("POST", url)
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
 
-        xhr.onreadystatechange = function() { //Appelle une fonction au changement d'état.
-            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-                if (typeof callback === "function") {
-                    callback()
-                }
-                // Requête finie, traitement ici.
+    xhr.onreadystatechange = function() { 
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            if (typeof callback === "function") {
+                callback()
             }
+            // Requête finie, traitement ici.
         }
-        xhr.send("token=" + token)
-    },
+    }
+    xhr.send("token=" + token)
+}
+
+var PARTICIPANT_PROPERTIES = [
+    'callerNumber',
+    'arrivalTime',
+    'talking', 
+    'speak'
+];
+
+function createAction(action, id) {
+    var $actionBtn = document.createElement('span')
+    $actionBtn.id = id + '-' + action
+    $actionBtn.onclick = "dashboard.participantAction(" + id + ", " + action + ")";
+    return $actionBtn;
+}
+
+function createParticipantPropertyBox(property) {
+    var $box = document.createElement('td');
+    $box.innerHTML = '<td>' + property + '<td>';
+    return $box
+}
+
+function createTableHeader() {
+    $tableHeader = document.createElement('tr'); 
+    for (var i=0; i <= PARTICIPANT_PROPERTIES.length; i++) {
+        $tableHeader.innerHTML += '<th>' + PARTICIPANT_PROPERTIES[i] + '</th>';
+    }
+    return $tableHeader
+}
+
+function createParticipantRow(participantInfo) {
+    var $row = document.createElement('tr');
+    $row.id = participantInfo.id
+    for (var i=0; i <= PARTICIPANT_PROPERTIES.length; i++) {
+        $row.appendChild(createParticipantPropertyBox(participantInfo[properties[i]]);
+    }
+    if (participantInfo['speak']) {
+        $row.appendChild(createAction('mute'));
+    } else {
+        $row.appendChild(createAction('unmute'));
+    }
+    return $row
+}
+
+window.dashboard = {
     getParticipants: function() {
         if (!token) {
             throw new Error(`Il n'y a pas de token`)
         }
-        window.dashboard.postRequest("/dashboard", token)
+        var participants = postRequest("/dashboard", token)
+        var $participantTable = document.getElementById('participant-table');
+        $participantTable.innerHTML = '';
+        $participantTable.appendChild(createTableHeader())
+        for (var i=0; i <= participants.length; i++) {
+            var $row = createParticipantRow(participants[i]);
+            $participantTable.appendChild($row)
+        }
     },
     participantAction: function(participantId, action) {
         if (!token) {
             throw new Error(`Il n'y a pas de token`)
         }
-        window.dashboard.postRequest("/dashboard/" + participantId + "/" + action, token)       
+        postRequest("/dashboard/" + participantId + "/" + action, token, function() {
+            setTimeout(function() {
+                dashboard.getParticipants()
+            }, 1000)
+        })       
     },
 }

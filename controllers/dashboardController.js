@@ -62,7 +62,7 @@ module.exports.participantAction = async (req, res) => {
         req.flash("info", `Action ${action} bien prise en compte`)
     } catch (err) {
         console.log(`Impossible d'effectuer l'action ${action} : ${err}`)
-        req.flash(`Impossible d'effectuer l'action ${action} : ${err}`)
+        req.flash(`Impossible d'effectuer l'action ${action}`)
         res.redirect(`/dashboard#${token}`)
     }
     setTimeout(() => { // wait for mute property to be updated
