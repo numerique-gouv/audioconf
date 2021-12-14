@@ -25,8 +25,8 @@
     <div class="fr-callout fr-mb-3w">
       <p class="fr-callout__title">
       </p>
-      <a class="fr-btn"
-      href="<%= siteUrl %>/dashboard/<%= token %>">Rafraîchir</a> Dernière mise à jour : il y a <span id="last-update">0</span>s 
+      <span class="fr-btn"
+        onclick="dashboard.getPartipants();">Rafraîchir</span> Dernière mise à jour : il y a <span id="last-update">0</span>s 
       <br>
       <br>
       <table>
@@ -51,9 +51,9 @@
             <!-- <td><%= participants[i].id %></td> -->
             <td>
               <% if (participants[i].speak) { %>
-              <span onclick="participantAction('<%= participants[i].id %>', 'mute');">mettre en sourdine</span>
+              <span onclick="dashboard.participantAction('<%= participants[i].id %>', 'mute');">mettre en sourdine</span>
               <% } else { %>
-                <span onclick="participantAction('<%= participants[i].id %>', 'unmute');">enlever la sourdine</span>
+                <span onclick="dashboard.participantAction('<%= participants[i].id %>', 'unmute');">enlever la sourdine</span>
               <% } %>
             </td>
           </tr>
