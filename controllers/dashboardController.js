@@ -6,35 +6,12 @@ const conferences = require("../lib/conferences")
 const { decrypt } = require("../lib/crypto")
 
 module.exports.get = async (req, res) => {
-    const token = req.body.token
-
-    if (!token) {
-        res.redirect('/')
-    }
-
-    try {
-        const roomNumber = jwt.verify(decrypt(token), config.SECRET).roomNumber
-        const participantIds = await conferences.getParticipants(config.OVH_ROOM_PHONE_NUMBER, roomNumber)
-        const participants = await Promise.all(participantIds.map(id => conferences.getParticipant(config.OVH_ROOM_PHONE_NUMBER, roomNumber, id)))
-        return res.render("dashboard", {
-            participants: participants.map(participant => {
-                const arrivalDateTime = participant.arrivalDateTime
-                const date = new Date(arrivalDateTime)
-                return {
-                    ...participant,
-                    arrivalTime: date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds(),
-                    callerNumber: participant.callerNumber.slice(0, 4) + "XXXX" + participant.callerNumber.slice(-4)
-                }
-            }),
-            phoneNumber: config.OVH_ROOM_PHONE_NUMBER,
-            roomNumber,
-            lastUpdate: new Date()
-        })
-    } catch (err) {
-        console.log(`Impossible de recuperer la room : ${err}`)
-        req.flash(`Ce lien n'est plus valide : ${err}`)
-        res.redirect('/')
-    }
+    res.render("dashboard", {
+        participants: [],
+        phoneNumber: config.OVH_ROOM_PHONE_NUMBER,
+        roomNumber: undefined,
+        lastUpdate: new Date()
+    })
 }
 
 module.exports.getParticipants = async (req, res) => {
@@ -64,7 +41,7 @@ module.exports.getParticipants = async (req, res) => {
         })
     } catch (err) {
         console.log(`Impossible de recuperer la room : ${err}`)
-        req.flash(`Ce lien n'est plus valide : ${err}`)
+        req.flash(`Ce lien n'est plus valide`)
         res.redirect('/')
     }
 }
