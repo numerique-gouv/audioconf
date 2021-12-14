@@ -10,6 +10,7 @@ module.exports = {
   stats: '/stats',
   contact: '/contact',
   faq: '/questions-frequentes',
+  getParticipants: '/dashboard/get-participants',
   participantAction: '/dashboard/:participantId/:action',
   dashboard: '/dashboard',
   status: '/api/status',

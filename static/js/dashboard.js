@@ -2,6 +2,7 @@ var token = window.location.hash.substring(1)
 
 window.onload = function() {
     var initDate = new Date()
+    window.dashboard.getParticipants()
     setInterval(function() {
         var currentDate = new Date()
         var id = document.getElementById("last-update")

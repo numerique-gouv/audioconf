@@ -232,26 +232,34 @@ describe("createConfController", function() {
       done()
     })
 
-    it("should not be able access dashboard with back token", function(done) {
+    it("should not be able to getParticipants with bad token", function(done) {
       const roomNumber = 123456789
       const token = encrypt(jwt.sign({ roomNumber: roomNumber } , "abadsecret", { expiresIn: "15d" }))
       chai.request(app)
-        .get(`/dashboard#${token}`)
+        .post("/dashboard/get-participants")
+        .type("form")
+        .send({
+          token
+        })
         .redirects(0) // block redirects, we don't want to test them
         .end(function(err, res) {
-          res.should.redirectTo(urls.landing)
+          res.should.redirectTo("")
           sinon.assert.notCalled(getParticipants)
           sinon.assert.notCalled(getParticipant)
           done()
         })
     })
 
-    it("should not be able to access dashboard if jwt is expired", function(done) {
+    it("should not be able to get participants info if jwt is expired", function(done) {
       const roomNumber = 123456789
       const token = encrypt(jwt.sign({ roomNumber: roomNumber } , config.SECRET, { expiresIn: "1m" }))
       clock.tick((60*1000) + 1)
       chai.request(app)
-        .get(`/dashboard#${token}`)
+        .post(`/dashboard/get-participants`)
+        .type("form")
+        .send({
+          token
+        })
         .redirects(0) // block redirects, we don't want to test them
         .end(function(err, res) {
           res.should.redirectTo(urls.landing)
@@ -261,11 +269,15 @@ describe("createConfController", function() {
         })
     })
 
-    it("should be able to access dashboard", function(done) {
+    it("should be able to get participants info if jwt ok", function(done) {
       const roomNumber = 123456789
       const token = encrypt(jwt.sign({ roomNumber: roomNumber } , config.SECRET, { expiresIn: "15d" }))
       chai.request(app)
-        .get(`/dashboard#${token}`)
+        .post(`/dashboard/get-participants`)
+        .type("form")
+        .send({
+          token
+        })
         .end(function(err, res) {
           sinon.assert.called(getParticipants)
           sinon.assert.called(getParticipant)
