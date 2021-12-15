@@ -6,7 +6,7 @@ const db = require('../lib/db')
 const emailer = require('../lib/emailer')
 const format = require('../lib/format')
 const urls = require('../urls')
-const { isAcceptedEmail, isValidEmail } = require('./utils')
+const { isAcceptedEmail, isValidEmail } = require("../lib/emailChecker")
 
 const generateToken = () => {
   return crypto.randomBytes(256).toString("base64");

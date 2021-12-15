@@ -6,7 +6,7 @@ const db = require("../lib/db")
 const emailer = require("../lib/emailer")
 const format = require("../lib/format")
 const urls = require("../urls")
-const { isAcceptedEmail } = require("./utils")
+const { isAcceptedEmail } = require("../lib/emailChecker")
 const { encrypt } = require("../lib/crypto")
 
 const createConfWithDuration = async (email, durationInMinutes) => {
