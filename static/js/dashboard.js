@@ -28,7 +28,7 @@ var utils = {
                 // Requête finie, traitement ici.
             }
         }
-        var properties = data.keys()
+        var properties = Object.keys(data)
         xhr.send(properties.map(key => "" + key + "=" + data[key]).join('&'))
     }
 }
