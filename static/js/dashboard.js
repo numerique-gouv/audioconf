@@ -82,20 +82,24 @@ var dashboard = {
         if (!roomNumberHash) {
             throw new Error(`Il n'y a pas de roomNumberHash`)
         }
-        utils.postRequest("/dashboard/fetch-dashboard-info", roomNumberHash, function(req) {
-            var data = JSON.parse(req.responseText)
-            var $participantTable = document.getElementById("participant-table")
-            $participantTable.innerHTML = ""
-            $participantTable.appendChild(elementBuilder.createTableHeader())
-            var $phoneNumber = document.getElementById("phone-number")
-            $phoneNumber.innerText = data.phoneNumber
-            var $roomNumber = document.getElementById("room-number")
-            $roomNumber.innerText = data.roomNumber
-            for (var i=0; i < data.participants.length; i++) {
-                var $row = elementBuilder.createParticipantRow(data.participants[i])
-                $participantTable.appendChild($row)
+        utils.postRequest(
+            "/dashboard/fetch-dashboard-info",
+            { roomNumberHash: roomNumberHash },
+            function(req) {
+                var data = JSON.parse(req.responseText)
+                var $participantTable = document.getElementById("participant-table")
+                $participantTable.innerHTML = ""
+                $participantTable.appendChild(elementBuilder.createTableHeader())
+                var $phoneNumber = document.getElementById("phone-number")
+                $phoneNumber.innerText = data.phoneNumber
+                var $roomNumber = document.getElementById("room-number")
+                $roomNumber.innerText = data.roomNumber
+                for (var i=0; i < data.participants.length; i++) {
+                    var $row = elementBuilder.createParticipantRow(data.participants[i])
+                    $participantTable.appendChild($row)
+                }
             }
-        })
+        )
         
     },
     participantAction: function(participantId, action) {
