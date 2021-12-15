@@ -9,11 +9,11 @@ const MemoryStore = require("memorystore")(session)
 
 const config = require("./config")
 const db = require("./lib/db")
+const dashboardController = require("./controllers/dashboardController") 
 const format = require("./lib/format")
 const createConfController = require("./controllers/createConfController")
 const landingController = require("./controllers/landingController")
 const sendValidationEmailController = require("./controllers/sendValidationEmailController")
-const dashboardController = require("./controllers/dashboardController")
 const statusController = require("./controllers/statusController")
 const stats = require("./lib/stats")
 const urls = require("./urls")
@@ -96,9 +96,9 @@ app.get(urls.legalNotice, (req, res) => {
   })
 })
 
-app.get(urls.dashboard, dashboardController.get)
+app.get(urls.dashboard, dashboardController.getDashboard)
 app.post(urls.participantAction, dashboardController.participantAction)
-app.post(urls.getParticipants, dashboardController.getParticipants)
+app.post(urls.fetchDashboardInfo, dashboardController.fetchDashboardInfo)
 
 
 if (config.FEATURE_STATS_PAGE) {

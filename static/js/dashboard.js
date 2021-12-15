@@ -8,12 +8,8 @@ var FRONT_LABELS = {
 }
 
 window.onload = function() {
-    // var initDate = new Date()
     setInterval(function() {
-        window.dashboard.getParticipants()
-        // var currentDate = new Date()
-        // var id = document.getElementById("last-update")
-        // id.innerText = Math.floor((currentDate.getTime() - initDate.getTime())/1000)
+        window.dashboard.fetchDashboardInfo()
     }, 1000)
 }
 
@@ -86,15 +82,19 @@ function createParticipantRow(participantInfo) {
 }
 
 window.dashboard = {
-    getParticipants: function() {
+    fetchDashboardInfo: function() {
         if (!token) {
             throw new Error(`Il n'y a pas de token`)
         }
-        postRequest("/dashboard/get-participants", token, function(req) {
+        postRequest("/dashboard/fetch-dashboard-info", token, function(req) {
             var data = JSON.parse(req.responseText)
             var $participantTable = document.getElementById("participant-table")
             $participantTable.innerHTML = ""
             $participantTable.appendChild(createTableHeader())
+            var $phoneNumber = document.getElementById("phone-number")
+            $phoneNumber.innerText = data.phoneNumber
+            var $roomNumber = document.getElementById("room-number")
+            $roomNumber.innerText = data.roomNumber
             for (var i=0; i < data.participants.length; i++) {
                 var $row = createParticipantRow(data.participants[i])
                 $participantTable.appendChild($row)
@@ -108,7 +108,7 @@ window.dashboard = {
         }
         postRequest("/dashboard/" + participantId + "/" + action, token, function() {
             setTimeout(function() {
-                window.dashboard.getParticipants()
+                window.dashboard.fetchDashboardInfo()
             }, 1000)
         })       
     },

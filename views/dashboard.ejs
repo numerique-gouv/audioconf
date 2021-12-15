@@ -3,68 +3,15 @@
 <div class="fr-container">
   <div class="main-paragraph">
     <h2>
-      Board de votre conference (numero: <%= phoneNumber %>, code : <%= roomNumber %>)
+      Tableau de bord de votre conference (numero: <span id="phone-number"></span>, code : <span id="room-number"></span>)
     </h2>
-    <% if (errors.length) { %>
-      <% errors.forEach(function(error) { %>
-        <%- include('partials/notificationError', {error: error}) -%>
-      <% }) %>
-    <% } %>
-
-    <% if (infos.length) { %>
-      <% infos.forEach(function(info) { %>
-        <%- include('partials/notificationInfo', {info: info}) -%>
-      <% }) %>
-    <% } %>
-
-    <% if (successes.length) { %>
-      <% successes.forEach(function(success) { %>
-        <%- include('partials/notificationSuccess', {success: success}) -%>
-      <% }) %>
-    <% } %>
     <div class="fr-callout fr-mb-3w">
-      <p class="fr-callout__title">
-      </p>
-      <!-- <span class="fr-btn"
-        onclick="dashboard.getPartipants();">Rafraîchir</span> Dernière mise à jour : il y a <span id="last-update">0</span>s  -->
-      <br>
       <br>
       <table id="participant-table">
-        <tr>
-          <th>Numéro</th>
-          <th>Heure d'arrivée</th>
-          <td>En train de parler</th>
-          <th>peut parler</th>
-          <!-- <th>actif</th> -->
-          <th>peut entendre</th>
-          <!-- <th>id</th> -->
-          <th>actions</th>
-        </tr>
-        <% for (var i = 0; i < participants.length; i++) { %>
-          <tr>
-            <td><%= participants[i].callerNumber %></td>
-            <td><%= participants[i].arrivalTime %></td>
-            <td><%= participants[i].talking ? 'oui' : 'non' %></td>
-            <td><%= participants[i].speak ? 'oui' : 'non' %></td>
-            <!-- <td><%= participants[i].floor ? 'oui' : 'non' %></td> -->
-            <td><%= participants[i].hear ? 'oui' : 'non' %></td>
-            <!-- <td><%= participants[i].id %></td> -->
-            <td>
-              <% if (participants[i].speak) { %>
-              <span onclick="dashboard.participantAction('<%= participants[i].id %>', 'mute');">mettre en sourdine</span>
-              <% } else { %>
-                <span onclick="dashboard.participantAction('<%= participants[i].id %>', 'unmute');">enlever la sourdine</span>
-              <% } %>
-            </td>
-          </tr>
-          <% } %>
       </table>
     </div>
-
     <p>
     </p>
-
-
     <p>Bonne discussion avec <%= appName %> !</p>
   </div>
 </div>

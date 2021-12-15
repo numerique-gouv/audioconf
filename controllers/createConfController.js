@@ -1,4 +1,3 @@
-const url = require("url")
 const jwt = require("jsonwebtoken")
 
 const conferences = require("../lib/conferences")
@@ -91,7 +90,7 @@ module.exports.createConf = async (req, res) => {
         email,
         phoneNumber: conference.phoneNumber,
         conferenceDay: conferenceDay,
-        url: `${config.HOSTNAME_WITH_PROTOCOL}/dashboard#${token}`,
+        url: `${config.HOSTNAME_WITH_PROTOCOL}${urls.dashboard}#${token}`,
         pin: conference.pin
       })
     } catch (err) {

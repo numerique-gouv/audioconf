@@ -202,48 +202,48 @@ describe("createConfController", function() {
   })
 
   describe("should access dashboard", function() {
-    let getParticipants
+    let fetchDashboardInfo
     let getParticipant
     let clock
 
     beforeEach(function(done) {
-      getParticipants = sinon.stub(conferences, "getParticipants").returns(Promise.resolve(
+      fetchDashboardInfo = sinon.stub(conferences, "fetchDashboardInfo").returns(Promise.resolve(
         [
           44545
         ]))
       getParticipant = sinon.stub(conferences, "getParticipant").returns(Promise.resolve(
         {
           arrivalDateTime: new Date(),
-          callerNumber: '+3306STEHDTSXTH',
+          callerNumber: "+3306STEHDTSXTH",
           talking: true,
           speak: true,
           floor: true,
           hear: true,
           id: 44545
         }))
-      clock = sinon.useFakeTimers(new Date('2020-01-01T09:59:59+01:00'));
+      clock = sinon.useFakeTimers(new Date("2020-01-01T09:59:59+01:00"))
       done()
     })
 
     afterEach(function(done) {
-      getParticipants.restore()
+      fetchDashboardInfo.restore()
       getParticipant.restore()
       clock.restore()
       done()
     })
 
-    it("should not be able to getParticipants with bad token", function(done) {
+    it("should not be able to fetchDashboardInfo with bad token", function(done) {
       const roomNumber = 123456789
       const token = encrypt(jwt.sign({ roomNumber: roomNumber } , "abadsecret", { expiresIn: "15d" }))
       chai.request(app)
-        .post("/dashboard/get-participants")
+        .post("/dashboard/fetch-dashboard-info")
         .type("form")
         .send({
           token
         })
         .redirects(0) // block redirects, we don't want to test them
         .end(function(err, res) {
-          sinon.assert.notCalled(getParticipants)
+          sinon.assert.notCalled(fetchDashboardInfo)
           sinon.assert.notCalled(getParticipant)
           done()
         })
@@ -254,14 +254,14 @@ describe("createConfController", function() {
       const token = encrypt(jwt.sign({ roomNumber: roomNumber } , config.SECRET, { expiresIn: "1m" }))
       clock.tick((60*1000) + 1)
       chai.request(app)
-        .post(`/dashboard/get-participants`)
+        .post(`/dashboard/fetch-dashboard-info`)
         .type("form")
         .send({
           token
         })
         .redirects(0) // block redirects, we don't want to test them
         .end(function(err, res) {
-          sinon.assert.notCalled(getParticipants)
+          sinon.assert.notCalled(fetchDashboardInfo)
           sinon.assert.notCalled(getParticipant)
           done()
         })
@@ -271,13 +271,13 @@ describe("createConfController", function() {
       const roomNumber = 123456789
       const token = encrypt(jwt.sign({ roomNumber: roomNumber } , config.SECRET, { expiresIn: "15d" }))
       chai.request(app)
-        .post(`/dashboard/get-participants`)
+        .post(`/dashboard/fetch-dashboard-info`)
         .type("form")
         .send({
           token
         })
         .end(function(err, res) {
-          sinon.assert.called(getParticipants)
+          sinon.assert.called(fetchDashboardInfo)
           sinon.assert.called(getParticipant)
           done()
         })
