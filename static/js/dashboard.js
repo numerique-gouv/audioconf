@@ -111,7 +111,7 @@ var dashboard = {
                 var data = JSON.parse(req.responseText)
                 this.displayError(data.error)
             }
-        ),
+        )
     },
     participantAction: function(participantId, action) {
         if (!roomNumberHash) {
