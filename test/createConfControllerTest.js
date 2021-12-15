@@ -51,6 +51,7 @@ describe("createConfController", function() {
       insertConfStub = insertConfStub.returns(Promise.resolve({
         id: confUUID,
         pin: confPin,
+        phoneNumber: "+330122334455"
       }))
       sendEmailStub = sendEmailStub.returns(Promise.resolve())
 
