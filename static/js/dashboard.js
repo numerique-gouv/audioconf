@@ -79,13 +79,18 @@ var elementBuilder = {
             $row.appendChild(this.createAction("unmute", participantInfo.id))
         }
         return $row
-    }
+    },
 }
 
 var dashboard = {
+    displayError(message) {
+        var $notificationError = document.getElementById("notification-error")
+        $notificationError.innerHTML = "<p class=\"fr-callout__text\">" + message + "</p>"
+        $notificationError.className = $notificationError.className.replace("notification--hidden", "")
+    },
     fetchDashboardInfo: function() {
         if (!roomNumberHash) {
-            throw new Error(`Il n'y a pas de roomNumberHash`)
+            this.displayError('Ce dashboard ne correspond à aucune conférence')
         }
         utils.postRequest(
             "/dashboard/fetch-dashboard-info",
@@ -101,15 +106,12 @@ var dashboard = {
                     var $row = elementBuilder.createParticipantRow(data.participants[i])
                     $participantTable.appendChild($row)
                 }
+            },
+            function(req) {
+                var data = JSON.parse(req.responseText)
+                this.displayError(data.error)
             }
         ),
-        function(req) {
-            var data = JSON.parse(req.responseText)
-            var $notificationError = document.getElementById("notification-error")
-            $notificationError.innerHTML = "<p class=\"fr-callout__text\">" + data.error + "</p>"
-            $notificationError.className = $notificationError.className.replace("notification--hidden", "")
-        }
-        
     },
     participantAction: function(participantId, action) {
         if (!roomNumberHash) {
@@ -122,6 +124,9 @@ var dashboard = {
                 setTimeout(function() {
                     dashboard.fetchDashboardInfo()
                 }, 1000)
+            },
+            function() {
+                this.displayError("L'action n'a pas pu être éxécutée")
             }
         )
     },
