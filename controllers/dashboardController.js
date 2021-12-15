@@ -5,7 +5,7 @@ const config = require("../config")
 const conferences = require("../lib/conferences")
 const { decrypt } = require("../lib/crypto")
 
-module.exports.get = async (req, res) => {
+module.exports.getDashboard = async (req, res) => {
     res.render("dashboard", {
         participants: [],
         phoneNumber: config.OVH_ROOM_PHONE_NUMBER,
