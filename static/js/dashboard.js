@@ -99,18 +99,22 @@ var dashboard = {
                     $participantTable.appendChild($row)
                 }
             }
-        )
+            )
         
     },
     participantAction: function(participantId, action) {
         if (!roomNumberHash) {
             throw new Error(`Il n'y a pas de roomNumberHash`)
         }
-        utils.postRequest("/dashboard/" + participantId + "/" + action, roomNumberHash, function() {
-            setTimeout(function() {
-                dashboard.fetchDashboardInfo()
-            }, 1000)
-        })       
+        utils.postRequest(
+            "/dashboard/" + participantId + "/" + action,
+            { roomNumberHash: roomNumberHash },
+            function() {
+                setTimeout(function() {
+                    dashboard.fetchDashboardInfo()
+                }, 1000)
+            }
+        )
     },
 }
 
