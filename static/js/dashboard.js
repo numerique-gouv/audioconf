@@ -92,6 +92,7 @@ var dashboard = {
         var displayError = this.displayError
         if (!roomNumberHash) {
             displayError("Ce dashboard ne correspond à aucune conférence")
+            return
         }
         utils.postRequest(
             "/dashboard/fetch-dashboard-info",
