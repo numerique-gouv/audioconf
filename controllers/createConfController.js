@@ -88,10 +88,10 @@ module.exports.createConf = async (req, res) => {
       const token = encrypt(jwt.sign({ roomNumber: conference.pin} , config.SECRET, { expiresIn: (durationInMinutes || 720) * 60 }))
       await emailer.sendConfWebAccessEmail({
         email,
-        phoneNumber: conference.phoneNumber,
+        phoneNumber: format.formatFrenchPhoneNumber(conference.phoneNumber),
         conferenceDay: conferenceDay,
         url: `${config.HOSTNAME_WITH_PROTOCOL}${urls.dashboard}#${token}`,
-        pin: conference.pin
+        pin: format.formatPin(conference.pin)
       })
     } catch (err) {
       console.error("Error when emailing", err)
