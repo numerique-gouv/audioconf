@@ -85,12 +85,12 @@ module.exports.createConf = async (req, res) => {
 
   if (isAcceptedEmail(email, config.EMAIL_WEB_ACCESS_WHITELIST) && config.FEATURE_WEB_ACCESS) { // check if email is in whitelist
     try {
-      const token = encrypt(jwt.sign({ roomNumber: conference.pin} , config.SECRET, { expiresIn: (durationInMinutes || 720) * 60 }))
+      const roomNumberHash = encrypt(jwt.sign({ roomNumber: conference.pin} , config.SECRET, { expiresIn: (durationInMinutes || 720) * 60 }))
       await emailer.sendConfWebAccessEmail({
         email,
         phoneNumber: format.formatFrenchPhoneNumber(conference.phoneNumber),
         conferenceDay: conferenceDay,
-        url: `${config.HOSTNAME_WITH_PROTOCOL}${urls.dashboard}#${token}`,
+        url: `${config.HOSTNAME_WITH_PROTOCOL}${urls.dashboard}#${roomNumberHash}`,
         pin: format.formatPin(conference.pin)
       })
     } catch (err) {

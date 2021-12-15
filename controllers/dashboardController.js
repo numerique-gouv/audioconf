@@ -11,13 +11,13 @@ module.exports.getDashboard = async (req, res) => {
 }
 
 module.exports.fetchDashboardInfo = async (req, res) => {
-    const token = req.body.token
+    const roomNumberHash = req.body.roomNumberHash
 
     try {
-        if (!token) {
-            throw new Error("Le token n'est pas présent")
+        if (!roomNumberHash) {
+            throw new Error("Le roomNumberHash n'est pas présent")
         }
-        const roomNumber = jwt.verify(decrypt(token), config.SECRET).roomNumber
+        const roomNumber = jwt.verify(decrypt(roomNumberHash), config.SECRET).roomNumber
         const participantIds = await conferences.fetchDashboardInfo(config.OVH_ROOM_PHONE_NUMBER, roomNumber)
         const participants = await Promise.all(participantIds.map(id => conferences.getParticipant(config.OVH_ROOM_PHONE_NUMBER, roomNumber, id)))
         return res.json({
@@ -41,18 +41,18 @@ module.exports.fetchDashboardInfo = async (req, res) => {
 }
 
 module.exports.participantAction = async (req, res) => {
-    const token = req.body.token
+    const roomNumberHash = req.body.roomNumberHash
     const participantId = parseInt(req.params.participantId, 10)
     const action = req.params.action
 
     try {
-        if (!token) {
-            throw new Error("Le token n'est pas présent")
+        if (!roomNumberHash) {
+            throw new Error("Le roomNumberHash n'est pas présent")
         }   
         if (!["mute", "unmute"].includes(action)) {
             throw new Error("L'action n'est pas autorisée")
         } 
-        const roomNumber = jwt.verify(decrypt(token), config.SECRET).roomNumber
+        const roomNumber = jwt.verify(decrypt(roomNumberHash), config.SECRET).roomNumber
         await conferences.participantAction(config.OVH_ROOM_PHONE_NUMBER, roomNumber, participantId, action)
         req.flash("info", `Action ${action} bien prise en compte`)
     } catch (err) {

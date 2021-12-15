@@ -233,14 +233,14 @@ describe("createConfController", function() {
       done()
     })
 
-    it("should not be able to fetchDashboardInfo with bad token", function(done) {
+    it("should not be able to fetchDashboardInfo with bad roomNumberHash", function(done) {
       const roomNumber = 123456789
-      const token = encrypt(jwt.sign({ roomNumber: roomNumber } , "abadsecret", { expiresIn: "15d" }))
+      const roomNumberHash = encrypt(jwt.sign({ roomNumber: roomNumber } , "abadsecret", { expiresIn: "15d" }))
       chai.request(app)
         .post("/dashboard/fetch-dashboard-info")
         .type("form")
         .send({
-          token
+          roomNumberHash
         })
         .redirects(0) // block redirects, we don't want to test them
         .end(function(err, res) {
@@ -252,13 +252,13 @@ describe("createConfController", function() {
 
     it("should not be able to get participants info if jwt is expired", function(done) {
       const roomNumber = 123456789
-      const token = encrypt(jwt.sign({ roomNumber: roomNumber } , config.SECRET, { expiresIn: "1m" }))
+      const roomNumberHash = encrypt(jwt.sign({ roomNumber: roomNumber } , config.SECRET, { expiresIn: "1m" }))
       clock.tick((60*1000) + 1)
       chai.request(app)
         .post(`/dashboard/fetch-dashboard-info`)
         .type("form")
         .send({
-          token
+          roomNumberHash
         })
         .redirects(0) // block redirects, we don't want to test them
         .end(function(err, res) {
@@ -270,12 +270,12 @@ describe("createConfController", function() {
 
     it("should be able to get participants info if jwt ok", function(done) {
       const roomNumber = 123456789
-      const token = encrypt(jwt.sign({ roomNumber: roomNumber } , config.SECRET, { expiresIn: "15d" }))
+      const roomNumberHash = encrypt(jwt.sign({ roomNumber: roomNumber } , config.SECRET, { expiresIn: "15d" }))
       chai.request(app)
         .post(`/dashboard/fetch-dashboard-info`)
         .type("form")
         .send({
-          token
+          roomNumberHash
         })
         .end(function(err, res) {
           sinon.assert.called(fetchDashboardInfo)
