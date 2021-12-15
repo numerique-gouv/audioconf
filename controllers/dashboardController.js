@@ -36,7 +36,7 @@ module.exports.fetchDashboardInfo = async (req, res) => {
         })
     } catch (err) {
         console.error(`Impossible de récuperer la room : ${err}`)
-        res.status(401).send({ error: "La conférence a expiré. Vous pouvez recréer une conférence" })
+        res.status(401).send({ error: "La conférence n'existe pas ou a expiré. Vous pouvez recréer une conférence." })
     }
 }
 
@@ -57,6 +57,6 @@ module.exports.participantAction = async (req, res) => {
         req.flash("info", `Action ${action} bien prise en compte`)
     } catch (err) {
         console.error(`Impossible d'effectuer l'action ${action} : ${err}`)
-        res.status(401).send({ error: "La conférence a expiré. Vous pouvez recréer une conférence" })
+        res.status(401).send({ error: "L'action n'a pas fonctionné" })
     }
 }

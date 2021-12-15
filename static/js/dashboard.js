@@ -15,21 +15,25 @@ var PARTICIPANT_PROPERTIES = [
 ]
 
 var utils = {
-    postRequest(url, data, callback) {
+    postRequest(url, data, onSuccess, onError) {
         var xhr = new XMLHttpRequest()
         xhr.open("POST", url)
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
 
         xhr.onreadystatechange = function() { 
             if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-                if (typeof callback === "function") {
-                    callback(xhr)
+                if (typeof onSuccess === "function") {
+                    onSuccess(xhr)
                 }
                 // Requête finie, traitement ici.
+            } else if (this.readyState === XMLHttpRequest.DONE ) {
+                if (typeof onError === "function") {
+                    onError(xhr)
+                }
             }
         }
         var properties = Object.keys(data)
-        xhr.send(properties.map(key => "" + key + "=" + data[key]).join('&'))
+        xhr.send(properties.map(key => "" + key + "=" + data[key]).join("&"))
     }
 }
 
@@ -37,6 +41,7 @@ var elementBuilder = {
     createAction(action, id) {
         var $actionBtn = document.createElement("button")
         $actionBtn.id = id + "-" + action
+        $actionBtn.className = "fr-btn"
         $actionBtn.innerText = action === "mute" ? "mettre en sourdine" : "retirer la sourdine"
         $actionBtn.addEventListener("click", function() {
             window.dashboard.participantAction(id, action)
@@ -87,19 +92,23 @@ var dashboard = {
             { roomNumberHash: roomNumberHash },
             function(req) {
                 var data = JSON.parse(req.responseText)
+                var $subtitle = document.getElementById("board-description-info")
+                $subtitle.innerText = "Pour rejoindre la conférence, appelez le " + data.phoneNumber + " et tapez le code " + data.roomNumber
                 var $participantTable = document.getElementById("participant-table")
                 $participantTable.innerHTML = ""
                 $participantTable.appendChild(elementBuilder.createTableHeader())
-                var $phoneNumber = document.getElementById("phone-number")
-                $phoneNumber.innerText = data.phoneNumber
-                var $roomNumber = document.getElementById("room-number")
-                $roomNumber.innerText = data.roomNumber
                 for (var i=0; i < data.participants.length; i++) {
                     var $row = elementBuilder.createParticipantRow(data.participants[i])
                     $participantTable.appendChild($row)
                 }
             }
-            )
+        ),
+        function(req) {
+            var data = JSON.parse(req.responseText)
+            var $notificationError = document.getElementById("notification-error")
+            $notificationError.innerHTML = "<p class=\"fr-callout__text\">" + data.error + "</p>"
+            $notificationError.className = $notificationError.className.replace("notification--hidden", "")
+        }
         
     },
     participantAction: function(participantId, action) {
