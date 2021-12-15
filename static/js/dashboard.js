@@ -89,8 +89,9 @@ var dashboard = {
         $notificationError.className = $notificationError.className.replace("notification--hidden", "")
     },
     fetchDashboardInfo: function() {
+        var displayError = this.displayError
         if (!roomNumberHash) {
-            this.displayError('Ce dashboard ne correspond à aucune conférence')
+            displayError("Ce dashboard ne correspond à aucune conférence")
         }
         utils.postRequest(
             "/dashboard/fetch-dashboard-info",
@@ -109,7 +110,7 @@ var dashboard = {
             },
             function(req) {
                 var data = JSON.parse(req.responseText)
-                this.displayError(data.error)
+                displayError(data.error)
             }
         )
     },
