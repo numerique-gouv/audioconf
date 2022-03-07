@@ -46,7 +46,7 @@
     "intl": "^1.2.5",
     "knex": "^0.21.6",
     "memorystore": "^1.6.4",
-    "nodemailer": "^6.4.14",
+    "nodemailer": "^6.6.1",
     "ovh": "^2.0.3",
     "pg": "^8.4.2",
     "remixicon": "^2.5.0"
