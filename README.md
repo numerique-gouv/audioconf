@@ -11,6 +11,11 @@ Pour profiter de l'intégration avec ESLint, il faut installer le plugin du mêm
 ### Générer clé API OVH
 
 Demander à vos collègues les identifiants pour générer la clé sur ce lien : https://eu.api.ovh.com/createToken/
+Pour créer le token, il faut :
+- `OVH_ROOM_ACCOUNT_NUMBER`: il est de la forme `aa1111111-ovh-1`. L'account ID à renseigner doit être `aa1111111-ovh`
+- Password : à récupérer auprès de vos collègues
+- Script name : Local *ton nom*
+- Script description : Local *ton nom*
 
 ### Configuration OVH de Dev
 Avec OVH_ROOM_ACCOUNT_NUMBER à demander à vos collègues
@@ -32,6 +37,9 @@ Installer et lancer postgres et maildev en local, ensuite:
 2. Récupérer les dépendences : `docker-compose run -u root web npm install`
 3. Créer les tables de la DB : `docker-compose run web npm run migrate`
 4. Lancer le service : `docker-compose up` ou `docker-compose run -p 8080:8080 web npm run dev`
+
+### Mail
+Pour consulter les mails envoyés avec Docker, se connecter à l'adresse `http://localhost:1080`
 
 ### Bon déroulement de l'opération
 Vous devriez normalement voir dans les logs ceci :
