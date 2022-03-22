@@ -97,12 +97,6 @@ Pour valider le code en local :
 npm run checkHTMLLocal
 ```
 
-<<<<<<< HEAD
-## Sticky sessions
-
-Le système de session est `in memory`. Dans un environnement à plusieurs containers web, cela peut poser des problèmes.
-Comme la production est dans ce cas, il faut activer les sticky sessions.
-=======
 
 ## Afficher des annonces
 Pour afficher des annonces de service (maintenance, formulaire, ...), on utilise la variable d'environnement `ANNOUNCEMENTS` (voir .env.sample ou le fichier docker-compose) qui peut être configurée sur l'hebergeur Scalingo. Elle permet d'afficher de l'HTML ou du texte.
@@ -111,7 +105,6 @@ Pour afficher des annonces de service (maintenance, formulaire, ...), on utilise
 
 Le système de session est `in memory`. Dans un environnement à plusieurs containers web, cela peut poser des problèmes.
 Comme la production est dans ce cas, il faut activer les sticky sessions.
->>>>>>> release/1.8.0
 Bien vérifier donc qu'ils sont activés (dans Scalingo > Settings).
 
 ## SQL
