@@ -38,25 +38,26 @@ var utils = {
 }
 
 var elementBuilder = {
-    createAction(action, id) {
+    createAction(action, participantId) {
         var $actionBtn = document.createElement("button")
-        $actionBtn.id = id + "-" + action
+        $actionBtn.id = participantId + "-" + action
         $actionBtn.className = "fr-btn"
-        $actionBtn.innerText = action === "mute" ? "mettre en sourdine" : "retirer la sourdine"
+        $actionBtn.innerText = action === "mute" ? "Rendre muet" : "Redonner la parole"
         $actionBtn.addEventListener("click", function() {
-            window.dashboard.participantAction(id, action)
+            window.dashboard.participantAction(participantId, action)
         })
         return $actionBtn
     },
     createParticipantPropertyBox(property, value) {
         var propertiesFrontValue = {
-            callerNumber: function(value) { return value},
-            arrivalTime: function(value) { return value},
-            talking: function(value) { return value ? "oui" : "non" },
-            speak: function(value) { return value ? "non" : "oui" },
+            callerNumber: value => ({value}),
+            arrivalTime: value => ({value}),
+            talking: value => ({className: value ? "cell--info": "", value: value ? "Oui" : "-"}),
+            speak: value => ({className: value ? "" :  "cell--info", value: value ? "-" : "Oui"}),
         }
         var $box = document.createElement("td")
-        $box.innerHTML = "<td>" + propertiesFrontValue[property](value) + "<td>"
+        $box.className = propertiesFrontValue[property](value).className
+        $box.innerText = propertiesFrontValue[property](value).value
         return $box
     },
     createTableHeader() {
@@ -128,7 +129,7 @@ var dashboard = {
                 }, 1000)
             },
             function() {
-                this.displayError("L'action n'a pas pu être éxécutée")
+                this.displayError("L'action n'a pas pu être exécutée")
             }
         )
     },
