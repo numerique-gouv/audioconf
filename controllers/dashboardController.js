@@ -36,7 +36,7 @@ module.exports.fetchDashboardInfo = async (req, res) => {
         })
     } catch (err) {
         console.error(`Impossible de récuperer la room : ${err}`)
-        res.status(401).send({ error: "La conférence n'existe pas ou a expiré. Vous pouvez recréer une conférence." })
+        res.status(401).send({ error: "La conférence ne contient aucun participant ou n'existe pas. Vous pouvez recréer une conférence." })
     }
 }
 

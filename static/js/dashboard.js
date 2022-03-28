@@ -52,8 +52,8 @@ var elementBuilder = {
         var propertiesFrontValue = {
             callerNumber: value => ({value}),
             arrivalTime: value => ({value}),
-            talking: value => ({className: value ? "cell--info": "", value: value ? "Oui" : "-"}),
-            speak: value => ({className: value ? "" :  "cell--info", value: value ? "-" : "Oui"}),
+            talking: value => ({className: value ? "cell--info": "", value: value ? "Oui" : "Non"}),
+            speak: value => ({className: value ? "" :  "cell--info", value: value ? "Non" : "Oui"}),
         }
         var $box = document.createElement("td")
         $box.className = propertiesFrontValue[property](value).className

@@ -32,9 +32,16 @@
       <% if(conference.conferenceDay) {  %>
         Ce numéro de conférence sera actif toute la journée du  <%= format.formatFrenchDate(new Date(conference.conferenceDay)) %>. Il pourra accueillir jusqu'à 50 personnes.
       <% } else { %>
-        Ce numéro de conférence est actif pendant <%= format.formatMinutesInHours(conference.durationInMinutes) %>.
-        Il expirera <%= format.formatFrenchDateTime(conference.expiresAt) %>.
+         Ce numéro de conférence expirera <%= format.formatFrenchDateTime(conference.expiresAt) %>.
       <% } %>
+    </p>
+
+    <p>
+      Deux e-mails vous ont été envoyés :
+      <ul>
+        <li>la confirmation de la réservation de votre conférence téléphonique. Le mail contient les informations de connexion à la conférence audio et peut être transmis aux participants.</li>
+        <li>le lien de modération de votre conférence téléphonique. Il permet d'accéder au tableau de bord de la conférence audio, et ne doit être transmis qu'aux modérateurs de la conférence.</li>
+      </ul>
     </p>
 
 
