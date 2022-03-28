@@ -4,7 +4,7 @@ var FRONT_LABELS = {
     callerNumber: "Numéro",
     arrivalTime: "Heure d'arrivée",
     talking: "En train de parler",
-    speak: "En sourdine",
+    speak: "Micro coupé",
 }
 
 var PARTICIPANT_PROPERTIES = [
@@ -42,7 +42,7 @@ var elementBuilder = {
         var $actionBtn = document.createElement("button")
         $actionBtn.id = participantId + "-" + action
         $actionBtn.className = "fr-btn"
-        $actionBtn.innerText = action === "mute" ? "Rendre muet" : "Redonner la parole"
+        $actionBtn.innerText = action === "mute" ? "Couper le micro" : "Remettre le micro"
         $actionBtn.addEventListener("click", function() {
             window.dashboard.participantAction(participantId, action)
         })
