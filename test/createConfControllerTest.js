@@ -1,14 +1,11 @@
 const chai = require("chai")
 const sinon = require("sinon")
-const jwt = require("jsonwebtoken")
 
 const app = require("../index")
 const conferences = require("../lib/conferences")
 const db = require("../lib/db")
 const emailer = require("../lib/emailer")
 const urls = require("../urls")
-const { encrypt } = require("../lib/crypto")
-const config = require("../config")
 
 describe("createConfController", function() {
   describe("createConf", function() {
@@ -16,12 +13,10 @@ describe("createConfController", function() {
     let sendEmailStub
     let getTokenStub
     let insertConfStub
-    let sendWebAccessEmailStub
 
     beforeEach(function(done) {
       createConfStub = sinon.stub(conferences, "createConf")
       sendEmailStub = sinon.stub(emailer, "sendConfCreatedEmail")
-      sendWebAccessEmailStub = sinon.stub(emailer, "sendConfWebAccessEmail")
       getTokenStub = sinon.stub(db, "getToken")
       insertConfStub = sinon.stub(db, "insertConferenceWithDay")
 
@@ -33,7 +28,6 @@ describe("createConfController", function() {
       sendEmailStub.restore()
       getTokenStub.restore()
       insertConfStub.restore()
-      sendWebAccessEmailStub.restore()
       done()
     })
 
@@ -51,7 +45,6 @@ describe("createConfController", function() {
       insertConfStub = insertConfStub.returns(Promise.resolve({
         id: confUUID,
         pin: confPin,
-        phoneNumber: "+330122334455"
       }))
       sendEmailStub = sendEmailStub.returns(Promise.resolve())
 
@@ -67,7 +60,6 @@ describe("createConfController", function() {
           sinon.assert.calledOnce(insertConfStub)
           chai.assert(insertConfStub.getCall(0).calledWith(email))
           sinon.assert.calledOnce(sendEmailStub)
-          sinon.assert.calledOnce(sendWebAccessEmailStub)
           res.should.redirectTo(urls.showConf.replace(":id", confUUID) + "#" + confPin)
           done()
         })
@@ -197,89 +189,6 @@ describe("createConfController", function() {
         .end(function(err, res) {
           chai.assert.include(res.text, "26 janvier")
           chai.assert.notInclude(res.text, "27 janvier")
-          done()
-        })
-    })
-  })
-
-  describe("should access dashboard", function() {
-    let fetchDashboardInfo
-    let getParticipant
-    let clock
-
-    beforeEach(function(done) {
-      fetchDashboardInfo = sinon.stub(conferences, "fetchDashboardInfo").returns(Promise.resolve(
-        [
-          44545
-        ]))
-      getParticipant = sinon.stub(conferences, "getParticipant").returns(Promise.resolve(
-        {
-          arrivalDateTime: new Date(),
-          callerNumber: "+3306STEHDTSXTH",
-          talking: true,
-          speak: true,
-          floor: true,
-          hear: true,
-          id: 44545
-        }))
-      clock = sinon.useFakeTimers(new Date("2020-01-01T09:59:59+01:00"))
-      done()
-    })
-
-    afterEach(function(done) {
-      fetchDashboardInfo.restore()
-      getParticipant.restore()
-      clock.restore()
-      done()
-    })
-
-    it("should not be able to fetchDashboardInfo with bad roomNumberHash", function(done) {
-      const roomNumber = 123456789
-      const roomNumberHash = encrypt(jwt.sign({ roomNumber: roomNumber } , "abadsecret", { expiresIn: "15d" }))
-      chai.request(app)
-        .post("/dashboard/fetch-dashboard-info")
-        .type("form")
-        .send({
-          roomNumberHash
-        })
-        .redirects(0) // block redirects, we don't want to test them
-        .end(function(err, res) {
-          sinon.assert.notCalled(fetchDashboardInfo)
-          sinon.assert.notCalled(getParticipant)
-          done()
-        })
-    })
-
-    it("should not be able to get participants info if jwt is expired", function(done) {
-      const roomNumber = 123456789
-      const roomNumberHash = encrypt(jwt.sign({ roomNumber: roomNumber } , config.SECRET, { expiresIn: "1m" }))
-      clock.tick((60*1000) + 1)
-      chai.request(app)
-        .post(`/dashboard/fetch-dashboard-info`)
-        .type("form")
-        .send({
-          roomNumberHash
-        })
-        .redirects(0) // block redirects, we don't want to test them
-        .end(function(err, res) {
-          sinon.assert.notCalled(fetchDashboardInfo)
-          sinon.assert.notCalled(getParticipant)
-          done()
-        })
-    })
-
-    it("should be able to get participants info if jwt ok", function(done) {
-      const roomNumber = 123456789
-      const roomNumberHash = encrypt(jwt.sign({ roomNumber: roomNumber } , config.SECRET, { expiresIn: "15d" }))
-      chai.request(app)
-        .post(`/dashboard/fetch-dashboard-info`)
-        .type("form")
-        .send({
-          roomNumberHash
-        })
-        .end(function(err, res) {
-          sinon.assert.called(fetchDashboardInfo)
-          sinon.assert.called(getParticipant)
           done()
         })
     })
