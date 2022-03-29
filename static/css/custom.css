@@ -31,8 +31,16 @@ body:after{
   color: var(--error);
 }
 
+.cell--info {
+  background-color: var(--info);
+}
+
 .notification--error {
   --scheme-border: var(--error);
+}
+
+.notification--hidden {
+  display: none;
 }
 
 .notification--info {

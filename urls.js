@@ -10,6 +10,8 @@ module.exports = {
   stats: '/stats',
   contact: '/contact',
   faq: '/questions-frequentes',
-
+  fetchDashboardInfo: '/dashboard/fetch-dashboard-info',
+  participantAction: '/dashboard/:participantId/:action',
+  dashboard: '/dashboard',
   status: '/api/status',
 }

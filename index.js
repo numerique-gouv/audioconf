@@ -9,6 +9,7 @@ const MemoryStore = require("memorystore")(session)
 
 const config = require("./config")
 const db = require("./lib/db")
+const dashboardController = require("./controllers/dashboardController") 
 const format = require("./lib/format")
 const createConfController = require("./controllers/createConfController")
 const landingController = require("./controllers/landingController")
@@ -94,6 +95,11 @@ app.get(urls.legalNotice, (req, res) => {
     pageTitle: "Mentions Légales",
   })
 })
+
+app.get(urls.dashboard, dashboardController.getDashboard)
+app.post(urls.participantAction, dashboardController.participantAction)
+app.post(urls.fetchDashboardInfo, dashboardController.fetchDashboardInfo)
+
 
 if (config.FEATURE_STATS_PAGE) {
   app.get(urls.stats, async (req, res) => {

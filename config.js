@@ -47,6 +47,13 @@ if (isPresent("EMAIL_WHITELIST")) {
   config.EMAIL_WHITELIST = [/.*/]
 }
 
+if (isPresent("EMAIL_WEB_ACCESS_WHITELIST")) {
+  config.EMAIL_WEB_ACCESS_WHITELIST= process.env.EMAIL_WEB_ACCESS_WHITELIST.split(",").map(string => new RegExp(string))
+} else {
+  config.EMAIL_WEB_ACCESS_WHITELIST = [/.*/]
+}
+
+
 if (
   !isPresent("OVH_ROOM_APP_KEY") ||
   !isPresent("OVH_ROOM_APP_SECRET") ||
@@ -76,6 +83,7 @@ config.POLL_URL = process.env.POLL_URL
 config.AFTER_MEETING_SURVEY_URL = process.env.AFTER_MEETING_SURVEY_URL
 
 config.SECRET = process.env.SECRET
+config.ENCRYPT_SECRET = process.env.ENCRYPT_SECRET
 
 config.SUPPORT_EMAIL = process.env.SUPPORT_EMAIL || process.env.MAIL_SENDER_EMAIL
 
@@ -93,6 +101,7 @@ config.FEATURE_RESERVATIONS = (process.env.FEATURE_RESERVATIONS === "true") || f
 config.FEATURE_JOB_COMPUTE_STATS = process.env.FEATURE_JOB_COMPUTE_STATS === "true" || false
 config.FEATURE_JOB_ANONYMIZE_EMAILS = process.env.FEATURE_JOB_ANONYMIZE_EMAILS === "true" || false
 config.FEATURE_JOB_CALLS_STATS = process.env.FEATURE_JOB_CALLS_STATS === "true" || false
+config.FEATURE_WEB_ACCESS = process.env.FEATURE_WEB_ACCESS === "true" || false
 
 config.ANNOUNCEMENTS = process.env.ANNOUNCEMENTS ? process.env.ANNOUNCEMENTS.split("|") : []
 
