@@ -35,7 +35,7 @@
          Ce numéro de conférence expirera <%= format.formatFrenchDateTime(conference.expiresAt) %>.
       <% } %>
     </p>
-
+    <% if(hasWebAccessMailBeenSent) {  %>
     <p>
       Deux e-mails vous ont été envoyés :
       <ul>
@@ -43,7 +43,9 @@
         <li>le lien de modération de votre conférence téléphonique. Il permet d'accéder au tableau de bord de la conférence audio, et ne doit être transmis qu'aux modérateurs de la conférence.</li>
       </ul>
     </p>
-
+    <% } else {%>
+      <p>Un e-mail vous a été envoyé : il contient les informations de connexion à la conférence audio et peut être transmis aux participants.</p>
+    <% }%>
 
     <p>Bonne discussion avec <%= appName %> !</p>
     <% if(pollUrl) {  %>

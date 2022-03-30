@@ -83,7 +83,7 @@ module.exports.createConf = async (req, res) => {
     return res.redirect("/")
   }
 
-  if (isAcceptedEmail(email, config.EMAIL_WEB_ACCESS_WHITELIST) && config.FEATURE_WEB_ACCESS) { // check if email is in whitelist
+  if (shouldSendWebAccessMail(email)) { // check if email is in whitelist
     try {
       const roomNumberHash = encrypt(jwt.sign({ roomNumber: conference.pin} , config.SECRET, { expiresIn: (durationInMinutes || 720) * 60 }))
       await emailer.sendConfWebAccessEmail({
@@ -120,9 +120,12 @@ module.exports.showConf = async (req, res) => {
       return res.redirect("/")
     }
 
+    const hasWebAccessMailBeenSent = shouldSendWebAccessMail(conference.email)
+
     res.render("confCreated", {
       pageTitle: "Votre conférence",
-      conference
+      conference,
+      hasWebAccessMailBeenSent,
     })
   } catch (error) {
     req.flash("error", "La conférence a expiré. Vous pouvez recréer une conférence.")
@@ -135,7 +138,7 @@ module.exports.showConf = async (req, res) => {
 module.exports.cancelConf = async (req, res) => {
   const confId = req.params.id
   try {
-    const conference = await db.cancelConference(confId)
+    await db.cancelConference(confId)
     req.flash("info", "La conférence a bien été annulée. Si vous avez encore besoin d'une conférence, vous pouvez en créer une nouvelle.")
     console.log(`La conférence ${confId} a été annulée`)
     return res.redirect("/")
@@ -144,4 +147,8 @@ module.exports.cancelConf = async (req, res) => {
     console.error("Erreur pour annuler la conférence", err)
     return res.redirect("/")
   }
+}
+
+function shouldSendWebAccessMail(email) {
+  return isAcceptedEmail(email, config.EMAIL_WEB_ACCESS_WHITELIST) && config.FEATURE_WEB_ACCESS
 }
