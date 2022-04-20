@@ -6,7 +6,6 @@ const db = require("../lib/db")
 const emailer = require("../lib/emailer")
 const format = require("../lib/format")
 const urls = require("../urls")
-const { isAcceptedEmail } = require("../lib/emailChecker")
 const { encrypt } = require("../lib/crypto")
 
 const createConfWithDuration = async (email, durationInMinutes) => {
@@ -83,7 +82,7 @@ module.exports.createConf = async (req, res) => {
     return res.redirect("/")
   }
 
-  if (shouldSendWebAccessMail(email)) { // check if email is in whitelist
+  if (emailer.shouldSendWebAccessMail(email)) { // check if email is in whitelist
     try {
       const roomNumberHash = encrypt(jwt.sign({ roomNumber: conference.pin} , config.SECRET, { expiresIn: (durationInMinutes || 720) * 60 }))
       await emailer.sendConfWebAccessEmail({
@@ -120,7 +119,7 @@ module.exports.showConf = async (req, res) => {
       return res.redirect("/")
     }
 
-    const hasWebAccessMailBeenSent = shouldSendWebAccessMail(conference.email)
+    const hasWebAccessMailBeenSent = emailer.shouldSendWebAccessMail(conference.email)
 
     res.render("confCreated", {
       pageTitle: "Votre conférence",
@@ -149,6 +148,6 @@ module.exports.cancelConf = async (req, res) => {
   }
 }
 
-function shouldSendWebAccessMail(email) {
+/*function shouldSendWebAccessMail(email) {
   return isAcceptedEmail(email, config.EMAIL_WEB_ACCESS_WHITELIST) && config.FEATURE_WEB_ACCESS
-}
+}*/

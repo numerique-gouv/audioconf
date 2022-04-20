@@ -17,6 +17,7 @@ describe("createConfController", function() {
     let getTokenStub
     let insertConfStub
     let sendWebAccessEmailStub
+    let shouldSendWebAccessMailStub
 
     beforeEach(function(done) {
       createConfStub = sinon.stub(conferences, "createConf")
@@ -24,7 +25,7 @@ describe("createConfController", function() {
       sendWebAccessEmailStub = sinon.stub(emailer, "sendConfWebAccessEmail")
       getTokenStub = sinon.stub(db, "getToken")
       insertConfStub = sinon.stub(db, "insertConferenceWithDay")
-
+      shouldSendWebAccessMailStub = sinon.stub(emailer, "shouldSendWebAccessMail")
       done()
     })
 
@@ -34,10 +35,11 @@ describe("createConfController", function() {
       getTokenStub.restore()
       insertConfStub.restore()
       sendWebAccessEmailStub.restore()
+      shouldSendWebAccessMailStub.restore()
       done()
     })
 
-    it("should create conf and send email", function(done) {
+    it("should create conf and send one email", function(done) {
       const confUUID = "long_uuid"
       const confPin = 123456789
       const email = "good.email@thing.com"
@@ -46,6 +48,7 @@ describe("createConfController", function() {
         conferenceDay: "2020-12-09",
         userTimezoneOffset: "-180",
       }]))
+
       createConfStub = createConfStub.returns(Promise.resolve(
         { phoneNumber: "+330122334455", pin: confPin, freeAt: new Date() }))
       insertConfStub = insertConfStub.returns(Promise.resolve({
@@ -54,6 +57,7 @@ describe("createConfController", function() {
         phoneNumber: "+330122334455"
       }))
       sendEmailStub = sendEmailStub.returns(Promise.resolve())
+      shouldSendWebAccessMailStub = shouldSendWebAccessMailStub.returns(false)
 
       chai.request(app)
         .get(urls.createConf)
@@ -67,6 +71,48 @@ describe("createConfController", function() {
           sinon.assert.calledOnce(insertConfStub)
           chai.assert(insertConfStub.getCall(0).calledWith(email))
           sinon.assert.calledOnce(sendEmailStub)
+          sinon.assert.notCalled(sendWebAccessEmailStub)
+          res.should.redirectTo(urls.showConf.replace(":id", confUUID) + "#" + confPin)
+          done()
+        })
+    })
+
+    it("should create conf and send two email", function(done) {
+      const confUUID = "long_uuid"
+      const confPin = 123456789
+      const email = "good.email@thing.com"
+      getTokenStub = getTokenStub.returns(Promise.resolve([{
+        email,
+        conferenceDay: "2020-12-09",
+        userTimezoneOffset: "-180",
+      }]))
+
+      createConfStub = createConfStub.returns(Promise.resolve(
+        { phoneNumber: "+330122334455", pin: confPin, freeAt: new Date() }))
+      insertConfStub = insertConfStub.returns(Promise.resolve({
+        id: confUUID,
+        pin: confPin,
+        phoneNumber: "+330122334455"
+      }))
+      sendEmailStub = sendEmailStub.returns(Promise.resolve())
+      
+      
+      shouldSendWebAccessMailStub = shouldSendWebAccessMailStub.returns(true)
+      sendWebAccessEmailStub = sendWebAccessEmailStub.returns(Promise.resolve())
+
+      chai.request(app)
+        .get(urls.createConf)
+        .redirects(0) // block redirects, we don't want to test them
+        .query({
+          token: "long_random_token",
+        })
+        .end(function(err, res) {
+          sinon.assert.calledOnce(getTokenStub)
+          sinon.assert.calledOnce(createConfStub)
+          sinon.assert.calledOnce(insertConfStub)
+          chai.assert(insertConfStub.getCall(0).calledWith(email))
+          sinon.assert.calledOnce(sendEmailStub)
+          sinon.assert.calledOnce(shouldSendWebAccessMailStub)
           sinon.assert.calledOnce(sendWebAccessEmailStub)
           res.should.redirectTo(urls.showConf.replace(":id", confUUID) + "#" + confPin)
           done()

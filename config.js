@@ -28,6 +28,7 @@ if (!isPresent("MAIL_SENDER_EMAIL")) {
   throw new Error("Env vars MAIL_SENDER_EMAIL should be set")
 }
 config.MAIL_SENDER_EMAIL = process.env.MAIL_SENDER_EMAIL
+config.MAIL_NOREPLY_EMAIL = process.env.MAIL_NOREPLY_EMAIL
 
 
 if (isPresent("MAIL_SERVICE")) {
