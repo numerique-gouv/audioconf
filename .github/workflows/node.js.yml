@@ -44,6 +44,7 @@ jobs:
         MAIL_SERVICE: debug
         MAIL_USER: fakeuser
         MAIL_SENDER_EMAIL: sender@example.com
+        MAIL_NOREPLY_EMAIL: no-reply@example.com
         SECRET: fakesessionsecret
         ENCRYPT_SECRET: un_secret_avec_exactement_64_bit
         FEATURE_WEB_ACCESS: true
