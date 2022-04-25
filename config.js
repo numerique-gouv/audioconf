@@ -24,8 +24,8 @@ if (!isPresent("MAIL_USER") || !isPresent("MAIL_PASS")) {
 config.MAIL_USER = process.env.MAIL_USER
 config.MAIL_PASS = process.env.MAIL_PASS
 
-if (!isPresent("MAIL_SENDER_EMAIL")) {
-  throw new Error("Env vars MAIL_SENDER_EMAIL should be set")
+if (!isPresent("MAIL_SENDER_EMAIL") || !isPresent("MAIL_NOREPLY_EMAIL")) {
+  throw new Error("Env vars MAIL_SENDER_EMAIL and MAIL_NOREPLY_EMAIL should be set")
 }
 config.MAIL_SENDER_EMAIL = process.env.MAIL_SENDER_EMAIL
 config.MAIL_NOREPLY_EMAIL = process.env.MAIL_NOREPLY_EMAIL
