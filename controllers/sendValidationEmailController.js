@@ -1,16 +1,10 @@
-const crypto = require('crypto')
 const url = require('url')
 
-const config = require('../config');
 const db = require('../lib/db')
-const emailer = require('../lib/emailer')
 const format = require('../lib/format')
 const urls = require('../urls')
-const { isAcceptedEmail, isValidEmail } = require("../lib/emailChecker")
+const magicLinkAuth = require("../lib/magicLinkAuth")
 
-const generateToken = () => {
-  return crypto.randomBytes(256).toString("base64");
-}
 
 module.exports.sendValidationEmail = async (req, res) => {
   const userTimezoneOffset = req.body.userTimezoneOffset
@@ -21,30 +15,17 @@ module.exports.sendValidationEmail = async (req, res) => {
     throw new Error('Both conferenceDayString and conferenceDurationInMinutes are undefined. This should not happen.')
   }
 
-  if (!isValidEmail(email)) {
-    req.flash('error', 'Email invalide. Avez vous bien tapé votre email ? Vous pouvez réessayer.')
-    return res.redirect('/')
-  }
+  const authRequest = await magicLinkAuth.authStart(email)
 
-  if (!isAcceptedEmail(email, config.EMAIL_WHITELIST)) {
-    req.flash('error', {
-      message: `Cet email ne correspond pas à une agence de l\'État. Si vous appartenez à un service de l'État mais votre email n'est pas reconnu par AudioConf, contactez-nous pour que nous le rajoutions!`,
-      withContactLink: true,
-    })
-    return res.redirect('/')
+  if (authRequest.error) {
+    console.log("Error in magicLinkAuth", authRequest.error)
+    req.flash("error", authRequest.error)
+    return res.redirect("/")
   }
-
-  // TODO : token creation should be done by db.js, and expose db.createAndInsertToken.
-  const token = generateToken()
-  const tokenExpirationDate = new Date()
-  tokenExpirationDate.setMinutes(tokenExpirationDate.getMinutes() + config.TOKEN_DURATION_IN_MINUTES)
 
   try {
-    await db.insertToken(email, token, tokenExpirationDate, conferenceDurationInMinutes, conferenceDayString, userTimezoneOffset)
-    console.log(`Login token créé pour ${format.hashForLogs(email)}, il expire à ${tokenExpirationDate}`)
-
-    const validationUrl = `${config.HOSTNAME_WITH_PROTOCOL}${urls.createConf}?token=${encodeURIComponent(token)}`
-    await emailer.sendEmailValidationEmail(email, tokenExpirationDate, validationUrl)
+    await db.insertToken(email, authRequest.token, authRequest.tokenExpirationDate, conferenceDurationInMinutes, conferenceDayString, userTimezoneOffset)
+    console.log(`Login token créé pour ${format.hashForLogs(email)}, il expire à ${authRequest.tokenExpirationDate}`)
 
     res.redirect(url.format({
       pathname: urls.validationEmailSent,
@@ -53,8 +34,8 @@ module.exports.sendValidationEmail = async (req, res) => {
       },
     }))
   } catch(err) {
-    console.log('Erreur sur la création de token', err)
-    req.flash('error', 'Une erreur interne s\'est produite, nous n\'avons pas pu créer votre conférence.')
-    return res.redirect('/')
+    console.log("Error when inserting authrequest token in DB", err)
+    req.flash("error", "Une erreur interne s'est produite, nous n'avons pas pu créer votre conférence.")
+    return res.redirect("/")
   }
 }
