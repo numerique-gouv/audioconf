@@ -13,8 +13,8 @@ services:
       MAILDEV_INCOMING_USER: mailuser
       MAILDEV_INCOMING_PASS: mailpassword
     ports:
-      - "1080:80"
-      - "1025:25"
+      - "1080:1080"
+      - "1025:1025"
   web:
     build: .
     command: nodemon --inspect=0.0.0.0:9229 ./index.js
@@ -26,11 +26,11 @@ services:
     environment:
       DATABASE_URL: postgres://conferences:conferences@db:5432/conferences
       # ANNOUNCEMENTS: "<a href='test'>test</a>|<h1>test</h1>"
-      MAIL_PASS: mailuser
-      MAIL_USER: mailpassword
+      MAIL_USER: mailuser
+      MAIL_PASS: mailpassword
       MAIL_HOST: maildev
       MAIL_IGNORE_TLS: "true"
-      MAIL_PORT: 25
+      MAIL_PORT: 1025
       MAIL_SENDER_EMAIL: test@example.com
       SECRET: secret
       ENCRYPT_SECRET: un_secret_avec_exactement_64_bit
