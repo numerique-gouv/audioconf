@@ -5,6 +5,8 @@ const config = require("../config")
 const db = require("../lib/db")
 const emailer = require("../lib/emailer")
 const format = require("../lib/format")
+const magicLinkAuth = require("../lib/magicLinkAuth")
+const oidcAuth = require("../lib/oidcAuth")
 const urls = require("../urls")
 const { isAcceptedEmail } = require("../lib/emailChecker")
 const { encrypt } = require("../lib/crypto")
@@ -43,7 +45,12 @@ const createConfWithDay = async (email, conferenceDay, userTimezoneOffset) => {
 }
 
 module.exports.createConf = async (req, res) => {
-  const token = req.query.token
+  console.log("createConf", "queryparams", req.query)
+  console.log("config.FEATURE_OIDC", config.FEATURE_OIDC)
+  const token = await (config.FEATURE_OIDC ? 
+    oidcAuth.getTokenFromRequest(req) : 
+    magicLinkAuth.getTokenFromRequest(req))
+  console.log("token", token)
 
   const tokensData = await db.getToken(token)
   const isTokenValid = tokensData.length === 1
