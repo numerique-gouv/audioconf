@@ -47,21 +47,12 @@ const createConfWithDay = async (email, conferenceDay, userTimezoneOffset) => {
 module.exports.createConf = async (req, res) => {
   console.log("createConf", "queryparams", req.query)
   console.log("config.FEATURE_OIDC", config.FEATURE_OIDC)
-  const token = await (config.FEATURE_OIDC ? 
+  const confData = await (config.FEATURE_OIDC ? 
     oidcAuth.getTokenFromRequest(req) : 
     magicLinkAuth.getTokenFromRequest(req))
-  console.log("token", token)
+  console.log("confData", confData)
 
-  const tokensData = await db.getToken(token)
-  const isTokenValid = tokensData.length === 1
-
-  if (!isTokenValid) {
-    req.flash("error", "Ce lien de confirmation ne marche plus, il a expiré. Entrez votre email ci-dessous pour recommencer.")
-    return res.redirect("/")
-  }
-
-  const tokenData = tokensData[0]
-  const { email, durationInMinutes, conferenceDay, userTimezoneOffset } = tokenData
+  const { email, durationInMinutes, conferenceDay, userTimezoneOffset } = confData
 
   if (!conferenceDay && !durationInMinutes) {
     console.error("Login token contained no conferenceDay and no durationInMinutes. Cannot create conference.")
