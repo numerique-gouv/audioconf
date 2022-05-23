@@ -1,22 +1,18 @@
 const app = require("../index")
 const chai = require("chai")
-const db = require("../lib/db")
 const magicLinkAuth = require("../lib/magicLinkAuth")
 const sinon = require("sinon")
 const urls = require("../urls")
 
 describe("sendValidationEmailController", function() {
-  let insertTokenStub, magicLinkAuthStub
+  let magicLinkAuthStub
 
   beforeEach(function(done) {
-    insertTokenStub = sinon.stub(db, "insertToken")
-      .returns(Promise.resolve())
     magicLinkAuthStub = sinon.stub(magicLinkAuth, "authStart")
     done()
   })
 
   afterEach(function(done) {
-    insertTokenStub.restore()
     magicLinkAuthStub.restore()
     done()
   })
@@ -34,13 +30,12 @@ describe("sendValidationEmailController", function() {
       })
       .end((err, res) => {
         res.should.redirectTo(urls.landing)
-        sinon.assert.notCalled(insertTokenStub)
         done()
       })
   })
 
   it("should store request in db if authStart succeeded", function(done) {
-    magicLinkAuthStub.returns(Promise.resolve({ token: "mytoken", tokenExpirationDate: new Date() }))
+    magicLinkAuthStub.returns(Promise.resolve({ redirectUrl: urls.validationEmailSent + "?email=me%40email.com" }))
 
     chai.request(app)
       .post(urls.sendValidationEmail)
@@ -52,7 +47,6 @@ describe("sendValidationEmailController", function() {
       })
       .end((err, res) => {
         res.should.redirectTo(urls.validationEmailSent + "?email=me%40email.com")
-        sinon.assert.calledOnce(insertTokenStub)
         done()
       })
   })
