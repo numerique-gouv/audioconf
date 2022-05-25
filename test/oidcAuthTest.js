@@ -19,6 +19,32 @@ describe("oidcAuth", function() {
   })
 
   it("should insert oidc request in db", async () => {
+    oidcClientStub.returns(Promise.resolve({
+      authorizationUrl: () => "/hello-redirect",
+    }))
+    insertOidcRequestStub.returns(Promise.resolve())
+
+    const email = "good.email@beta.gouv.fr"
+    const conferenceDayString = "2022-05-25"
+    const userTimezoneOffset = 60
+
+    await oidcAuth.startAuth(
+      email,
+      undefined, //conferenceDurationInMinutes,
+      conferenceDayString,
+      userTimezoneOffset,
+    )
+
+    sinon.assert.calledOnce(insertOidcRequestStub)
+    sinon.assert.calledWith(insertOidcRequestStub.getCall(0),
+      sinon.match.string, // state,
+      undefined, // conferenceDurationInMinutes,
+      conferenceDayString,
+      userTimezoneOffset
+    )
+  })
+
+  it("should generate the redirect url", async () => {
     const redirectUrl = "/hello-redirect"
     const authorizationUrlStub = sinon.stub()
     authorizationUrlStub.returns(redirectUrl)
@@ -39,14 +65,6 @@ describe("oidcAuth", function() {
     )
 
     expect(request.redirectUrl).to.equal(redirectUrl)
-    sinon.assert.calledOnce(insertOidcRequestStub)
-    sinon.assert.calledWith(insertOidcRequestStub.getCall(0),
-      sinon.match.string, // state,
-      undefined, // conferenceDurationInMinutes,
-      conferenceDayString,
-      userTimezoneOffset
-    )
-
     sinon.assert.calledWith(authorizationUrlStub.getCall(0),
       {
         login_hint: email,
