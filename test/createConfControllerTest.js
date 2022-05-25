@@ -21,10 +21,10 @@ describe("createConfController", function() {
     let insertConfStub
     let sendWebAccessEmailStub
 
-    let featureFlagValue
+    let featureFlagBackupValue
 
     beforeEach(function(done) {
-      featureFlagValue = config.FEATURE_OIDC
+      featureFlagBackupValue = config.FEATURE_OIDC
 
       createConfStub = sinon.stub(conferences, "createConf")
       sendEmailStub = sinon.stub(emailer, "sendConfCreatedEmail")
@@ -35,7 +35,7 @@ describe("createConfController", function() {
     })
 
     afterEach(function(done) {
-      config.FEATURE_OIDC = featureFlagValue
+      config.FEATURE_OIDC = featureFlagBackupValue
 
       createConfStub.restore()
       sendEmailStub.restore()
@@ -201,55 +201,30 @@ describe("createConfController", function() {
 
 
     describe("using OIDC auth", () => {
-      let getOidcRequestStub
-      let oidcClientStub
+      let finishAuthStub
 
       beforeEach(function() {
         config.FEATURE_OIDC = true
-
-        getOidcRequestStub = sinon.stub(db, "getOidcRequest")
-        oidcClientStub = sinon.stub(oidcAuth, "getClient")
-        oidcClientStub.returns(Promise.resolve({
-          callback: () => ({
-            access_token: "myAccessToken",
-            expires_at: 1653316281,
-            refresh_expires_in: 60,
-            refresh_token: "myRefreshToken",
-            token_type: "Bearer",
-            id_token: "myIdToken",
-            "not-before-polic": 0,
-            session_state: "mySessionState",
-            scope: "openid profile email"
-          }),
-          callbackParams: () => ({ state: "myState"}),
-          authorizationUrl: () => "myRedirectUrl",
-          userinfo: () => ({
-            sub: "mySub",
-            email_verified: false,
-            preferred_username: "good.email@thing.com"
-          })
-        }))
-
-//        finishAuthStub = sinon.stub(magicLinkAuth, "finishAuth")
+        finishAuthStub = sinon.stub(oidcAuth, "finishAuth")
       })
 
       afterEach(function() {
-  //      finishAuthStub.restore()
-        getOidcRequestStub.restore()
-        oidcClientStub.restore()
+        finishAuthStub.restore()
       })
 
       it("should create conf and send email", function(done) {
         const confUUID = "long_uuid"
         const confPin = 123456789
         const email = "good.email@thing.com"
-        getOidcRequestStub = getOidcRequestStub.returns(Promise.resolve([{
-          state: "myState",
-          createdAt: "2022-05-23T14:26:06.717Z",
-          email,
-          conferenceDay: "2020-12-09",
-          userTimezoneOffset: "-180",
-        }]))
+
+        finishAuthStub.returns(Promise.resolve(
+          {
+            email,
+            durationInMinutes: undefined,
+            conferenceDay: "2022-05-25",
+            userTimezoneOffset: -60,
+          }
+        ))
 
         createConfStub = createConfStub.returns(Promise.resolve(
           { phoneNumber: "+330122334455", pin: confPin, freeAt: new Date() }))
@@ -267,7 +242,7 @@ describe("createConfController", function() {
             token: "long_random_token",
           })
           .end(function(err, res) {
-            sinon.assert.calledOnce(getOidcRequestStub)
+            sinon.assert.calledOnce(finishAuthStub)
             sinon.assert.calledOnce(createConfStub)
             sinon.assert.calledOnce(insertConfStub)
             chai.assert(insertConfStub.getCall(0).calledWith(email))
@@ -278,7 +253,7 @@ describe("createConfController", function() {
           })
       })
 
-      it("should redirect when request is bad", function(done) {
+      it("should redirect when finishAuth has failed", function(done) {
         const confUUID = "long_uuid"
         const confPin = 123456789
         insertConfStub = insertConfStub.returns(Promise.resolve({
@@ -288,8 +263,11 @@ describe("createConfController", function() {
         createConfStub = createConfStub.returns(Promise.resolve(
           { phoneNumber: "+330122334455", pin: confPin, freeAt: new Date() }))
         sendEmailStub = sendEmailStub.returns(Promise.resolve())
-        // No oidc request found.
-        getOidcRequestStub = getOidcRequestStub.returns(Promise.resolve([]))
+        finishAuthStub.returns(Promise.resolve(
+          {
+            error: "oooops",
+          }
+        ))
 
         chai.request(app)
           .get(urls.createConf)
@@ -298,7 +276,7 @@ describe("createConfController", function() {
             token: "long_random_token",
           })
           .end(function(err, res) {
-            sinon.assert.calledOnce(getOidcRequestStub)
+            sinon.assert.calledOnce(finishAuthStub)
             sinon.assert.notCalled(createConfStub)
             sinon.assert.notCalled(insertConfStub)
             sinon.assert.notCalled(sendEmailStub)
@@ -311,18 +289,16 @@ describe("createConfController", function() {
         const confUUID = "long_uuid"
         const confPin = 123456789
         const email = "good.email@thing.com"
-
         insertConfStub = insertConfStub.returns(Promise.resolve({
           id: confUUID,
           pin: confPin,
         }))
-        getOidcRequestStub = getOidcRequestStub.returns(Promise.resolve([{
-          state: "myState",
-          createdAt: "2022-05-23T14:26:06.717Z",
+        finishAuthStub.returns(Promise.resolve({
           email,
-          conferenceDay: "2020-12-09",
-          userTimezoneOffset: "-180",
-        }]))
+          durationInMinutes: undefined,
+          conferenceDay: "2022-05-25",
+          userTimezoneOffset: -60,
+        }))
         sendEmailStub = sendEmailStub.returns(Promise.resolve())
         // Conf creation errors
         createConfStub = createConfStub.returns(Promise.reject(new Error("Conf not created aaaaah")))
@@ -334,7 +310,7 @@ describe("createConfController", function() {
             token: "long_random_token",
           })
           .end(function(err, res) {
-            sinon.assert.calledOnce(getOidcRequestStub)
+            sinon.assert.calledOnce(finishAuthStub)
             sinon.assert.calledOnce(createConfStub)
             sinon.assert.notCalled(insertConfStub)
             sinon.assert.notCalled(sendEmailStub)
@@ -347,14 +323,12 @@ describe("createConfController", function() {
         const confUUID = "long_uuid"
         const confPin = 123456789
         const email = "good.email@thing.com"
-
-        getOidcRequestStub = getOidcRequestStub.returns(Promise.resolve([{
-          state: "myState",
-          createdAt: "2022-05-23T14:26:06.717Z",
+        finishAuthStub.returns(Promise.resolve({
           email,
-          conferenceDay: "2020-12-09",
-          userTimezoneOffset: "-180",
-        }]))
+          durationInMinutes: undefined,
+          conferenceDay: "2022-05-25",
+          userTimezoneOffset: -60,
+        }))
         createConfStub = createConfStub.returns(Promise.resolve(
           { phoneNumber: "+330122334455", pin: confPin, freeAt: new Date() }))
         insertConfStub = insertConfStub.returns(Promise.resolve({
@@ -370,7 +344,7 @@ describe("createConfController", function() {
             token: "long_random_token",
           })
           .end(function(err, res) {
-            sinon.assert.calledOnce(getOidcRequestStub)
+            sinon.assert.calledOnce(finishAuthStub)
             sinon.assert.calledOnce(createConfStub)
             sinon.assert.calledOnce(insertConfStub)
             sinon.assert.calledOnce(sendEmailStub)
