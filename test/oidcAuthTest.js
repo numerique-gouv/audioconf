@@ -73,4 +73,31 @@ describe("oidcAuth", function() {
       }
     )
   })
+
+  /**
+   * A possible mega-stub for Client, if we need it.
+
+    const oidcClientStub = sinon.stub(oidcAuth, "getClient")
+    oidcClientStub.returns(Promise.resolve({
+      callback: () => ({
+        access_token: "myAccessToken",
+        expires_at: 1653316281,
+        refresh_expires_in: 60,
+        refresh_token: "myRefreshToken",
+        token_type: "Bearer",
+        id_token: "myIdToken",
+        "not-before-polic": 0,
+        session_state: "mySessionState",
+        scope: "openid profile email"
+      }),
+      callbackParams: () => ({ state: "myState"}),
+      authorizationUrl: () => "myRedirectUrl",
+      userinfo: () => ({
+        sub: "mySub",
+        email_verified: false,
+        preferred_username: "good.email@thing.com"
+      })
+    }))
+
+   */
 })
