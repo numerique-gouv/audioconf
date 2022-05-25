@@ -7,94 +7,119 @@ const urls = require("../urls")
 const config = require("../config")
 
 describe("startAuthController", function() {
-  let magicLinkAuthStub
-  let oidcClientStub
+  let featureFlagValue
 
   beforeEach(function(done) {
-    magicLinkAuthStub = sinon.stub(magicLinkAuth, "startAuth")
-    oidcClientStub = sinon.stub(oidcAuth, "startAuth")
+    featureFlagValue = config.FEATURE_OIDC
     done()
   })
 
   afterEach(function(done) {
-    magicLinkAuthStub.restore()
-    oidcClientStub.restore()
+    config.FEATURE_OIDC = featureFlagValue
     done()
   })
 
-  it("MAGIC_LINK - should not store request in db if startAuth failed", function(done) {
-    config.FEATURE_OIDC = false
+  describe("using magicLinkAuth", function() {
+    let magicLinkAuthStub
 
-    magicLinkAuthStub.returns(Promise.resolve({ error: "something went wrong"}))
+    beforeEach(function() {
+      magicLinkAuthStub = sinon.stub(magicLinkAuth, "startAuth")
+      config.FEATURE_OIDC = false
+    })
 
-    chai.request(app)
-      .post(urls.startAuth)
-      .redirects(0) // block redirects, we don't want to test them
-      .type("form")
-      .send({
-        email: "email",
-        day: "2020-12-09",
-      })
-      .end((err, res) => {
-        res.should.redirectTo(urls.landing)
-        done()
-      })
+    afterEach(function() {
+      magicLinkAuthStub.restore()
+    })
+
+
+    it("should redirect to landing page if startAuth failed", function(done) {
+      magicLinkAuthStub.returns(Promise.resolve({ error: "something went wrong"}))
+
+      chai.request(app)
+        .post(urls.startAuth)
+        .redirects(0) // block redirects, we don't want to test them
+        .type("form")
+        .send({
+          email: "email",
+          day: "2020-12-09",
+        })
+        .end((err, res) => {
+          res.should.redirectTo(urls.landing)
+          done()
+        })
+    })
+
+    it("should redirect to redirectUrl if startAuth succeeded", function(done) {
+      const redirectUrl = "/my-redirect-url"
+
+      magicLinkAuthStub.returns(Promise.resolve({ redirectUrl }))
+
+      chai.request(app)
+        .post(urls.startAuth)
+        .redirects(0) // block redirects, we don't want to test them
+        .type("form")
+        .send({
+          email: "me@email.com",
+          day: "2020-12-09",
+        })
+        .end((err, res) => {
+          res.should.redirectTo(redirectUrl)
+          done()
+        })
+    })
+
   })
 
-  it("MAGIC_LINK - should store request in db if startAuth succeeded", function(done) {
-    config.FEATURE_OIDC = false
+  describe("using oidcAuth", function() {
+    let oidcClientStub
 
-    magicLinkAuthStub.returns(Promise.resolve({ redirectUrl: urls.validationEmailSent + "?email=me%40email.com" }))
+    beforeEach(function() {
+      oidcClientStub = sinon.stub(oidcAuth, "startAuth")
+      config.FEATURE_OIDC = true
+    })
 
-    chai.request(app)
-      .post(urls.startAuth)
-      .redirects(0) // block redirects, we don't want to test them
-      .type("form")
-      .send({
-        email: "me@email.com",
-        day: "2020-12-09",
-      })
-      .end((err, res) => {
-        res.should.redirectTo(urls.validationEmailSent + "?email=me%40email.com")
-        done()
-      })
-  })
+    afterEach(function() {
+      oidcClientStub.restore()
+    })
 
-  it("FEATURE_OIDC - should not store request in db if startAuth failed", function(done) {
-    config.FEATURE_OIDC = true
+    it("should redirect to landing page if startAuth failed", function(done) {
+      config.FEATURE_OIDC = true
 
-    oidcClientStub.returns(Promise.resolve({ error: "something went wrong"}))
+      oidcClientStub.returns(Promise.resolve({ error: "something went wrong"}))
 
-    chai.request(app)
-      .post(urls.startAuth)
-      .redirects(0) // block redirects, we don't want to test them
-      .type("form")
-      .send({
-        email: "email",
-        day: "2020-12-09",
-      })
-      .end((err, res) => {
-        res.should.redirectTo(urls.landing)
-        done()
-      })
-  })
+      chai.request(app)
+        .post(urls.startAuth)
+        .redirects(0) // block redirects, we don't want to test them
+        .type("form")
+        .send({
+          email: "email",
+          day: "2020-12-09",
+        })
+        .end((err, res) => {
+          res.should.redirectTo(urls.landing)
+          done()
+        })
+    })
 
-  it("FEATURE_OIDC - should store request in db if startAuth succeeded", function(done) {
-    config.FEATURE_OIDC = true
+    it("should redirect to redirectUrl if startAuth succeeded", function(done) {
+      config.FEATURE_OIDC = true
+      const redirectUrl = "/my-redirect-url"
 
-    oidcClientStub.returns(Promise.resolve({ redirectUrl: urls.validationEmailSent + "?email=me%40email.com" }))
+      oidcClientStub.returns(Promise.resolve({ redirectUrl }))
 
-    chai.request(app)
-      .post(urls.startAuth)
-      .redirects(0) // block redirects, we don't want to test them
-      .type("form")
-      .send({
-        email: "me@email.com",
-        day: "2020-12-09",
-      })
-      .end((err, res) => {
-        res.should.redirectTo(urls.validationEmailSent + "?email=me%40email.com")
-        done()
-      })
+      chai.request(app)
+        .post(urls.startAuth)
+        .redirects(0) // block redirects, we don't want to test them
+        .type("form")
+        .send({
+          email: "me@email.com",
+          day: "2020-12-09",
+        })
+        .end((err, res) => {
+          res.should.redirectTo(redirectUrl)
+          done()
+        })
+    })
+
   })
 })
