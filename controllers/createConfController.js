@@ -45,12 +45,9 @@ const createConfWithDay = async (email, conferenceDay, userTimezoneOffset) => {
 }
 
 module.exports.createConf = async (req, res) => {
-  console.log("createConf", "queryparams", req.query)
-  console.log("config.FEATURE_OIDC", config.FEATURE_OIDC)
   const confData = await (config.FEATURE_OIDC ?
     oidcAuth.finishAuth(req) :
     magicLinkAuth.authFinish(req))
-  console.log("confData", confData)
 
   const { email, durationInMinutes, conferenceDay, userTimezoneOffset } = confData
 

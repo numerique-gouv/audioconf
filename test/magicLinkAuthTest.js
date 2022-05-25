@@ -26,7 +26,7 @@ describe("magicLinkAuth", function() {
 
   it("should refuse invalid email", async function() {
     const email = "bad.email"
-    const request = await magicLinkAuth.authStart(email)
+    const request = await magicLinkAuth.startAuth(email)
 
     expect(request).to.have.own.property("error")
     sinon.assert.notCalled(sendEmailStub)
@@ -34,7 +34,7 @@ describe("magicLinkAuth", function() {
 
   it("should refuse email that is not in EMAIL_WHITELIST", async function() {
     const email = "bad.email@not.betagouv.fr"
-    const request = await magicLinkAuth.authStart(email)
+    const request = await magicLinkAuth.startAuth(email)
 
     expect(request).to.have.own.property("error")
     sinon.assert.notCalled(sendEmailStub)

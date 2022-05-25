@@ -11,8 +11,8 @@ describe("startAuthController", function() {
   let oidcClientStub
 
   beforeEach(function(done) {
-    magicLinkAuthStub = sinon.stub(magicLinkAuth, "authStart")
-    oidcClientStub = sinon.stub(oidcAuth, "authStart")
+    magicLinkAuthStub = sinon.stub(magicLinkAuth, "startAuth")
+    oidcClientStub = sinon.stub(oidcAuth, "startAuth")
     done()
   })
 
@@ -22,13 +22,13 @@ describe("startAuthController", function() {
     done()
   })
 
-  it("MAGIC_LINK - should not store request in db if authStart failed", function(done) {
+  it("MAGIC_LINK - should not store request in db if startAuth failed", function(done) {
     config.FEATURE_OIDC = false
 
     magicLinkAuthStub.returns(Promise.resolve({ error: "something went wrong"}))
 
     chai.request(app)
-      .post(urls.sendValidationEmail)
+      .post(urls.startAuth)
       .redirects(0) // block redirects, we don't want to test them
       .type("form")
       .send({
@@ -41,13 +41,13 @@ describe("startAuthController", function() {
       })
   })
 
-  it("MAGIC_LINK - should store request in db if authStart succeeded", function(done) {
+  it("MAGIC_LINK - should store request in db if startAuth succeeded", function(done) {
     config.FEATURE_OIDC = false
 
     magicLinkAuthStub.returns(Promise.resolve({ redirectUrl: urls.validationEmailSent + "?email=me%40email.com" }))
 
     chai.request(app)
-      .post(urls.sendValidationEmail)
+      .post(urls.startAuth)
       .redirects(0) // block redirects, we don't want to test them
       .type("form")
       .send({
@@ -60,13 +60,13 @@ describe("startAuthController", function() {
       })
   })
 
-  it("FEATURE_OIDC - should not store request in db if authStart failed", function(done) {
+  it("FEATURE_OIDC - should not store request in db if startAuth failed", function(done) {
     config.FEATURE_OIDC = true
 
     oidcClientStub.returns(Promise.resolve({ error: "something went wrong"}))
 
     chai.request(app)
-      .post(urls.sendValidationEmail)
+      .post(urls.startAuth)
       .redirects(0) // block redirects, we don't want to test them
       .type("form")
       .send({
@@ -79,13 +79,13 @@ describe("startAuthController", function() {
       })
   })
 
-  it("FEATURE_OIDC - should store request in db if authStart succeeded", function(done) {
+  it("FEATURE_OIDC - should store request in db if startAuth succeeded", function(done) {
     config.FEATURE_OIDC = true
 
     oidcClientStub.returns(Promise.resolve({ redirectUrl: urls.validationEmailSent + "?email=me%40email.com" }))
 
     chai.request(app)
-      .post(urls.sendValidationEmail)
+      .post(urls.startAuth)
       .redirects(0) // block redirects, we don't want to test them
       .type("form")
       .send({

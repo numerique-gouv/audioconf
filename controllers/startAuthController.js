@@ -12,15 +12,14 @@ module.exports.startAuth = async (req, res) => {
     throw new Error('Both conferenceDayString and conferenceDurationInMinutes are undefined. This should not happen.')
   }
 
-  console.log("FEATURE_OIDC", config.FEATURE_OIDC)
   const authRequest = await (
     config.FEATURE_OIDC ?
-    oidcAuth.authStart(email, conferenceDurationInMinutes, conferenceDayString, userTimezoneOffset) :
-    magicLinkAuth.authStart(email, conferenceDurationInMinutes, conferenceDayString, userTimezoneOffset)
+    oidcAuth.startAuth(email, conferenceDurationInMinutes, conferenceDayString, userTimezoneOffset) :
+    magicLinkAuth.startAuth(email, conferenceDurationInMinutes, conferenceDayString, userTimezoneOffset)
   )
 
   if (authRequest.error) {
-    console.log("Error in magicLinkAuth", authRequest.error)
+    console.log("Error in authentication", authRequest.error)
     req.flash("error", authRequest.error)
     return res.redirect("/")
   }
