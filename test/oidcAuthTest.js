@@ -20,8 +20,10 @@ describe("oidcAuth", function() {
 
   it("should insert oidc request in db", async () => {
     const redirectUrl = "/hello-redirect"
+    const authorizationUrlStub = sinon.stub()
+    authorizationUrlStub.returns(redirectUrl)
     oidcClientStub.returns(Promise.resolve({
-      authorizationUrl: () => redirectUrl,
+      authorizationUrl: authorizationUrlStub,
     }))
     insertOidcRequestStub.returns(Promise.resolve())
 
@@ -45,5 +47,12 @@ describe("oidcAuth", function() {
       userTimezoneOffset
     )
 
+    sinon.assert.calledWith(authorizationUrlStub.getCall(0),
+      {
+        login_hint: email,
+        scope: "openid",
+        state: sinon.match.string,
+      }
+    )
   })
 })
