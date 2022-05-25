@@ -3,7 +3,7 @@ const magicLinkAuth = require("../lib/magicLinkAuth")
 const oidcAuth = require("../lib/oidcAuth")
 
 
-module.exports.sendValidationEmail = async (req, res) => {
+module.exports.startAuth = async (req, res) => {
   const userTimezoneOffset = req.body.userTimezoneOffset
   const email = req.body.email
   const conferenceDurationInMinutes = req.body.durationInMinutes
@@ -14,7 +14,7 @@ module.exports.sendValidationEmail = async (req, res) => {
 
   console.log("FEATURE_OIDC", config.FEATURE_OIDC)
   const authRequest = await (
-    config.FEATURE_OIDC ? 
+    config.FEATURE_OIDC ?
     oidcAuth.authStart(email, conferenceDurationInMinutes, conferenceDayString, userTimezoneOffset) :
     magicLinkAuth.authStart(email, conferenceDurationInMinutes, conferenceDayString, userTimezoneOffset)
   )

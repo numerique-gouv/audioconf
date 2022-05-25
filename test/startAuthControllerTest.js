@@ -6,7 +6,7 @@ const sinon = require("sinon")
 const urls = require("../urls")
 const config = require("../config")
 
-describe("sendValidationEmailController", function() {
+describe("startAuthController", function() {
   let magicLinkAuthStub
   let oidcClientStub
 
