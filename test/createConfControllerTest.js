@@ -11,7 +11,6 @@ const oidcAuth = require("../lib/oidcAuth")
 const urls = require("../urls")
 const { encrypt } = require("../lib/crypto")
 const config = require("../config")
-const { finished } = require("nodemailer/lib/xoauth2")
 
 
 describe("createConfController", function() {
@@ -20,7 +19,6 @@ describe("createConfController", function() {
     let sendEmailStub
     let insertConfStub
     let sendWebAccessEmailStub
-    let finishAuthStub
 
     let featureFlagBackupValue
 
@@ -45,7 +43,7 @@ describe("createConfController", function() {
       done()
     })
 
-    const shouldCreateConfAndSendEmail = (done) => {
+    const shouldCreateConfAndSendEmail = (done, finishAuthStub) => {
       const confUUID = "long_uuid"
       const confPin = 123456789
       const email = "good.email@thing.com"
@@ -86,7 +84,7 @@ describe("createConfController", function() {
         })
     }
 
-    const shouldRedirectWhenFinishAuthHasFailed = (done) => {
+    const shouldRedirectWhenFinishAuthHasFailed = (done, finishAuthStub) => {
       const confUUID = "long_uuid"
       const confPin = 123456789
       insertConfStub = insertConfStub.returns(Promise.resolve({
@@ -118,7 +116,7 @@ describe("createConfController", function() {
         })
     }
 
-    const shouldRedirectWhenConfWasNotCreated = (done) => {
+    const shouldRedirectWhenConfWasNotCreated = (done, finishAuthStub) => {
       const confUUID = "long_uuid"
       const confPin = 123456789
       const email = "good.email@thing.com"
@@ -152,7 +150,7 @@ describe("createConfController", function() {
         })
     }
 
-    const shouldRedirectWhenEmailWasNotSent = (done) => {
+    const shouldRedirectWhenEmailWasNotSent = (done, finishAuthStub) => {
       const confUUID = "long_uuid"
       const confPin = 123456789
       const email = "good.email@thing.com"
@@ -187,60 +185,62 @@ describe("createConfController", function() {
     }
 
     describe("using magicLinkAuth", () => {
+      let magicLinkFinishAuthStub
 
       beforeEach(function() {
         config.FEATURE_OIDC = false
-        finishAuthStub = sinon.stub(magicLinkAuth, "finishAuth")
+        magicLinkFinishAuthStub = sinon.stub(magicLinkAuth, "finishAuth")
       })
 
       afterEach(function() {
-        finishAuthStub.restore()
+        magicLinkFinishAuthStub.restore()
       })
 
       it("should create conf and send email", function(done) {
-        shouldCreateConfAndSendEmail(done)
+        shouldCreateConfAndSendEmail(done, magicLinkFinishAuthStub)
       })
 
       it("should redirect when finishAuth has failed", function(done) {
-        shouldRedirectWhenFinishAuthHasFailed(done)
+        shouldRedirectWhenFinishAuthHasFailed(done, magicLinkFinishAuthStub)
       })
 
       it("should redirect when conf was not created", function(done) {
-        shouldRedirectWhenConfWasNotCreated(done)
+        shouldRedirectWhenConfWasNotCreated(done, magicLinkFinishAuthStub)
       })
 
       it("should redirect when email was not sent", function(done) {
-        shouldRedirectWhenEmailWasNotSent(done)
+        shouldRedirectWhenEmailWasNotSent(done, magicLinkFinishAuthStub)
       })
 
     })
 
 
     describe("using OIDC auth", () => {
+      let oidcFinishAuthStub
 
       beforeEach(function() {
         config.FEATURE_OIDC = true
-        finishAuthStub = sinon.stub(oidcAuth, "finishAuth")
+        oidcFinishAuthStub = sinon.stub(oidcAuth, "finishAuth")
       })
 
       afterEach(function() {
-        finishAuthStub.restore()
+        oidcFinishAuthStub.restore()
       })
 
       it("should create conf and send email", function(done) {
-        shouldCreateConfAndSendEmail(done)
+        shouldCreateConfAndSendEmail(done, oidcFinishAuthStub)
       })
 
       it("should redirect when finishAuth has failed", function(done) {
-        shouldRedirectWhenFinishAuthHasFailed(done)
+        shouldRedirectWhenFinishAuthHasFailed(done, oidcFinishAuthStub)
       })
 
       it("should redirect when conf was not created", function(done) {
-        shouldRedirectWhenConfWasNotCreated(done)
+        shouldRedirectWhenConfWasNotCreated(done, oidcFinishAuthStub)
       })
 
       it("should redirect when email was not sent", function(done) {
-        shouldRedirectWhenEmailWasNotSent(done)
+        shouldRedirectWhenEmailWasNotSent(done, oidcFinishAuthStub)
       })
 
     })
