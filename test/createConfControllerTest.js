@@ -20,10 +20,13 @@ describe("createConfController", function() {
     let insertConfStub
     let sendWebAccessEmailStub
 
-    let featureFlagBackupValue
+    let oidcFlagBackupValue
+    let webAccessFlagBackupValue
 
     beforeEach(function(done) {
-      featureFlagBackupValue = config.FEATURE_OIDC
+      oidcFlagBackupValue = config.FEATURE_OIDC
+      webAccessFlagBackupValue = config.FEATURE_WEB_ACCESS
+      config.FEATURE_WEB_ACCESS = true
 
       createConfStub = sinon.stub(conferences, "createConf")
       sendEmailStub = sinon.stub(emailer, "sendConfCreatedEmail")
@@ -34,7 +37,8 @@ describe("createConfController", function() {
     })
 
     afterEach(function(done) {
-      config.FEATURE_OIDC = featureFlagBackupValue
+      config.FEATURE_OIDC = oidcFlagBackupValue
+      config.FEATURE_WEB_ACCESS = webAccessFlagBackupValue
 
       createConfStub.restore()
       sendEmailStub.restore()
