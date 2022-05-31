@@ -1,6 +1,6 @@
 module.exports = {
   landing : '/',
-  sendValidationEmail : '/valider-email',
+  startAuth : '/commencer-authentification',
   validationEmailSent: '/email-de-validation-envoye',
   createConf : '/creer-conf',
   confCreated : '/conf-creee',
