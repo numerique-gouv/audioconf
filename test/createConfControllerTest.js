@@ -47,147 +47,6 @@ describe("createConfController", function() {
       done()
     })
 
-    const shouldCreateConfAndSendEmail = (done, finishAuthStub) => {
-      const confUUID = "long_uuid"
-      const confPin = 123456789
-      const email = "good.email@thing.com"
-
-      finishAuthStub.returns(Promise.resolve(
-        {
-          email,
-          durationInMinutes: undefined,
-          conferenceDay: "2022-05-25",
-          userTimezoneOffset: -60,
-        }
-      ))
-
-      createConfStub = createConfStub.returns(Promise.resolve(
-        { phoneNumber: "+330122334455", pin: confPin, freeAt: new Date() }))
-      insertConfStub = insertConfStub.returns(Promise.resolve({
-        id: confUUID,
-        pin: confPin,
-        phoneNumber: "+330122334455"
-      }))
-      sendEmailStub = sendEmailStub.returns(Promise.resolve())
-
-      chai.request(app)
-        .get(urls.createConf)
-        .redirects(0) // block redirects, we don't want to test them
-        .query({
-          token: "long_random_token",
-        })
-        .end(function(err, res) {
-          sinon.assert.calledOnce(finishAuthStub)
-          sinon.assert.calledOnce(createConfStub)
-          sinon.assert.calledOnce(insertConfStub)
-          chai.assert(insertConfStub.getCall(0).calledWith(email))
-          sinon.assert.calledOnce(sendEmailStub)
-          sinon.assert.calledOnce(sendWebAccessEmailStub)
-          res.should.redirectTo(urls.showConf.replace(":id", confUUID) + "#" + confPin)
-          done()
-        })
-    }
-
-    const shouldRedirectWhenFinishAuthHasFailed = (done, finishAuthStub) => {
-      const confUUID = "long_uuid"
-      const confPin = 123456789
-      insertConfStub = insertConfStub.returns(Promise.resolve({
-        id: confUUID,
-        pin: confPin,
-      }))
-      createConfStub = createConfStub.returns(Promise.resolve(
-        { phoneNumber: "+330122334455", pin: confPin, freeAt: new Date() }))
-      sendEmailStub = sendEmailStub.returns(Promise.resolve())
-      finishAuthStub.returns(Promise.resolve(
-        {
-          error: "oooops",
-        }
-      ))
-
-      chai.request(app)
-        .get(urls.createConf)
-        .redirects(0) // block redirects, we don't want to test them
-        .query({
-          token: "long_random_token",
-        })
-        .end(function(err, res) {
-          sinon.assert.calledOnce(finishAuthStub)
-          sinon.assert.notCalled(createConfStub)
-          sinon.assert.notCalled(insertConfStub)
-          sinon.assert.notCalled(sendEmailStub)
-          res.should.redirectTo(urls.landing)
-          done()
-        })
-    }
-
-    const shouldRedirectWhenConfWasNotCreated = (done, finishAuthStub) => {
-      const confUUID = "long_uuid"
-      const confPin = 123456789
-      const email = "good.email@thing.com"
-      insertConfStub = insertConfStub.returns(Promise.resolve({
-        id: confUUID,
-        pin: confPin,
-      }))
-      finishAuthStub.returns(Promise.resolve({
-        email,
-        durationInMinutes: undefined,
-        conferenceDay: "2022-05-25",
-        userTimezoneOffset: -60,
-      }))
-      sendEmailStub = sendEmailStub.returns(Promise.resolve())
-      // Conf creation errors
-      createConfStub = createConfStub.returns(Promise.reject(new Error("Conf not created aaaaah")))
-
-      chai.request(app)
-        .get(urls.createConf)
-        .redirects(0) // block redirects, we don't want to test them
-        .query({
-          token: "long_random_token",
-        })
-        .end(function(err, res) {
-          sinon.assert.calledOnce(finishAuthStub)
-          sinon.assert.calledOnce(createConfStub)
-          sinon.assert.notCalled(insertConfStub)
-          sinon.assert.notCalled(sendEmailStub)
-          res.should.redirectTo(urls.landing)
-          done()
-        })
-    }
-
-    const shouldRedirectWhenEmailWasNotSent = (done, finishAuthStub) => {
-      const confUUID = "long_uuid"
-      const confPin = 123456789
-      const email = "good.email@thing.com"
-      finishAuthStub.returns(Promise.resolve({
-        email,
-        durationInMinutes: undefined,
-        conferenceDay: "2022-05-25",
-        userTimezoneOffset: -60,
-      }))
-      createConfStub = createConfStub.returns(Promise.resolve(
-        { phoneNumber: "+330122334455", pin: confPin, freeAt: new Date() }))
-      insertConfStub = insertConfStub.returns(Promise.resolve({
-        id: confUUID,
-        pin: confPin,
-      }))
-      sendEmailStub = sendEmailStub.returns(Promise.reject(new Error("oh no email not sent")))
-
-      chai.request(app)
-        .get(urls.createConf)
-        .redirects(0) // block redirects, we don't want to test them
-        .query({
-          token: "long_random_token",
-        })
-        .end(function(err, res) {
-          sinon.assert.calledOnce(finishAuthStub)
-          sinon.assert.calledOnce(createConfStub)
-          sinon.assert.calledOnce(insertConfStub)
-          sinon.assert.calledOnce(sendEmailStub)
-          res.should.redirectTo(urls.landing)
-          done()
-        })
-    }
-
     describe("using magicLinkAuth", () => {
       let magicLinkFinishAuthStub
 
@@ -248,6 +107,149 @@ describe("createConfController", function() {
       })
 
     })
+
+    const shouldCreateConfAndSendEmail = (done, finishAuthStub) => {
+      const confUUID = "long_uuid"
+      const confPin = 123456789
+      const email = "good.email@thing.com"
+
+      const successFinishAuthStub = finishAuthStub.returns(Promise.resolve(
+        {
+          email,
+          durationInMinutes: undefined,
+          conferenceDay: "2022-05-25",
+          userTimezoneOffset: -60,
+        }
+      ))
+
+      const successCreateConfStub = createConfStub.returns(Promise.resolve(
+        { phoneNumber: "+330122334455", pin: confPin, freeAt: new Date() }))
+      const successInsertConfStub = insertConfStub.returns(Promise.resolve({
+        id: confUUID,
+        pin: confPin,
+        phoneNumber: "+330122334455"
+      }))
+      const successSendEmailStub = sendEmailStub.returns(Promise.resolve())
+
+      chai.request(app)
+        .get(urls.createConf)
+        .redirects(0) // block redirects, we don't want to test them
+        .query({
+          token: "long_random_token",
+        })
+        .end(function(err, res) {
+          sinon.assert.calledOnce(successFinishAuthStub)
+          sinon.assert.calledOnce(successCreateConfStub)
+          sinon.assert.calledOnce(successInsertConfStub)
+          chai.assert(successInsertConfStub.getCall(0).calledWith(email))
+          sinon.assert.calledOnce(successSendEmailStub)
+          sinon.assert.calledOnce(sendWebAccessEmailStub)
+          res.should.redirectTo(urls.showConf.replace(":id", confUUID) + "#" + confPin)
+          done()
+        })
+    }
+
+    const shouldRedirectWhenFinishAuthHasFailed = (done, finishAuthStub) => {
+      const confUUID = "long_uuid"
+      const confPin = 123456789
+      const successInsertConfStub = insertConfStub.returns(Promise.resolve({
+        id: confUUID,
+        pin: confPin,
+      }))
+      const successCreateConfStub = createConfStub.returns(Promise.resolve(
+        { phoneNumber: "+330122334455", pin: confPin, freeAt: new Date() }))
+      const successSendEmailStub = sendEmailStub.returns(Promise.resolve())
+      const failFinishAuthStub = finishAuthStub.returns(Promise.resolve(
+        {
+          error: "oooops",
+        }
+      ))
+
+      chai.request(app)
+        .get(urls.createConf)
+        .redirects(0) // block redirects, we don't want to test them
+        .query({
+          token: "long_random_token",
+        })
+        .end(function(err, res) {
+          sinon.assert.calledOnce(failFinishAuthStub)
+          sinon.assert.notCalled(successCreateConfStub)
+          sinon.assert.notCalled(successInsertConfStub)
+          sinon.assert.notCalled(successSendEmailStub)
+          res.should.redirectTo(urls.landing)
+          done()
+        })
+    }
+
+    const shouldRedirectWhenConfWasNotCreated = (done, finishAuthStub) => {
+      const confUUID = "long_uuid"
+      const confPin = 123456789
+      const email = "good.email@thing.com"
+      const successInsertConfStub = insertConfStub.returns(Promise.resolve({
+        id: confUUID,
+        pin: confPin,
+      }))
+      const successFinishAuthStub = finishAuthStub.returns(Promise.resolve({
+        email,
+        durationInMinutes: undefined,
+        conferenceDay: "2022-05-25",
+        userTimezoneOffset: -60,
+      }))
+      const successSendEmailStub = sendEmailStub.returns(Promise.resolve())
+      // Conf creation errors
+      const failCreateConfStub = createConfStub.returns(Promise.reject(new Error("Conf not created aaaaah")))
+
+      chai.request(app)
+        .get(urls.createConf)
+        .redirects(0) // block redirects, we don't want to test them
+        .query({
+          token: "long_random_token",
+        })
+        .end(function(err, res) {
+          sinon.assert.calledOnce(successFinishAuthStub)
+          sinon.assert.calledOnce(failCreateConfStub)
+          sinon.assert.notCalled(successInsertConfStub)
+          sinon.assert.notCalled(successSendEmailStub)
+          res.should.redirectTo(urls.landing)
+          done()
+        })
+    }
+
+    const shouldRedirectWhenEmailWasNotSent = (done, finishAuthStub) => {
+      const confUUID = "long_uuid"
+      const confPin = 123456789
+      const email = "good.email@thing.com"
+
+      const successFinishAuthStub = finishAuthStub.returns(Promise.resolve({
+        email,
+        durationInMinutes: undefined,
+        conferenceDay: "2022-05-25",
+        userTimezoneOffset: -60,
+      }))
+      const successCreateConfStub = createConfStub.returns(Promise.resolve(
+        { phoneNumber: "+330122334455", pin: confPin, freeAt: new Date() }))
+      const successInsertConfStub = insertConfStub.returns(Promise.resolve({
+        id: confUUID,
+        pin: confPin,
+      }))
+      const failedSendEmailStub = sendEmailStub.returns(Promise.reject(new Error("oh no email not sent")))
+
+      chai.request(app)
+        .get(urls.createConf)
+        .redirects(0) // block redirects, we don't want to test them
+        .query({
+          token: "long_random_token",
+        })
+        .end(function(err, res) {
+          sinon.assert.calledOnce(successFinishAuthStub)
+          sinon.assert.calledOnce(successCreateConfStub)
+          sinon.assert.calledOnce(successInsertConfStub)
+          sinon.assert.calledOnce(failedSendEmailStub)
+          res.should.redirectTo(urls.landing)
+          done()
+        })
+    }
+
   })
 
 
