@@ -38,6 +38,7 @@ describe("oidcAuth", function() {
     sinon.assert.calledOnce(insertOidcRequestStub)
     sinon.assert.calledWith(insertOidcRequestStub.getCall(0),
       sinon.match.string, // state,
+      sinon.match.string, // nonce,
       undefined, // conferenceDurationInMinutes,
       conferenceDayString,
       userTimezoneOffset
@@ -70,6 +71,7 @@ describe("oidcAuth", function() {
         login_hint: email,
         scope: "openid",
         state: sinon.match.string,
+        nonce: sinon.match.string,
       }
     )
   })

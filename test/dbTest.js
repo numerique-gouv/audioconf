@@ -40,9 +40,11 @@ describe("db", function() {
     it("should return the same dateString for conferenceDay that was inserted", async function() {
       const conferenceDayString = "2020-12-04"
       const state = crypto.randomBytes(256).toString("base64")
+      const nonce = crypto.randomBytes(256).toString("base64")
 
       await db.insertOidcRequest(
         state,
+        nonce,
         undefined, // conferenceDurationInMinutes
         conferenceDayString,
       )
