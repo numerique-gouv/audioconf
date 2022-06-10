@@ -5,6 +5,8 @@ const config = require("../config")
 const db = require("../lib/db")
 const emailer = require("../lib/emailer")
 const format = require("../lib/format")
+const magicLinkAuth = require("../lib/magicLinkAuth")
+const oidcAuth = require("../lib/oidcAuth")
 const urls = require("../urls")
 const { isAcceptedEmail } = require("../lib/emailChecker")
 const { encrypt } = require("../lib/crypto")
@@ -43,18 +45,11 @@ const createConfWithDay = async (email, conferenceDay, userTimezoneOffset) => {
 }
 
 module.exports.createConf = async (req, res) => {
-  const token = req.query.token
+  const confData = await (config.FEATURE_OIDC ?
+    oidcAuth.finishAuth(req) :
+    magicLinkAuth.finishAuth(req))
 
-  const tokensData = await db.getToken(token)
-  const isTokenValid = tokensData.length === 1
-
-  if (!isTokenValid) {
-    req.flash("error", "Ce lien de confirmation ne marche plus, il a expiré. Entrez votre email ci-dessous pour recommencer.")
-    return res.redirect("/")
-  }
-
-  const tokenData = tokensData[0]
-  const { email, durationInMinutes, conferenceDay, userTimezoneOffset } = tokenData
+  const { email, durationInMinutes, conferenceDay, userTimezoneOffset } = confData
 
   if (!conferenceDay && !durationInMinutes) {
     console.error("Login token contained no conferenceDay and no durationInMinutes. Cannot create conference.")

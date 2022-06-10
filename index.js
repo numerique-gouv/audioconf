@@ -9,11 +9,11 @@ const MemoryStore = require("memorystore")(session)
 
 const config = require("./config")
 const db = require("./lib/db")
-const dashboardController = require("./controllers/dashboardController") 
+const dashboardController = require("./controllers/dashboardController")
 const format = require("./lib/format")
 const createConfController = require("./controllers/createConfController")
 const landingController = require("./controllers/landingController")
-const sendValidationEmailController = require("./controllers/sendValidationEmailController")
+const startAuthController = require("./controllers/startAuthController")
 const statusController = require("./controllers/statusController")
 const stats = require("./lib/stats")
 const urls = require("./urls")
@@ -75,7 +75,7 @@ app.use(function(req, res, next){
 
 app.get(urls.landing, landingController.getLanding)
 
-app.post(urls.sendValidationEmail, sendValidationEmailController.sendValidationEmail)
+app.post(urls.startAuth, startAuthController.startAuth)
 
 app.get(urls.validationEmailSent, (req, res) => {
   res.render("validationEmailSent", {
