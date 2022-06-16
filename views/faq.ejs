@@ -13,7 +13,7 @@
             id: 1
           }) -%>
             <p>
-              Si vous êtes un <a href="#qui-peut-avoir-acces">agent public de l'État</a>, vous pouvez créer une conférence en toute autonomie.
+              Si vous êtes un <a href="#qui-peut-avoir-acces">agent public d'une administration reconnue</a>, vous pouvez créer une conférence en toute autonomie.
             </p>
             <p>
               <ol>
@@ -26,13 +26,13 @@
                   Choisissez la date de votre conférence. Elle sera utilisable toute la journée choisie.
                 </li>
                 <li>
-                  Un lien de confirmation est envoyé à votre adresse électronique. Cliquez sur ce lien pour confirmer votre identité.
-                  Le lien est actif 2h.
+                  Un code de confirmation est envoyé à votre adresse électronique. Renseignez ce code pour confirmer votre identité.
+                  Le code est actif 60 minutes.
                 </li>
                 <li>
                   Votre conférence est créée !
                 </li>
-                <li>Vous recevez un email récapitulatif contenant les codes. Vous pouvez transmettre ces codes d'accès aux participants de votre conférence.
+                <li>Vous recevez ensuite un email récapitulatif contenant les codes d'accès à votre conférence. Vous pouvez transmettre ces codes d'accès aux participants de votre conférence.
                 </li>
               </ol>
             </p>
@@ -66,12 +66,9 @@
             link: "qui-peut-avoir-acces",
             id: 3
           }) -%>
+            <div>Pour utiliser AudioConf, il faut un <b>e-mail professionnel d'une administration reconnue.</b></div>
             <p>
-              <b>Seuls les agents de l'État peuvent réserver des conférences</b>. C'est votre email professionnel qui déterminera
-              si vous avez accès ou non. Les agents des collectivités ne sont pas acceptés.
-            </p>
-            <p>
-              <b>N'importe qui peut rejoindre une conférence</b> dont il/elle a les codes d'accès, depuis son téléphone.
+              <b>Toute personne disposant des codes d'accès</b> peut rejoindre une conférence depuis son téléphone.
             </p>
             <%- include('partials/askToAddNewService') -%>
           <%- include("partials/accordionBottom") -%>
