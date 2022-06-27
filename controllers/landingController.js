@@ -56,5 +56,6 @@ module.exports.getLanding = async (req, res) => {
     dateChoices: dateChoices,
     FEATURE_RESERVATIONS: config.FEATURE_RESERVATIONS,
     announcements: config.ANNOUNCEMENTS,
+    rizomoURI: config.RIZOMO_URI
   })
 }
