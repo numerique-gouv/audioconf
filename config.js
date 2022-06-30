@@ -113,4 +113,6 @@ config.OIDC_PROVIDER_URL = process.env.OIDC_PROVIDER_URL
 config.OIDC_CLIENT_ID = process.env.OIDC_CLIENT_ID
 config.OIDC_CLIENT_SECRET = process.env.OIDC_CLIENT_SECRET
 
+config.RIZOMO_URI = process.env.RIZOMO_URI
+
 module.exports = config

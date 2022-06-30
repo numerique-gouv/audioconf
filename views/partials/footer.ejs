@@ -1,5 +1,8 @@
 <script type="module" src="/static/gouvfr/js/dsfr.module.min.js"></script>
 <script type="text/javascript" nomodule src="/static/gouvfr/js/dsfr.nomodule.min.js"></script>
+<% if (locals.rizomoURI !== undefined) { %>
+  <script type="text/javascript" src="<%= locals.rizomoURI %>" async defer></script>
+<% } %>
 
 <footer class="fr-footer" role="contentinfo" id="footer">
   <div class="fr-container">
