@@ -130,7 +130,6 @@ describe("magicLinkAuth", function() {
       // Simulate : The user clicks the magic link
       const fakeRequest = url.parse(magicLink, true)
       const confData = await magicLinkAuth.finishAuth(fakeRequest)
-      console.log("confData", confData)
 
       expect(confData.email).to.equal(email)
       expect(confData.conferenceDay).to.equal(conferenceDayString)
