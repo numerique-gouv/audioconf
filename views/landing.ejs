@@ -33,13 +33,13 @@
 
           <form action="<%= urls.startAuth %>" method="POST">
             <div class="fr-input-group">
-              <label class="fr-label" for="email">Votre email professionnel :</label>
+              <label class="fr-label" for="email">Votre adresse mail professionnelle :</label>
               <input class="fr-input" type="email" id="email" name="email" required>
             </div>
             <% if(FEATURE_RESERVATIONS) { %>
               <div class="fr-input-group">
                 <label class="fr-label" for="day">Date de votre conférence :</label>
-                <p class="fr-hint-text" id="day-hint">La conférence vous sera réservée pour la journée choisie.</p>
+                <p class="fr-hint-text" id="day-hint">La conférence vous sera réservée pour la <b>journée entière</b>.</p>
                 <select class="fr-select" id="day" name="day" aria-describedby="day-hint">
                   <% dateChoices.forEach(function(dateChoice) { %>
                     <option value="<%= dateChoice.value %>"><%= dateChoice.label %></option>
@@ -117,7 +117,7 @@
               <% } else { %>
                 durée
               <% } %>
-              pour laquelle vous voulez réserver un numéro et validez votre réservation avec votre email professionnel.
+              pour laquelle vous voulez réserver un numéro et validez votre réservation avec votre adresse mail professionnelle.
             </p>
           </div>
           <div class="sub-paragraph">

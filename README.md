@@ -60,7 +60,7 @@ npm test
 
 ### Tester manuellement l'application
 1. Se connecter sur http://localhost:8080
-2. Remplir son email et son horaire
+2. Remplir son adresse mail et son horaire
 3. Consulter le http://localhost:1080/#/ pour voir l'email envoyé par le service
 
 
