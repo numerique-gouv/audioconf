@@ -1,6 +1,6 @@
 {
   "name": "conferences",
-  "version": "1.15.1",
+  "version": "1.15.2",
   "description": "Conférences audio et vidéo pour les fonctionnaires de l'Etat",
   "main": "index.js",
   "directories": {
