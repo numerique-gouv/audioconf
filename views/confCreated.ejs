@@ -14,7 +14,7 @@
       <p class="fr-callout__title">
         Pour vous y connecter
         <% if(conference.conferenceDay) {  %>
-          le <%= format.formatFrenchDate(new Date(conference.conferenceDay)) %>
+          jusqu'au <%= format.formatFrenchDate(new Date(conference.conferenceDay)) %>
         <% } %>
       </p>
       <ul class="fr-callout__text">
@@ -30,7 +30,7 @@
 
     <p>
       <% if(conference.conferenceDay) {  %>
-        Ce numéro de conférence sera actif toute la journée du  <%= format.formatFrenchDate(new Date(conference.conferenceDay)) %>. Il pourra accueillir jusqu'à 50 personnes.
+        Ce numéro de conférence jusqu'au <%= format.formatFrenchDate(new Date(conference.conferenceDay)) %>. Il pourra accueillir jusqu'à 50 personnes.
       <% } else { %>
          Ce numéro de conférence expirera <%= format.formatFrenchDateTime(conference.expiresAt) %>.
       <% } %>
