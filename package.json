@@ -59,7 +59,7 @@
     "eslint-config-node": "^4.1.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
-    "mocha": "^8.2.0",
+    "mocha": "^10.1.0",
     "nodemon": "^2.0.20",
     "sinon": "^9.2.0"
   }
