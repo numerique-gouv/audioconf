@@ -32,6 +32,7 @@
     "@gouvfr/dsfr": "^1.0.0-rc1.0",
     "@sentry/node": "^6.2.2",
     "chart.js": "^2.9.4",
+    "cheerio": "^1.0.0-rc.12",
     "connect-flash": "^0.1.1",
     "connect-session-knex": "^2.0.0",
     "cookie-parser": "^1.4.5",
@@ -43,13 +44,14 @@
     "express-session": "^1.17.1",
     "intl": "^1.2.5",
     "jsonwebtoken": "^8.5.1",
-    "knex": "^0.21.6",
+    "knex": "^2.3.0",
     "memorystore": "^1.6.4",
+    "node-fetch": "^2.6.7",
     "nodemailer": "^6.6.1",
+    "openid-client": "^5.1.5",
     "ovh": "^2.0.3",
     "pg": "^8.4.2",
-    "remixicon": "^2.5.0",
-    "openid-client": "^5.1.5"
+    "remixicon": "^2.5.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",

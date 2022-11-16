@@ -103,6 +103,7 @@ config.FEATURE_JOB_ANONYMIZE_EMAILS = process.env.FEATURE_JOB_ANONYMIZE_EMAILS =
 config.FEATURE_JOB_CALLS_STATS = process.env.FEATURE_JOB_CALLS_STATS === "true" || false
 config.FEATURE_WEB_ACCESS = process.env.FEATURE_WEB_ACCESS === "true" || false
 config.FEATURE_OIDC = process.env.FEATURE_OIDC === "true" || false
+config.FEATURE_JOB_FETCH_MARKS = process.env.FEATURE_JOB_FETCH_MARKS == "true" || false
 
 config.ANNOUNCEMENTS = process.env.ANNOUNCEMENTS ? process.env.ANNOUNCEMENTS.split("|") : []
 

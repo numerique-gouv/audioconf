@@ -3,6 +3,7 @@ const anonymizeConferences = require("./jobs/anonymizeConferences")
 const sendSurveyEmails = require("./jobs/sendSurveyEmails")
 const computeStats = require("./jobs/computeStats")
 const fetchCallsStats = require("./jobs/fetchCallsStats.js")
+const fetchSurveyMarks = require("./jobs/fetchSurveyMarks")
 const config = require("./config")
 
 const jobs = [
@@ -37,6 +38,14 @@ const jobs = [
     timeZone: "Europe/Paris",
     isActive: config.FEATURE_JOB_CALLS_STATS,
     name: "Fetch statistics from past calls from OVH",
+  },
+  {
+    cronTime: "59 23 * * *", // everyday at 23:59 PM
+    onTick: fetchSurveyMarks,
+    start: true,
+    timeZone: "Europe/Paris",
+    isActive: config.FEATURE_JOB_FETCH_MARKS,
+    name: "Fetch summary marks from surveys",
   },
 ]
 
