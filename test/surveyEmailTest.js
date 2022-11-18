@@ -7,7 +7,7 @@ const surveyEmailsJob = require("../jobs/sendSurveyEmails")
 const emailer = require("../lib/emailer")
 const utils = require("./utils")
 
-/* global afterEach describe beforeEach it */
+// global afterEach describe beforeEach it
 
 const now = new Date()
 const yesterday = subHours(now, 20)

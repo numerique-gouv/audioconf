@@ -1,4 +1,4 @@
-/* global afterEach describe beforeEach it */
+// global afterEach describe beforeEach it
 const chai = require("chai")
 const conferences = require("../lib/conferences")
 const db = require("../lib/db")

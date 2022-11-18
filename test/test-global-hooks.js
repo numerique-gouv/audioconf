@@ -1,6 +1,6 @@
 const utils = require("./utils")
 
-/* global after before */
+// global after before
 
 before(() => utils.setupTestDatabase())
 

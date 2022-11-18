@@ -330,7 +330,7 @@ describe("createConfController", function() {
           roomNumberHash
         })
         .redirects(0) // block redirects, we don't want to test them
-        .end(function(err, res) {
+        .end(function() {
           sinon.assert.notCalled(fetchDashboardInfo)
           sinon.assert.notCalled(getParticipant)
           done()
@@ -348,7 +348,7 @@ describe("createConfController", function() {
           roomNumberHash
         })
         .redirects(0) // block redirects, we don't want to test them
-        .end(function(err, res) {
+        .end(function() {
           sinon.assert.notCalled(fetchDashboardInfo)
           sinon.assert.notCalled(getParticipant)
           done()
@@ -364,7 +364,7 @@ describe("createConfController", function() {
         .send({
           roomNumberHash
         })
-        .end(function(err, res) {
+        .end(function() {
           sinon.assert.called(fetchDashboardInfo)
           sinon.assert.called(getParticipant)
           done()

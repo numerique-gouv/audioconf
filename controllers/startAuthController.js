@@ -8,8 +8,8 @@ module.exports.startAuth = async (req, res) => {
   const email = req.body.email
   const conferenceDurationInMinutes = req.body.durationInMinutes
   const conferenceDayString = req.body.day
-  if (typeof conferenceDayString === 'undefined' && typeof conferenceDurationInMinutes === 'undefined') {
-    throw new Error('Both conferenceDayString and conferenceDurationInMinutes are undefined. This should not happen.')
+  if (typeof conferenceDayString === "undefined" && typeof conferenceDurationInMinutes === "undefined") {
+    throw new Error("Both conferenceDayString and conferenceDurationInMinutes are undefined. This should not happen.")
   }
 
   const authRequest = await (

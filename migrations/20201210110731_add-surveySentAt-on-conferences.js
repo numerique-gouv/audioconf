@@ -5,7 +5,7 @@ exports.up = function (knex) {
     })
     .then(() =>
       knex.schema.createTable("users", (table) => {
-        table.uuid('id').primary().defaultTo(knex.raw('uuid_generate_v4()'));
+        table.uuid("id").primary().defaultTo(knex.raw("uuid_generate_v4()"))
         table.datetime("surveySentAt")
         table.text("hashedEmail")
       })

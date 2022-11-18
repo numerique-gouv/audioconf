@@ -3,7 +3,7 @@ const chai = require("chai")
 const anonymizeJob = require("../jobs/anonymizeConferences")
 const utils = require("./utils")
 
-/* global describe beforeEach it */
+// global describe beforeEach it
 
 describe("Tests on anonymize conference job", () => {
 
