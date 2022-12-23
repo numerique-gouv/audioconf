@@ -42,7 +42,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "intl": "^1.2.5",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "knex": "^0.21.6",
     "memorystore": "^1.6.4",
     "nodemailer": "^6.6.1",
