@@ -21,13 +21,13 @@ module.exports.fetchDashboardInfo = async (req, res) => {
         const participantIds = await conferences.fetchDashboardInfo(config.OVH_ROOM_PHONE_NUMBER, roomNumber)
         const participants = await Promise.all(participantIds.map(id => conferences.getParticipant(config.OVH_ROOM_PHONE_NUMBER, roomNumber, id)))
         return res.json({
-            participants: participants.map(participant => {
-                const arrivalDateTime = participant.arrivalDateTime
+            participants: participants.map(({callerNumber, arrivalDateTime, speak, talking}) => {
                 const date = new Date(arrivalDateTime)
                 return {
-                    ...participant,
+                    speak,
+                    talking,
                     arrivalTime: formatLocalTime(date),
-                    callerNumber: participant.callerNumber.slice(0, 4) + "XXXX" + participant.callerNumber.slice(-4)
+                    callerNumber: callerNumber.slice(0, 4) + "XXXX" + callerNumber.slice(-4)
                 }
             }),
             phoneNumber: formatFrenchPhoneNumber(config.OVH_ROOM_PHONE_NUMBER),
