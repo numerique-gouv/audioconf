@@ -175,26 +175,20 @@ On utilise également cet appel dans la page de status, pour vérifier que la co
 - Obtenir l'historique d'une conf passée donnée : `GET /telephony/${process.env.OVH_ACCOUNT_NUMBER}/conference/${phoneNumber}/histories/${callId}`
 
 ## Mise en prod
+
 La mise en prod est faite à la main pour le moment.
 
 Procédé basique :
- - On fait une branche release:
+ - On crée une branche release:
  ```
 git checkout main
 git pull
 git checkout -B release/X.Y.Z
  ```
- - On incrémente le numéro de version dans package.json et on commit dans la branche de release. On teste cette branche de release.
- - on merge la release dans la branche `prod`
- ```
- git checkout prod
- git merge --no-ff release/X.Y.Z
- ```
- - on fait une release sur github (https://github.com/betagouv/audioconf/releases/new) en décrivant les modifications apportées par cette release. Ce process crée un tag sur le commit de la release.
- - on déploie la branche prod sur Scalingo.
- - on merge `prod` dans `main` (pour récupérer le numéro de version et les éventuelles modifs de test):
- ```
- git checkout main
- git pull
- git merge --no-ff prod
- ```
+ - On incrémente le numéro de version dans package.json et on commit dans la branche de release.
+ - On crée une PR de cette branche de release vers la branche `prod`, la PR est testée par la CI.
+ - On crée une release sur github (https://github.com/betagouv/audioconf/releases/new) en décrivant les modifications apportées par cette release. Ce process crée un tag sur le commit de la release.
+ - Quand on merge la PR, la branche _prod_ est déployée automatiquement sur scalingo.
+ - Créer ensuite une PR depuis `prod` vers `main`, pour récupérer le numéro de version et les éventuelles modifs de test.
+
+Les PR sont nécessaires car les branches `prod` et `main` sont protégées, on ne peut pas push directement dessus.
