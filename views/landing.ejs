@@ -41,10 +41,6 @@
           <% } %>
 
           <form action="<%= urls.startAuth %>" method="POST">
-            <div class="fr-input-group">
-              <label class="fr-label" for="email">Votre adresse mail professionnelle :</label>
-              <input class="fr-input" type="email" id="email" name="email" required>
-            </div>
             <% if(FEATURE_RESERVATIONS) { %>
               <div class="fr-input-group">
                 <label class="fr-label" for="day">Date d'expiration de votre conférence :</label>
