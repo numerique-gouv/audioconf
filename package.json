@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/betagouv/conferences#readme",
   "dependencies": {
-    "@gouvfr/dsfr": "^1.0.0-rc1.0",
+    "@gouvfr/dsfr": "^1.11.2",
     "@sentry/node": "^6.2.2",
     "chart.js": "^2.9.4",
     "connect-flash": "^0.1.1",

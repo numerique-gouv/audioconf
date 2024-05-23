@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" data-fr-theme>
+<html lang="fr" data-fr-scheme="system">
 
 <head>
   <meta charset="utf-8">
@@ -12,8 +12,9 @@
     <% } %>
   </title>
   <!-- todo(estellecomment) : import min css and js -->
-  <link rel="stylesheet" type="text/css" href="/static/gouvfr/css/dsfr.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/gouvfr/dsfr/dsfr.min.css">
   <link rel="stylesheet" href="/static/css/custom.css">
+  <link rel="stylesheet" href="/static/gouvfr/utility/utility.min.css">
   <link rel="stylesheet" href="/static/remixicon/remixicon.css">
   <link rel="icon" type="image/png" sizes="16x16" href="/static/images/favicon/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/static/images/favicon/favicon-32x32.png">
@@ -52,7 +53,7 @@
           <div class="fr-header__tools">
             <div class="fr-header__tools-links">
               <ul class="fr-links-group">
-                <li class="fr-link fr-fi-question-line">
+                <li class="fr-link fr-icon-question-line">
                   <a href="<%= urls.faq %>">Une question ?</a>
                 </li>
                 <li>
