@@ -1,4 +1,5 @@
 const oidcAuth = require("../lib/oidcAuth")
+const urls = require("../urls")
 
 module.exports.startAuth = async (req, res) => {
   const userTimezoneOffset = req.body.userTimezoneOffset
@@ -20,6 +21,13 @@ module.exports.startAuth = async (req, res) => {
 }
 
 module.exports.logout = async(req, res) => {
-  console.log(req.session)
-  return res.redirect(`/`)
+  const user = req.session.user
+  if(!user){
+    return res.redirect(urls.landing)
+  }
+  const {id_token_hint, state} = user
+  req.session.destroy()
+
+  const logoutUrl = oidcAuth.getLogoutUrl({id_token_hint, state})
+  return res.redirect(logoutUrl)
 }
