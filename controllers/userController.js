@@ -18,3 +18,8 @@ module.exports.startAuth = async (req, res) => {
 
   res.redirect(authRequest.redirectUrl)
 }
+
+module.exports.logout = async(req, res) => {
+  console.log(req.session)
+  return res.redirect(`/`)
+}

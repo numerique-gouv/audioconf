@@ -14,4 +14,5 @@ module.exports = {
   participantAction: '/dashboard/:participantId/:action',
   dashboard: '/dashboard',
   status: '/api/status',
+  logout: '/api/logout'
 }

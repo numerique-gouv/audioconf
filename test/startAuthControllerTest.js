@@ -4,7 +4,7 @@ const oidcAuth = require("../lib/oidcAuth")
 const sinon = require("sinon")
 const urls = require("../urls")
 
-describe("startAuthController", function() {
+describe("userController", function() {
 
   describe("using oidcAuth", function() {
     let oidcClientStub
