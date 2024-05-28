@@ -22,12 +22,12 @@ module.exports.startAuth = async (req, res) => {
 
 module.exports.logout = async (req, res) => {
   const user = req.session.user
-  console.log("USER")
-  console.log(user)
   if(!user){
     return res.redirect(urls.landing)
   }
   const {id_token_hint, state} = user
+  console.log(`state :  ${state}`)
+  console.log(`id_token_hint :  ${id_token_hint}`)
   req.session.destroy()
 
   const logoutUrl = await oidcAuth.getLogoutUrl({id_token_hint, state})
