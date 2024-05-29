@@ -70,6 +70,7 @@ app.use(function(req, res, next){
   res.locals.urls = urls
   res.locals.version = version
   res.locals.siteUrl = config.HOSTNAME_WITH_PROTOCOL
+  res.locals.user = req.session.user
   next()
 })
 

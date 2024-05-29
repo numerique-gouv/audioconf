@@ -59,9 +59,11 @@
                 <li>
                   <%- include('dark-mode-switch') -%>
                 </li>
+                <% if (locals.user) { %>
                 <li class="fr-link fr-icon-logout-box-r-line fr-icon">
                   <a href="<%= urls.logout %>">Se déconnecter</a>
                 </li>
+                <% } %>
               </ul>
             </div>
           </div>
