@@ -102,7 +102,6 @@ config.FEATURE_JOB_COMPUTE_STATS = process.env.FEATURE_JOB_COMPUTE_STATS === "tr
 config.FEATURE_JOB_ANONYMIZE_EMAILS = process.env.FEATURE_JOB_ANONYMIZE_EMAILS === "true" || false
 config.FEATURE_JOB_CALLS_STATS = process.env.FEATURE_JOB_CALLS_STATS === "true" || false
 config.FEATURE_WEB_ACCESS = process.env.FEATURE_WEB_ACCESS === "true" || false
-config.FEATURE_OIDC = process.env.FEATURE_OIDC === "true" || false
 
 config.ANNOUNCEMENTS = process.env.ANNOUNCEMENTS ? process.env.ANNOUNCEMENTS.split("|") : []
 
@@ -112,6 +111,9 @@ config.STATS_EXTERNAL_DASHBOARD_URL = process.env.STATS_EXTERNAL_DASHBOARD_URL
 config.OIDC_PROVIDER_URL = process.env.OIDC_PROVIDER_URL
 config.OIDC_CLIENT_ID = process.env.OIDC_CLIENT_ID
 config.OIDC_CLIENT_SECRET = process.env.OIDC_CLIENT_SECRET
+config.OIDC_ACR_VALUES = process.env.OIDC_ACR_VALUES
+config.OIDC_ID_TOKEN_SIGNED_ALG = process.env.OIDC_ID_TOKEN_SIGNED_ALG
+config.OIDC_USER_INFO_SIGNED_ALG = process.env.OIDC_USER_INFO_SIGNED_ALG
 
 config.RIZOMO_URI = process.env.RIZOMO_URI
 

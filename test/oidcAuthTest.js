@@ -24,12 +24,10 @@ describe("oidcAuth", function() {
     }))
     insertOidcRequestStub.returns(Promise.resolve())
 
-    const email = "good.email@beta.gouv.fr"
     const conferenceDayString = "2022-05-25"
     const userTimezoneOffset = 60
 
     await oidcAuth.startAuth(
-      email,
       undefined, //conferenceDurationInMinutes,
       conferenceDayString,
       userTimezoneOffset,
@@ -54,12 +52,10 @@ describe("oidcAuth", function() {
     }))
     insertOidcRequestStub.returns(Promise.resolve())
 
-    const email = "good.email@beta.gouv.fr"
     const conferenceDayString = "2022-05-25"
     const userTimezoneOffset = 60
 
     const request = await oidcAuth.startAuth(
-      email,
       undefined, //conferenceDurationInMinutes,
       conferenceDayString,
       userTimezoneOffset,
@@ -68,8 +64,8 @@ describe("oidcAuth", function() {
     expect(request.redirectUrl).to.equal(redirectUrl)
     sinon.assert.calledWith(authorizationUrlStub.getCall(0),
       {
-        login_hint: email,
-        scope: "openid",
+        scope: "openid uid email",
+        acr_values: "eidas1",
         state: sinon.match.string,
         nonce: sinon.match.string,
       }
