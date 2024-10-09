@@ -64,7 +64,8 @@ describe("oidcAuth", function() {
     expect(request.redirectUrl).to.equal(redirectUrl)
     sinon.assert.calledWith(authorizationUrlStub.getCall(0),
       {
-        scope: "openid",
+        scope: "openid uid email",
+        acr_values: "eidas1",
         state: sinon.match.string,
         nonce: sinon.match.string,
       }
