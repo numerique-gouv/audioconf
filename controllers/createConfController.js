@@ -5,7 +5,6 @@ const config = require("../config")
 const db = require("../lib/db")
 const emailer = require("../lib/emailer")
 const format = require("../lib/format")
-const magicLinkAuth = require("../lib/magicLinkAuth")
 const oidcAuth = require("../lib/oidcAuth")
 const urls = require("../urls")
 const { isAcceptedEmail } = require("../lib/emailChecker")
@@ -45,15 +44,12 @@ const createConfWithDay = async (email, conferenceDay, userTimezoneOffset) => {
 }
 
 module.exports.createConf = async (req, res) => {
-  const confData = await (config.FEATURE_OIDC ?
-    oidcAuth.finishAuth(req) :
-    magicLinkAuth.finishAuth(req))
+  const confData = await oidcAuth.finishAuth(req)
 
-  const { email, durationInMinutes, conferenceDay, userTimezoneOffset } = confData
+  const { email, durationInMinutes, conferenceDay, userTimezoneOffset, error } = confData
 
   if (!conferenceDay && !durationInMinutes) {
-    console.error("Login token contained no conferenceDay and no durationInMinutes. Cannot create conference.")
-    req.flash("error", "La conférence n'a pas pu être créée. Vous pouvez réessayer.")
+    req.flash("error", error || "La conférence n'a pas pu être créée. Vous pouvez réessayer.")
     return res.redirect("/")
   }
 

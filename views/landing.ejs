@@ -1,6 +1,15 @@
 <%- include('partials/header') -%>
 
 <div class="fr-container">
+  <div class="fr-notice fr-notice--info">
+    <div class="fr-container">
+        <div class="fr-notice__body">
+            <p class="fr-notice__title">
+              Audioconf change de mode d'authentification au 27/05/2024 pour <a href='https://agentconnect.gouv.fr' rel='noopener external' title="site d'Agent Connect - nouvelle fenêtre" target='_blank'>Agent Connect</a> !
+            </p>
+        </div>
+    </div>
+</div>
   <div class="fr-grid-row fr-grid-row--center">
     <div class="fr-col fr-col-lg-8">
       <div id="je-cree-une-conf" class="main-paragraph">
@@ -32,10 +41,6 @@
           <% } %>
 
           <form action="<%= urls.startAuth %>" method="POST">
-            <div class="fr-input-group">
-              <label class="fr-label" for="email">Votre adresse mail professionnelle :</label>
-              <input class="fr-input" type="email" id="email" name="email" required>
-            </div>
             <% if(FEATURE_RESERVATIONS) { %>
               <div class="fr-input-group">
                 <label class="fr-label" for="day">Date d'expiration de votre conférence :</label>
@@ -61,9 +66,16 @@
             <div class="hidden">
               <input type="number" id="userTimezoneOffset" name="userTimezoneOffset" required>
             </div>
-            <div class="fr-input-group">
-              <button type="submit" class="fr-btn" title="Réserver ma conférence">Réserver ma conférence</button>
-            </div>
+
+            <div class="fr-connect-group">
+              <button class="fr-connect" type="submit">
+                  <span class="fr-connect__login">Réserver avec</span>
+                  <span class="fr-connect__brand">AgentConnect</span>
+              </button>
+              <p>
+                  <a href="https://agentconnect.gouv.fr/" target="_blank"  rel="noopener" title="Qu'est-ce que AgentConnect ? - nouvelle fenêtre">Qu’est-ce que AgentConnect ?</a>
+              </p>
+          </div>
           </form>
 
           <p class="fr-text--s">
@@ -79,7 +91,7 @@
   </div>
 </div>
 
-<div id="advantages" class="fr-container-fluid fr-bg--alt text-center fr-p-5w">
+<div id="advantages" class="fr-container-fluid bandeau-principal text-center fr-p-5w">
   <div class="fr-grid-row fr-grid-row--center">
     <div class="fr-col-6"><h3 class="fr-h2">Collaborez à distance facilement</h3></div>
   </div>

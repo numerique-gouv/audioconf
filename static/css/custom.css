@@ -10,14 +10,17 @@
   margin-bottom: 56px !important; /* fr-mb-7w */
 }
 
-/* Todo : use callouts from the design system instead of home-made paragraphs ? */
+.bandeau-principal {
+  background-color: var(--background-contrast-grey);
+}
+
 
 .error-text {
-  color: var(--error);
+  color: var(--text-default-error);
 }
 
 .cell--info {
-  background-color: var(--info);
+  background-color: var(--background-alt-blue-france);
 }
 
 .notification--error {
@@ -29,17 +32,11 @@
 }
 
 .notification--info {
-  --scheme-border: var(--info);
+  --scheme-border: var(--background-alt-blue-france);
 }
 
 .notification--success {
-  --scheme-border: var(--success);
-}
-
-
-.fr-bg--alt {
-  background-color: var(--bf500);
-  color: var(--g100);
+  --scheme-border: var(--background-flat-success);
 }
 
 .text-center {

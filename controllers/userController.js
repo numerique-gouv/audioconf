@@ -1,22 +1,15 @@
-const config = require("../config.js")
-const magicLinkAuth = require("../lib/magicLinkAuth")
 const oidcAuth = require("../lib/oidcAuth")
-
+const urls = require("../urls")
 
 module.exports.startAuth = async (req, res) => {
   const userTimezoneOffset = req.body.userTimezoneOffset
-  const email = req.body.email
   const conferenceDurationInMinutes = req.body.durationInMinutes
   const conferenceDayString = req.body.day
   if (typeof conferenceDayString === 'undefined' && typeof conferenceDurationInMinutes === 'undefined') {
     throw new Error('Both conferenceDayString and conferenceDurationInMinutes are undefined. This should not happen.')
   }
 
-  const authRequest = await (
-    config.FEATURE_OIDC ?
-    oidcAuth.startAuth(email, conferenceDurationInMinutes, conferenceDayString, userTimezoneOffset) :
-    magicLinkAuth.startAuth(email, conferenceDurationInMinutes, conferenceDayString, userTimezoneOffset)
-  )
+  const authRequest = await oidcAuth.startAuth(conferenceDurationInMinutes, conferenceDayString, userTimezoneOffset)
 
   if (authRequest.error) {
     console.log("Error in authentication", authRequest.error)
@@ -25,4 +18,16 @@ module.exports.startAuth = async (req, res) => {
   }
 
   res.redirect(authRequest.redirectUrl)
+}
+
+module.exports.logout = async (req, res) => {
+  const user = req.session.user
+  if(!user){
+    return res.redirect(urls.landing)
+  }
+  const {id_token, state} = user
+  req.session.destroy()
+
+  const logoutUrl = await oidcAuth.getLogoutUrl({id_token_hint: id_token, state})
+  return res.redirect(logoutUrl)
 }

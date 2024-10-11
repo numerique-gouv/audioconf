@@ -13,7 +13,7 @@ const dashboardController = require("./controllers/dashboardController")
 const format = require("./lib/format")
 const createConfController = require("./controllers/createConfController")
 const landingController = require("./controllers/landingController")
-const startAuthController = require("./controllers/startAuthController")
+const userController = require("./controllers/userController")
 const statusController = require("./controllers/statusController")
 const stats = require("./lib/stats")
 const urls = require("./urls")
@@ -70,12 +70,14 @@ app.use(function(req, res, next){
   res.locals.urls = urls
   res.locals.version = version
   res.locals.siteUrl = config.HOSTNAME_WITH_PROTOCOL
+  res.locals.user = req.session.user
   next()
 })
 
 app.get(urls.landing, landingController.getLanding)
 
-app.post(urls.startAuth, startAuthController.startAuth)
+app.post(urls.startAuth, userController.startAuth)
+app.post(urls.logout, userController.logout)
 
 app.get(urls.validationEmailSent, (req, res) => {
   res.render("validationEmailSent", {
@@ -138,6 +140,8 @@ app.get(urls.faq, (req, res) => {
     pageTitle: "Questions fréquentes",
   })
 })
+
+app.get(urls.logout, userController.logout)
 
 app.get(urls.status, statusController.getStatus)
 

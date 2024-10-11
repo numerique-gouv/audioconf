@@ -6,7 +6,6 @@ const app = require("../index")
 const conferences = require("../lib/conferences")
 const db = require("../lib/db")
 const emailer = require("../lib/emailer")
-const magicLinkAuth = require("../lib/magicLinkAuth")
 const oidcAuth = require("../lib/oidcAuth")
 const urls = require("../urls")
 const { encrypt } = require("../lib/crypto")
@@ -20,11 +19,9 @@ describe("createConfController", function() {
     let insertConfStub
     let sendWebAccessEmailStub
 
-    let oidcFlagBackupValue
     let webAccessFlagBackupValue
 
     beforeEach(function(done) {
-      oidcFlagBackupValue = config.FEATURE_OIDC
       webAccessFlagBackupValue = config.FEATURE_WEB_ACCESS
       config.FEATURE_WEB_ACCESS = true
 
@@ -37,7 +34,6 @@ describe("createConfController", function() {
     })
 
     afterEach(function(done) {
-      config.FEATURE_OIDC = oidcFlagBackupValue
       config.FEATURE_WEB_ACCESS = webAccessFlagBackupValue
 
       createConfStub.restore()
@@ -47,42 +43,10 @@ describe("createConfController", function() {
       done()
     })
 
-    describe("using magicLinkAuth", () => {
-      let magicLinkFinishAuthStub
-
-      beforeEach(function() {
-        config.FEATURE_OIDC = false
-        magicLinkFinishAuthStub = sinon.stub(magicLinkAuth, "finishAuth")
-      })
-
-      afterEach(function() {
-        magicLinkFinishAuthStub.restore()
-      })
-
-      it("should create conf and send email", function(done) {
-        shouldCreateConfAndSendEmail(done, magicLinkFinishAuthStub)
-      })
-
-      it("should redirect when finishAuth has failed", function(done) {
-        shouldRedirectWhenFinishAuthHasFailed(done, magicLinkFinishAuthStub)
-      })
-
-      it("should redirect when conf was not created", function(done) {
-        shouldRedirectWhenConfWasNotCreated(done, magicLinkFinishAuthStub)
-      })
-
-      it("should redirect when email was not sent", function(done) {
-        shouldRedirectWhenEmailWasNotSent(done, magicLinkFinishAuthStub)
-      })
-
-    })
-
-
     describe("using OIDC auth", () => {
       let oidcFinishAuthStub
 
       beforeEach(function() {
-        config.FEATURE_OIDC = true
         oidcFinishAuthStub = sinon.stub(oidcAuth, "finishAuth")
       })
 
