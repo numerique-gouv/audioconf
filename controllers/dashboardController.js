@@ -21,9 +21,10 @@ module.exports.fetchDashboardInfo = async (req, res) => {
         const participantIds = await conferences.fetchDashboardInfo(config.OVH_ROOM_PHONE_NUMBER, roomNumber)
         const participants = await Promise.all(participantIds.map(id => conferences.getParticipant(config.OVH_ROOM_PHONE_NUMBER, roomNumber, id)))
         return res.json({
-            participants: participants.map(({callerNumber, arrivalDateTime, speak, talking}) => {
+            participants: participants.map(({callerNumber, arrivalDateTime, speak, talking, id}) => {
                 const date = new Date(arrivalDateTime)
                 return {
+                    id,
                     speak,
                     talking,
                     arrivalTime: formatLocalTime(date),
